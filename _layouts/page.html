@@ -1,0 +1,15 @@
+---
+layout: default
+---
+
+{{ content }}
+
+{% unless page.comment_exclude %}
+<script src="https://utteranc.es/client.js"
+  repo="France-ioi/algorea-devdoc"
+  issue-term="pathname"
+  theme="github-light"
+  crossorigin="anonymous"
+  async>
+</script>
+{% endunless %}
