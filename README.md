@@ -18,4 +18,6 @@ bundle exec just-the-docs rake search:init
 
 ## Style
 
-For text style, have a look at [Just-the-docs documentation](https://pmarsceill.github.io/just-the-docs/docs/ui-components). Try to use markdown (Kromdown) as much as possible.
+For basic style (indent style, line break), make sure your editor support [EditorConfig](https://editorconfig.org/) so that the one defined in this project is used by everybody.
+
+For the text style, try to use markdown file as much as possible. Have a look at [Just-the-docs documentation](https://pmarsceill.github.io/just-the-docs/docs/ui-components) for ways to do custom styling.
