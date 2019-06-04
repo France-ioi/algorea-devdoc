@@ -4,4 +4,5 @@ title: Home
 nav_order: 1
 permalink: /
 ---
-Hey!
+
+The purpose of this website is to regroup all developer documentation related the Algorea project.
