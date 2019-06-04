@@ -1,6 +1,6 @@
 
 title: Algorea DevDoc
-url: "https://france-ioi.github.io"
+url: "//france-ioi.github.io"
 baseurl: "/algorea-devdoc/"
 
 remote_theme: pmarsceill/just-the-docs
@@ -9,8 +9,8 @@ color_scheme: nil
 
 search_enabled: true
 aux_links: # top right links
-    "This doc on GitHub":
-      - "//github.com/France-iois/algorea-devdoc"
+    "Full project":
+      - "//github.com/France-ioi/algorea-devdoc"
 permalink: pretty
 exclude:
   - Gemfile

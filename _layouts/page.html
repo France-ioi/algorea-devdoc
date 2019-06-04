@@ -1,6 +1,12 @@
 ---
 layout: default
 ---
+<script type="text/javascript">
+const auxNavUL = document.querySelector('.js-aux-nav');
+const newLI = '<li class="d-inline-block my-0 mr-2"><a href="//github.com/France-ioi/algorea-devdoc/edit/master/{{ page.path }}">Edit this page on Github</a></li>';
+auxNavUL.innerHTML = newLI + auxNavUL.innerHTML;
+</script>
+
 
 {{ content }}
 
