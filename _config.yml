@@ -8,9 +8,6 @@ remote_theme: pmarsceill/just-the-docs
 color_scheme: nil
 
 search_enabled: true
-aux_links: # top right links
-    "Full project":
-      - "//github.com/France-ioi/algorea-devdoc"
 permalink: pretty
 exclude:
   - Gemfile
