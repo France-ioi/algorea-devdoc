@@ -1,0 +1,19 @@
+
+title: Algorea DevDoc
+# url: "https://github.com/France-ioi"
+# baseurl: "/algorea-devdoc"
+
+remote_theme: pmarsceill/just-the-docs
+# Color scheme currently only supports "dark" or nil (default)
+color_scheme: nil
+
+search_enabled: true
+aux_links: # top right links
+    "This doc on GitHub":
+      - "//github.com/France-iois/algorea-devdoc"
+permalink: pretty
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - LICENSE
+  - README.md
