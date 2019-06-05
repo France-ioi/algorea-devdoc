@@ -1,9 +1,10 @@
 ---
 layout: page
 title: Backend
-nav_order: 2
+nav_order: 20
 has_children: true
-permalink: /backend
+parent: Components
+permalink: /components/backend
 ---
 
 # Backend

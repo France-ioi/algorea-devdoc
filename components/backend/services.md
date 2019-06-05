@@ -1,8 +1,9 @@
 ---
 layout: page
 title: Services
-nav_order: 5
+nav_order: 50
 parent: Backend
+grand_parent: Components
 ---
 
 # Backend services

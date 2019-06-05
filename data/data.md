@@ -1,10 +1,10 @@
 ---
 layout: page
-title: Database
-nav_order: 2
+title: Data Model
+nav_order: 30
 has_children: true
-permalink: /database
+permalink: /data
 comment_exclude: true
 ---
 
-# Database
+# Data Model

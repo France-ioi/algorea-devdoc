@@ -1,8 +1,8 @@
 ---
 layout: page
-title: Decisions
-nav_order: 5
-parent: Database
+title: Change Decisions
+nav_order: 20
+parent: Data Model
 ---
 
 # Design decisions
