@@ -3,6 +3,7 @@ layout: page
 title: Database
 nav_order: 10
 parent: Data Model
+has_children: true
 ---
 
 # Database
