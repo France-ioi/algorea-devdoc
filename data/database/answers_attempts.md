@@ -17,11 +17,15 @@ There is a "old" [requirement document](https://docs.google.com/document/d/19B-B
 ### Teams
 Users may solve a task (item) either alone or as a team, depending on the contest. This is defined by the `items.bHasAttempts` of the contest, when true the contest has to be run in team (WTF?).
 
-When alone, the changes are done through his selfGroup. When in a team, the operations are done through his team, which is the only (current limitation) group which is direct parent of user selfGroup and which has access to the contest (item).
+When alone, the changes are done through his selfGroup. When in a team, the operations are done through his team, which is defined as the only (current limitation) group which is direct parent of user's selfGroup and whose `group.idTeamItem`is ancestor of the item.
+
+Later (Michel, 20/05/19): It's planned to be able to participate with the same team in each round, and hence idTeamItem will probably be deleted (or replaced with something more generic).
 
 ### Attempts
 
 An attempts is a instance of the same task with different parameters that make the task different (e.g., a random seed changing the data set).
+
+It may also serve as a way to reset one's own progress, e.g., a student solves a full chapter of tasks ; 6 months later, before the exam, student starts a new attempt so he can revise these tasks and start over from zero, without having his previous solution written out in front of him.
 
 Only items with `items.bHasAttempts` can have multiple attempts. The other one can have at most one attempt.
 
@@ -31,7 +35,7 @@ A user can manually submit an answer, typically to get a score back.
 
 ## Current state
 
-* The `groups_attempts` table represents the **attempts**. They are specific to a **group** and an **item**. It stores the current success status of the attempt.
+* The `groups_attempts` table represents the **attempts** (see above). They are specific to a **group** and an **item**. It stores the current success status of the attempt.
 * The `users_answers` table represents
   - when `sType='Submission'`, the history of user's manual submissions. It is specific to an **attempt** (so a group and an item) and a **user**. The result of the submission (returned by the task platform) is stored in `sState`, `sAnswer`, `iScore`, and `bValidated`. These entries are immutable once scored, there may be several entries for an attempt and a user.
   - when `sType='Current'`, the auto-saved state of a work (not submitted yet by the user). The state is stored in `sState` and `sAnswer`. This is typically used for resuming a task. The other columns are irrelevant for this case. These entries change each time a new (auto-)save is done and there should be only one of such entry (current) per user and attempt.
@@ -41,7 +45,7 @@ On May 2019, `sState` and `sAnswer` were stored in both `users_items` and `users
 
 ## Evolution
 
-We could deprecated the state/answer stored in `users_items` and only use `users_answers`'s current. But actually it will cause problem for the existing data. So currently (June 2019), we will
+We could deprecated the state/answer stored in `users_items` and only use `users_answers`'s current. But actually it will cause problem for the existing data. So currently (June 2019), we will keep duplication.
 
 Soon enough, state and answer should not be store in `users_answers` anymore as it is not really made for that (with the `type='Current'`) and unconsistent (immutable >< mutable, multiple >< unique). It should be moved to a specific table with entry uniquely identified by an attempt and a user, e.g. `users_states`. This transistion has to be done while making sure the existing data are migrated (from `users_items` and `users_answers`).
 
