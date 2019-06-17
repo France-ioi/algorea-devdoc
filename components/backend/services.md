@@ -1,16 +1,18 @@
 ---
 layout: page
-title: Services
+title: Implementation status/doc
 nav_order: 50
 parent: Backend
 grand_parent: Components
 ---
 
-# Backend services
+# Implementation Status and Documentation
 
-## API
+The API does not currently cover all implemented services... we are working on it.
 
-There is currently no API for the backend services. The best way to use the backend is to use the descriptions of the services (see below) to know what exists and read the [`*.feature` files](https://github.com/France-ioi/AlgoreaBackend/search?q=language%3AGherkin&unscoped_q=language%3AGherkin) in the code for usage examples.
+## Examples (test scenarios)
+
+One of the best way to understand how a service is supposed to work and are the edge cases is to check the test scenarios for the services. These can be found in the [`*.feature` files](https://github.com/France-ioi/AlgoreaBackend/search?q=language%3AGherkin&unscoped_q=language%3AGherkin) in the code.
 
 ## Work in progress
 
