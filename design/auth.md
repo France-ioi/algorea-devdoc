@@ -32,7 +32,7 @@ Some remarks:
 - The authorization on AlgoreaPlaform only relies on its PHP session after this first authorization. It means the access and refresh token provided by the *login module* are just ignored, including their validity time. It may lead to unconsistency between the two sessions (difficulty to revoke globally a user, problem at logout or to get user data, ...). OAuth2 is not supposed to be used this way.
 - Further session refresh (and more user info fetching) can be done through the backend which has a *refresh token* that it can use to contact the *login module* again.
 
-# Possible workflow
+# Possible workflows
 
 ## Using "implicit" workflow
 
