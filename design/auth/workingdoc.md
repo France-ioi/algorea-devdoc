@@ -1,11 +1,10 @@
 ---
 layout: page
-title: Authentication & Authorization workflow
-nav_order: 30
-parent: Design
+title: "Auth: Working docs"
+nav_order: 35
+parent: Authentication & Authorization workflow
+grand_parent: Design
 ---
-
-Authentication and authorization are managed in common through most France-IOI applications, using the OAuth2 protocol. The authorization is centrally managed in the [Login Module](https://github.com/France-ioi/login-module). The PHP clients share a lib which implement the OAuth2 client to *Login Module*: [login-module-client](https://github.com/France-ioi/login-module-client).
 
 # OAuth2 and best practices
 
