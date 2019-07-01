@@ -19,3 +19,7 @@ The following workflow using OAuth2 "authorization code" looks the more approria
 # Logout Workflow
 
 <iframe frameborder="0" style="width:100%;height:474px;" src="https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=logout.drawio#Uhttps%3A%2F%2Fdrive.google.com%2Fa%2Fsmad.be%2Fuc%3Fid%3D13yhLJA3MTP0peFQT-T2mtVm8l9VaG081%26export%3Ddownload"></iframe>
+
+# Token Refresh
+
+<iframe frameborder="0" style="width:100%;height:434px;" src="https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=tokenrefresh.drawio#Uhttps%3A%2F%2Fdrive.google.com%2Fa%2Fsmad.be%2Fuc%3Fid%3D1P-YMuir4xO6j64akwz3yYKpQYuCrIkZH%26export%3Ddownload"></iframe>
