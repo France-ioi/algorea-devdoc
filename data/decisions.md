@@ -27,3 +27,5 @@ Here is a list of the decisions on database design which have been done recently
   * Replacing the current way to end a contest (currently: check at each access if the time is not over for the user and remove him the access if no)
     - Every group membership (`groups_groups`) gets a expiration time. This expiratin time is used in the abovementioned `items.idAccessGroup` so that the user/team access expires once his time is over.
   * Replace unlockItem by "joinGroup": solving an item can make the user join a group which has access (instead of creating partial access)
+* 16/09/2019 - Mathias & Damien
+  * The combination of `items_items.bAlwaysVisible` and `items_items.bAccessRestricted` can represents 4 states while actually they are used to represent 3 possible ways of propagating partial access from an item to its child. We will merge these attribute to one `items_items.partial_propagation` (name to be defined) allowing 3 values: `no`, `yes`, `as grey` (to be defined).
