@@ -1,9 +1,8 @@
 ---
 layout: page
 title: Answers & Attempts
-nav_order: 10
-grand_parent: Data Model
-parent: Database
+nav_order: 100
+parent: Data Model
 ---
 
 # Answers & Attempts
