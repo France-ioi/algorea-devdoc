@@ -48,7 +48,10 @@ In case time extensions (or reduction) should be granted to the participant (or 
 
 ## Changing team after entering the contest
 
-Changing the members (adding or removing some) of a team when the team has entered a contest is allowed as long as the "conditions for entering" (defined above) related to team members are still valid.
+<span class="label label-yellow">TODO</span>
+* Changing the members (adding or removing some) of a team when the team has entered a contest is allowed as long as the "conditions for entering" (defined above) related to team members are still valid.
+* ++ handling modification after the first contest
+* ++ handle `items.bTeamsEditable`
 
 ## Still to be discussed/decided
 
