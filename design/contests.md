@@ -13,7 +13,7 @@ Both a user on his own or a team of users (a group in both cases) can participat
 
 ## Before a contest
 
-Before starting a contest, the participant should be able to see the title and description of the contest (the parent item) but nothing about the tasks themselves. Practically, he means he must has to "grayed" access to the parent item and no access at all to the children.
+Before starting a contest, the participant should be able to see the title and description of the contest (the parent item) but nothing about the tasks themselves. Practically, it means he must have "grayed" access to the parent item and no access at all to the children.
 
 ## Starting a contest
 
