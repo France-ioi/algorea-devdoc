@@ -17,7 +17,7 @@ Before starting a contest, the participant should be able to see the title and d
 
 ## Starting a contest
 
-For starting a contest, the participant goes on the contest item (as he has greyed access) and press a button (if the conditions defined below are met) a button to start the clock for himself or his team.
+For starting a contest, the participant goes on the contest item (as he has greyed access) and press a button (if the conditions defined below are met) a button to start the clock for himself.
 
 The UI may not display the button if the conditions are not met and ask if the user wants to participate alone or as one of his team.
 
