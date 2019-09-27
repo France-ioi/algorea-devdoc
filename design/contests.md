@@ -25,9 +25,9 @@ The UI may not display the button if the conditions are not met and ask if the u
 
 * The item must be a contest, so have a duration
 * The user "pressing the button" can view the contest item (at least grayed access).
-* The participant must not have started the contest yet (so `group_participations.contest_start` is not set)
-* If `items.team_max_members` is set and the participant is a team, validate that the number of users in the team is lower or equals to this number.
-* If `items.contest_entering_conditions` (somehow former `sTeamMode`) is:
+* The participant must not have started the contest yet (so `group_participations.contest_started_at` is not set)
+* If `items.contest_max_team_size` is set and the participant is a team, validate that the number of users in the team is lower or equals to this number.
+* If `items.contest_entering_condition` (somehow former `sTeamMode`) is:
   * "None": no additional conditions (one can enter the contest at any moment)
   * "One": the current time needs to be included in the `group_contest_permissions.can_enter_from`-`can_enter_until` time range for the contest item and one of the group ancestors of either the user (if participating alone) or <span style="text-decoration: underline">at least one member of the team</span>.
   * "All": same but <span style="text-decoration: underline">all members of the team</span>.
@@ -35,7 +35,7 @@ The UI may not display the button if the conditions are not met and ask if the u
 
 ## Changes on entering
 
-* We set in `group_participations`: `start` to now, `contest_start` to now, `last_activity` to now
+* We set in `group_participations`: `started_at` to now, `contest_started_at` to now, `last_activity_at` to now
 * We give access to the tasks (the ones we want the participant to have access at the beginning) by adding him to a dedicated group `items.contestant_group_id` which has a partial access to this contest, with a membership expiring at `now + duration`.
 
 ## Finishing
