@@ -1,148 +1,155 @@
 ---
 layout: page
-title: Access rights on items [WIP]
+title: Access rights on items
 nav_order: 10
 parent: Principles of access rights and their propagation
 grand_parent: Design
 ---
 
-<span class="label label-red">Work in progress - Not final</span>
-
 # Access rights on items
 
 ## Preambule on data schema
 
-Access rights to items given to groups are expressed in the `permissions_given` table.
-The results of the explicit propagation of access rights through items is stored in the `permissions_computed` table.
-Relations (parent-child) among items have a property `unlocked_access_propagation` which affects propagation and may have the following possible values: *none*, *as unlocked*, *as visible*.
+Access rights to items given to groups are expressed in the `permissions_granted` table.
+The results of the explicit propagation of access rights through items is stored in the `permissions_generated` table.
+Relations (parent-child) among items have several properties which affect propagation.
 
-{% include items_relations.html %}
+<div style="max-width:90%;">{% include items_relations.html %}</div>
 
 ## Overview of permissions of a group on an item
 
-The following permissions may be given to a group for an item.
+### can_view
 
-<div style="display: none;">
-### Visibility levels (resulting permissions)
+The level of visibily the group has on the item:
 
-There are four levels of "view" of an item for a group:
-* **none**
-* **list**: can view the title, subtitle and description
-* **content**: *list* + can load the content of the item and try to solve it
-* **solutions**: *content* + can view the solutions and discussions about the item
-</div>
-
-### Permissions affecting visibility
-
-There are four permissions (not especially matching the four resulting permissions!) which can be given to a group on an item. Technically, they are given as a time value from which the permission is applied ("since ..."), this detail is ommitted here.
-* **visible**: view the title, subtitle and description, do not propagate to children
-* **unlocked**: can load the content of the item and try to solve it, propagate to children in some conditions (see below in <a href="#technically">technically</a>)
-* **full access**: same as unlocked except it propagates to children
-* **solution access**: can view solutions and discussions, propagate to children (may change soon)
-
-<div style="display: none;">
-
-### Authorized Actions
-
-* Distribution
-* Reuse
-* Observation
-* Write
-* Sessions (?)
-* Ownership
-
-</div>
-
-### Meta permissions
-
-Permissions of giving permissions
-
-* **owner**: can view/do everything about this item and give all other permissions (upcoming); can delete the item
-
-<div style="display: none;">
-
-### Specific to some types
-
-#### Time-limited items
-
-Time-limited items (typically contests) have a specific "start" button which allow the user to start a participation on an item-specified duration.
-
-* **can enter from** and **can enter until**: time frame during which the user can enter the item, i.e. is put into the *participation group* with an expiring membership.
-</div>
-
-## Parent-child Propagation
-
-Permissions given on an item to a group may be propagated (explicitely) to the item's children, under some conditions depending on the permissions.
-
-This propagation is relaunched each time a permission is changed or an item added/removed. It is computed on the changed node (the group-item relation node) based on its parents, and then propagated to its children.
-
-Below, the "permissions given" correspond to the permissions which has been given directly, typically by another user. The "computed permissions" correspond to what the group has actually as permission, as a result of the permissions given and the propagation.
+* **no**: not listed and trying to get it returns not-found or forbidden
+* **info**: can view basic database info on the item: title, description, type
+* **content**: can view "info" and content stored by task platforms; for tasks, can try to solve
+* **content_with_descendants**: can view "content" and more of the descendant items (see propagation)
+* **solution**: can view "content", solutions and discussions
 
 
-<div style="display: none;">
-TODO: Handle deps between perm and declare if they are checked when set, when get, contrained in the db, ...
+### can_grant_view
 
-</div>
+The level of visibility that the group can give on this item to other groups on which it has the right to (cfr group permissions).
+
+* **no**: cannot grant view access
+* **content**: can give *can_view* "content"
+* **content_with_descendants**: can give up to *can_view* "content_with_descendants"
+* **solution**: can give up to *can_view* "solution"
+* **transfer**: can give up to *can_view* "solution" and grant any *can_grant_view* access to another group
 
 
+### can_watch
 
-## Technically
+The level of observation a group has for an item, on the activity of the users he can watch (cfr group permissions).
 
-### Permissions given
+* **no**
+* **result**: can view meta data about the submissions, including the scores
+* **answer**: can watch "result" and can look at the detail of the answers
+* **transfer**: can watch "answer" and grant any *can_watch* access to another group
 
-The `permissions_given` table express the raw permissions given to a group on an item.
-One permission entry matches exactly one group, one item, and one owner (the group who has given this permission). There may be several permissions for a same *(group, item)*.
+### can_edit
+
+The level of edition permissions a group has on an item.
+
+* **no**
+* **children**: can attach new child items to the item, and edit propagation rules between the item and some of the children (cfr propagation permissions) [still to be defined: what about relation deletion?]
+* **all**: can edit "children" and can make changes to the parameters, title and content and solution of the item; cannot delete the item.
+* **transfer**: can edit "all" and grant any *can_edit* access to another group
+
+### is_owner
+
+Whether (true/false) the group is the owner of this item. Implies the maximum level in all of the above permissions. Can delete the item.
+
+## Propagation across items
+
+Permissions given on an item to a group may be propagated (explicitely) to the item's children, under some conditions and depending on the permissions. This propagation computation is relaunched each time a permission is changed or an item added/removed. It is computed on the changed node (the group-item relation node) based on its parents, and then propagated to its children. When there are several parents, the higher permission among parents is kept.
+
+The copy of the permission levels from the parent to its children is either equivalent or lower (never increase), which mainly depends on the following attributes on the item-item relationship:
+
+* **content_view_propagation**: *none*, *as_info*, *as_content* -- defines how a *can_view="content"* permission propagates: not at all, as "info" or as "content"
+* **view_propagation_limit**: *content_view_propagation*, *content_with_descendants*, *solution* -- defines how *can_view* propagates at best (level never increases through propagation):
+   * *content_view_propagation*: at best use the value given in *content_view_propagation*
+   * *content_with_descendants*: at best propagate as *content_with_descendants*
+   * *solution*: at best propagate as *solution*
+* **grant_view_propagation**: false, true -- Whether *can_grant_view* propagates (with the same level with, as upper limit, "solution")
+* **watch_propagation**: false, true -- Whether *can_watch* propagates (with the same level with, as upper limit, "answer")
+* **edit_propagation**: false, true -- Whether *can_edit* propagates (with the same level with, as upper limit, "all")
+
+In addition, the following levels **never** propagate:
+* *can_view*="info" (so propagates as "none")
+* *can_grant_view*, *can_watch*, *can_edit*="transfer" (so propagate as the preceding level)
+* *is_owner*=true (so propagates as "false")
+
+## Summary on changing and propagating permissions
+
+| "can_view" perm granted | Constraint on "giver" | Constraint on "receiver" | Propagation rule     |
+|:------------------------|:----------------------|:-------------------------|:---------------------|
+| info                    | can_grant_view ≥ content        | none |  Never propagates              |
+| content                 | can_grant_view ≥ content        | none | Apply content_view_propagation |
+| content_with_descendants| can_grant_view ≥ content_with_d | none | Yes if view_propagation_limit ≥ "content_with_d".; otherwise apply content_view_propagat. |
+| solution                | can_grant_view ≥ solution       | none | Yes if view_propagation_limit ≥ "solution;otherwise apply content_view_propagat. |
+
+
+| "can_grant_view" perm granted | Constraint on "giver" | Constraint on "receiver"        | Propagation condition     |
+|:------------------------------|:----------------------|:--------------------------------|:---------------------|
+| content                 | can_grant_view = transfer   | can_view ≥ content              | Yes if grant_view_propagation |
+| content_with_descendants| can_grant_view = transfer   | can_view ≥ content_with_d       | Yes if grant_view_propagation |
+| solution                | can_grant_view = transfer   | can_view ≥ solution             | Yes if grant_view_propagation |
+| transfer                | is_owner                    | can_view ≥ solution             | Never propagates |
+
+
+| "can_watch" perm granted | Constraint on "giver" | Constraint on "receiver"        | Propagation condition     |
+|:-------------------------|:----------------------|:--------------------------------|:---------------------|
+| result                   | can_watch = transfer   | can_view ≥ content             | Yes if watch_propagation |
+| answer                   | can_watch = transfer   | can_view ≥ content             | Yes if watch_propagation |
+| transfer                 | is_owner               | can_view ≥ content            | Never propagates |
+
+
+| "can_edit" perm granted | Constraint on "giver" | Constraint on "receiver"        | Propagation condition     |
+|:-------------------------|:----------------------|:--------------------------------|:---------------------|
+| children                 | can_edit = transfer   | can_view ≥ content             | Yes if edit_propagation |
+| all                      | can_edit = transfer   | can_view ≥ content             | Yes if edit_propagation |
+| transfer                 | is_owner              | can_view ≥ content             | Never propagates |
+
+| perm granted  | Constraint on "giver" | Constraint on "receiver"        | Propagation condition     |
+|:--------------|:----------------------|:--------------------------------|:------------------|
+| is_owner=true | is_owner              | none                            | Never propagates          |
+
+## On changing propagation rules
+
+For changing propagation rules (on the item-item relationship), the giver group needs *can_edit ≥ children* access on the parent item and the following permissions on the child item.
+
+To decrease the propagation level (whatever the level), you do not need any specific permissions on the child item.
+To increase it, you need:
+
+| Propagation rule         | Increased to value | Permission needed on the child item  |
+|:-------------------------|:-------------------|:--------------------------|
+| content_view_propagation | any                | can_grant_view ≥ content  |
+| view_propagation_limit   | content_with_descendants | can_grant_view ≥ content_with_descendants  |
+| view_propagation_limit   | solution           | can_grant_view ≥ solution  |
+| grant_view_propagation   | true               | can_grant_view ≥ transfer  |
+| watch_propagation        | true               | can_watch ≥ transfer       |
+| edit_propagation         | true               | can_edit ≥ transfer        |
+
+
+## Database details
+
+### Granted permissions table (permissions_granted)
+
+The `permissions_granted` table express the raw permissions given to a group on an item.
+One permission entry matches exactly one group, one item, and one owner. The owner is the group who has given this permission, all permissions given by users are given as a specific group which has the required permissions to do so and which will be able to revoke or modify this permission. There may be several permissions for a same *(group, item)*.
 
 The attributes of this table are the following:
+* group_id, item_id, owner_group_id [PK]
+* latest_update_on
+* can_view, can_grant_view, can_watch, can_edit, is_owner
 
-* **group_id**
-* **item_id**
-* **owner_group_id**
-* **latest_update_on**
+### Generated permissions table (permissions_generated)
 
-* **visible_from**
-* **unlocked_from**
-* **full_access_from**
-* **solution_access_from**
-<div style="display: none;">
-* reuse_perm: t/f
-* distribution_perm: no, yes, transfer
-* distribution_propagated: t/f
-* write_perm: no, yes, transfer
-* write_propagated: t/f
-* observation_perm: no, yes, transfer
-* observation_propagated: t/f
-* session_perm: t/f
-</div>
-
-* **is_owner**: t/f
-
-### Computed permissions
-
-The `permissions_computed` table represents the actual permissions that the group has, considering the given permissions and their propagations. This table could be completely rebuild from `permissions_given`.
+The `permissions_generated` table represents the actual permissions that the group has, considering the given permissions and their propagations. This table could be completely rebuild from `permissions_granted` by aggregating (max) *owner_group_id* and applying propagation.
 
 The attribute of this table are the following:
-
-* **group_id**
-* **item_id**
-* **actual_visible_from**: computed as the min of all `visible_from` of the *(group, item)* and all `actual_unlocked_from` of item's parents with `unlocked_access_propagation = 'as visible'`
-* **actual_unlocked_from**: computed as the min of all `unlocked_from` of the *(group, item)* and all `actual_unlocked_from` of item's parents with `unlocked_access_propagation = 'as unlocked'`
-* **actual_full_access_from**: computed as the min of all `full_access_from` of the *(group, item)* and all `actual_full_access_from` of item's parents
-* **actual_solution_access_from**: computed as the min of all `solution_access_from` of the *(group, item)* and all `actual_solution_access_from` of item's parents
-
-* **view_perm**: (virtual attribute, enum)
-  * if `actual_solution_access_from` is in the past or `actual_is_owner` is true : **'solutions'**; otherwise:
-  * if `actual_unlocked_from` or `actual_full_access_from` is in the past: **'content'**; otherwise:
-  * if `actual_visible_from` is in the past: **'list'**; otherwise:
-  * 'none'
-
-<div style="display: none;">
-* actual_reuse_perm: t/f
-* actual_distribution_perm: no, yes, transfer
-* actual_distribution_propagated: t/f
-* actual_write_perm: no, yes, transfer
-* actual_write_propagated: t/f
-* actual_observation_perm: no, yes, transfer
-* actual_observation_propagated: t/f
-</div>
-* **actual_is_owner**: bool - max of `is_owner` of the *(group, item)*
+* group_id, item_id [PK]
+* can_view_generated, can_grant_view_generated, can_watch_generated, can_edit_generated, is_owner_generated
