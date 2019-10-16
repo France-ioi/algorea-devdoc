@@ -62,7 +62,17 @@ The level of edition permissions a group has on an item.
 
 Whether (true/false) the group is the owner of this item. Implies the maximum level in all of the above permissions. Can delete the item.
 
-## Propagation across items
+<a name="aggregation"></a>
+
+## Aggregation of permissions from multiple sources
+
+We call *aggregation* the merge of the multiple granted permissions (from possibily different groups) to one permission tuple (indexed by group, item).
+
+For each permission attribute (can_view, can_grant_view, can_watch, can_edit, and is_owner), we take its maximum level among all values. In addition, "is_owner=true" makes every other attribute get its maximum possible value.
+
+<a name="propagation"></a>
+
+## Propagation across parent-child items
 
 Permissions given on an item to a group may be propagated (explicitely) to the item's children, under some conditions and depending on the permissions. This propagation computation is relaunched each time a permission is changed or an item added/removed. It is computed on the changed node (the group-item relation node) based on its parents, and then propagated to its children. When there are several parents, the higher permission among parents is kept.
 
@@ -148,7 +158,7 @@ The attributes of this table are the following:
 
 ### Generated permissions table (permissions_generated)
 
-The `permissions_generated` table represents the actual permissions that the group has, considering the given permissions and their propagations. This table could be completely rebuild from `permissions_granted` by aggregating (max) *owner_group_id* and applying propagation.
+The `permissions_generated` table represents the actual permissions that the group has, considering the <a href="#aggregation">aggregation</a> and the <a href="#propagation">propagation</a>. This table could be completely rebuild from `permissions_granted`.
 
 The attribute of this table are the following:
 * group_id, item_id [PK]
