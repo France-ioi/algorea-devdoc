@@ -4,9 +4,14 @@ title: Access rights on items
 nav_order: 10
 parent: Principles of access rights and their propagation
 grand_parent: Design
+has_toc: true
 ---
 
 # Access rights on items
+{: .no_toc}
+
+1. TOC
+{:toc}
 
 ## Preambule on data schema
 
@@ -92,7 +97,7 @@ In addition, the following levels **never** propagate:
 * *can_grant_view*, *can_watch*, *can_edit*="transfer" (so propagate as the preceding level)
 * *is_owner*=true (so propagates as "false")
 
-## Summary on changing and propagating permissions
+## Changing and propagating permissions
 
 | "can_view" perm granted | Constraint on "giver" | Constraint on "receiver" | Propagation rule     |
 |:------------------------|:----------------------|:-------------------------|:---------------------|
@@ -127,11 +132,11 @@ In addition, the following levels **never** propagate:
 |:--------------|:----------------------|:--------------------------------|:------------------|
 | is_owner=true | is_owner              | none                            | Never propagates          |
 
-## On changing propagation rules
+## Creating (defaults) and changing propagation rules
 
-For changing propagation rules (on the item-item relationship), the giver group needs *can_edit ≥ children* access on the parent item and the following permissions on the child item.
+Any user can create relationship between two items at the condition he has at least *can_edit ≥ children* on the parent item and *can_view > none* access to the child. This way, he can build a custom structured chapter with the content he want. However, adding content to item he owns does not give him more access to this content and does not necessarily give him any rights to distribute this content. At creation, by default, the propagation will be set to the maximum values the groups can set (see below).
 
-To decrease the propagation level (whatever the level), you do not need any specific permissions on the child item.
+For changing propagation rules (on the item-item relationship), the giver group also needs *can_edit ≥ children* access on the parent item and the following permissions on the child item. To decrease the propagation level (whatever the level), you do not need any specific permissions on the child item.
 To increase it, you need:
 
 | Propagation rule         | Increased to value | Permission needed on the child item  |
