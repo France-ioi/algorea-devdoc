@@ -134,7 +134,7 @@ In addition, the following levels **never** propagate:
 
 ## Creating (defaults) and changing propagation rules
 
-Any user can create relationship between two items at the condition he has at least *can_edit ≥ children* on the parent item and *can_view > none* access to the child. This way, he can build a custom structured chapter with the content he want. However, adding content to item he owns does not give him more access to this content and does not necessarily give him any rights to distribute this content. At creation, by default, the propagation will be set to the maximum values the groups can set (see below).
+Any user can create relationship between two items at the condition he has at least *can_edit ≥ children* on the parent item and *can_view > none* access to the child. This way, he can build a custom structured chapter with the content he want. However, adding content to item he owns does not give him more access to this content and does not necessarily give him any rights to distribute this content. At creation, by default, the propagation will be set to the maximum values the groups can set (see below), but *content_view_propagation* which is set by default to maximum "as_info".
 
 For changing propagation rules (on the item-item relationship), the giver group also needs *can_edit ≥ children* access on the parent item and the following permissions on the child item. To decrease the propagation level (whatever the level), you do not need any specific permissions on the child item.
 To increase it, you need:
