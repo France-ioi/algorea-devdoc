@@ -141,7 +141,7 @@ To increase it, you need:
 
 | Propagation rule         | Increased to value | Permission needed on the child item  |
 |:-------------------------|:-------------------|:--------------------------|
-| content_view_propagation | any                | can_grant_view ≥ content  |
+| content_view_propagation | *                | can_grant_view ≥ content  |
 | descendants_and_solution_view_propagation   | content_with_descendants | can_grant_view ≥ content_with_descendants  |
 | descendants_and_solution_view_propagation   | solution           | can_grant_view ≥ solution  |
 | grant_view_propagation   | true               | can_grant_view ≥ transfer  |
