@@ -39,7 +39,7 @@ The level of visibily the group has on the item:
 The level of visibility that the group can give on this item to other groups on which it has the right to (cfr group permissions).
 
 * **no**: cannot grant view access
-* **content**: can give *can_view* "content"
+* **content**: can give up to *can_view* "content"
 * **content_with_descendants**: can give up to *can_view* "content_with_descendants"
 * **solution**: can give up to *can_view* "solution"
 * **transfer**: can give up to *can_view* "solution" and grant any *can_grant_view* access to another group
