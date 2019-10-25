@@ -99,33 +99,35 @@ In addition, the following levels **never** propagate:
 
 ## Changing and propagating permissions
 
+The following tables defines which permissions are required to be able to change the permission of another groups, and summarize how these permissions propagates.
+
 | "can_view" perm granted | Constraint on "giver" | Constraint on "receiver" | Propagation rule     |
 |:------------------------|:----------------------|:-------------------------|:---------------------|
 | info                    | can_grant_view ≥ content        | none |  Never propagates              |
 | content                 | can_grant_view ≥ content        | none | Apply content_view_propagation |
-| content_with_descendants| can_grant_view ≥ content_with_d | none | Yes if descendants_and_solution_view_propagation ≥ "descendants".; otherwise apply content_view_propagat. |
-| solution                | can_grant_view ≥ solution       | none | Yes if descendants_and_solution_view_propagation ≥ "descendants_and_solution; otherwise apply content_view_propagat. |
+| content_with_descendants| can_grant_view ≥ content_with_d | none | Only if descendants_and_solution_view_propagation ≥ "descendants".; otherwise apply content_view_propagat. |
+| solution                | can_grant_view ≥ solution       | none | Only if descendants_and_solution_view_propagation ≥ "descendants_and_solution; otherwise apply content_view_propagat. |
 
 
 | "can_grant_view" perm granted | Constraint on "giver" | Constraint on "receiver"        | Propagation condition     |
 |:------------------------------|:----------------------|:--------------------------------|:---------------------|
-| content                 | can_grant_view = transfer   | can_view ≥ content              | Yes if grant_view_propagation |
-| content_with_descendants| can_grant_view = transfer   | can_view ≥ content_with_d       | Yes if grant_view_propagation |
-| solution                | can_grant_view = transfer   | can_view ≥ solution             | Yes if grant_view_propagation |
+| content                 | can_grant_view = transfer   | can_view ≥ content              | Only if grant_view_propagation |
+| content_with_descendants| can_grant_view = transfer   | can_view ≥ content_with_d       | Only if grant_view_propagation |
+| solution                | can_grant_view = transfer   | can_view ≥ solution             | Only if grant_view_propagation |
 | transfer                | is_owner                    | can_view ≥ solution             | Never propagates |
 
 
 | "can_watch" perm granted | Constraint on "giver" | Constraint on "receiver"        | Propagation condition     |
 |:-------------------------|:----------------------|:--------------------------------|:---------------------|
-| result                   | can_watch = transfer   | can_view ≥ content             | Yes if watch_propagation |
-| answer                   | can_watch = transfer   | can_view ≥ content             | Yes if watch_propagation |
+| result                   | can_watch = transfer   | can_view ≥ content             | Only if watch_propagation |
+| answer                   | can_watch = transfer   | can_view ≥ content             | Only if watch_propagation |
 | transfer                 | is_owner               | can_view ≥ content            | Never propagates |
 
 
 | "can_edit" perm granted | Constraint on "giver" | Constraint on "receiver"        | Propagation condition     |
 |:-------------------------|:----------------------|:--------------------------------|:---------------------|
-| children                 | can_edit = transfer   | can_view ≥ content             | Yes if edit_propagation |
-| all                      | can_edit = transfer   | can_view ≥ content             | Yes if edit_propagation |
+| children                 | can_edit = transfer   | can_view ≥ content             | Only if edit_propagation |
+| all                      | can_edit = transfer   | can_view ≥ content             | Only if edit_propagation |
 | transfer                 | is_owner              | can_view ≥ content             | Never propagates |
 
 | perm granted  | Constraint on "giver" | Constraint on "receiver"        | Propagation condition     |
