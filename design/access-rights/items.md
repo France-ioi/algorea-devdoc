@@ -84,13 +84,13 @@ Permissions given on an item to a group may be propagated (explicitely) to the i
 The copy of the permission levels from the parent to its children is either equivalent or lower (never increase), which mainly depends on the following attributes on the item-item relationship:
 
 * **content_view_propagation**: *none*, *as_info*, *as_content* -- defines how a *can_view="content"* permission propagates: not at all, as "info" or as "content"
-* **view_propagation_limit**: *content_view_propagation*, *content_with_descendants*, *solution* -- defines how *can_view* propagates at best (level never increases through propagation):
-   * *content_view_propagation*: at best use the value given in *content_view_propagation*
-   * *content_with_descendants*: at best propagate as *content_with_descendants*
-   * *solution*: at best propagate as *solution*
-* **grant_view_propagation**: false, true -- Whether *can_grant_view* propagates (with the same level with, as upper limit, "solution")
-* **watch_propagation**: false, true -- Whether *can_watch* propagates (with the same level with, as upper limit, "answer")
-* **edit_propagation**: false, true -- Whether *can_edit* propagates (with the same level with, as upper limit, "all")
+* **descendants_and_solution_view_propagation**: *none*, *descendants*, *descendants_and_solution* -- defines which of the "descendants" and "solution" aspects from *can_view* propagate, so propagated to:
+   * *none*: the value given in *content_view_propagation* at best
+   * *descendants*: as *content_with_descendants* at best
+   * *descendants_and_solution*: the same value
+* **grant_view_propagation**: false, true -- Whether *can_grant_view* propagates (as the same level with, as upper limit, "solution")
+* **watch_propagation**: false, true -- Whether *can_watch* propagates (as the same level with, as upper limit, "answer")
+* **edit_propagation**: false, true -- Whether *can_edit* propagates (as the same level with, as upper limit, "all")
 
 In addition, the following levels **never** propagate:
 * *can_view*="info" (so propagates as "none")
@@ -103,8 +103,8 @@ In addition, the following levels **never** propagate:
 |:------------------------|:----------------------|:-------------------------|:---------------------|
 | info                    | can_grant_view ≥ content        | none |  Never propagates              |
 | content                 | can_grant_view ≥ content        | none | Apply content_view_propagation |
-| content_with_descendants| can_grant_view ≥ content_with_d | none | Yes if view_propagation_limit ≥ "content_with_d".; otherwise apply content_view_propagat. |
-| solution                | can_grant_view ≥ solution       | none | Yes if view_propagation_limit ≥ "solution;otherwise apply content_view_propagat. |
+| content_with_descendants| can_grant_view ≥ content_with_d | none | Yes if descendants_and_solution_view_propagation ≥ "descendants".; otherwise apply content_view_propagat. |
+| solution                | can_grant_view ≥ solution       | none | Yes if descendants_and_solution_view_propagation ≥ "descendants_and_solution; otherwise apply content_view_propagat. |
 
 
 | "can_grant_view" perm granted | Constraint on "giver" | Constraint on "receiver"        | Propagation condition     |
@@ -142,8 +142,8 @@ To increase it, you need:
 | Propagation rule         | Increased to value | Permission needed on the child item  |
 |:-------------------------|:-------------------|:--------------------------|
 | content_view_propagation | any                | can_grant_view ≥ content  |
-| view_propagation_limit   | content_with_descendants | can_grant_view ≥ content_with_descendants  |
-| view_propagation_limit   | solution           | can_grant_view ≥ solution  |
+| descendants_and_solution_view_propagation   | content_with_descendants | can_grant_view ≥ content_with_descendants  |
+| descendants_and_solution_view_propagation   | solution           | can_grant_view ≥ solution  |
 | grant_view_propagation   | true               | can_grant_view ≥ transfer  |
 | watch_propagation        | true               | can_watch ≥ transfer       |
 | edit_propagation         | true               | can_edit ≥ transfer        |
