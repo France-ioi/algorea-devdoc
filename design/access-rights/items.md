@@ -170,3 +170,9 @@ The `permissions_generated` table represents the actual permissions that the gro
 The attribute of this table are the following:
 * group_id, item_id [PK]
 * can_view_generated, can_grant_view_generated, can_watch_generated, can_edit_generated, is_owner_generated
+
+## FAQ / Remarks
+
+### "is_owner" aggregation and propagation
+As a consequence of these rules, when *is_owner* is set to *true* only the *is_owner* attribute is modified in the
+`permissions_granted` table. It is aggregation (so into `permissions_generated` table) which make *is_owner* set all "can_*" to their maximum value. For propagation, while "is_owner" is not propagated, the levels it involves in all other permissions are propagated as they had been granted directly (so "can_edit:transfer" propagates to "can_edit:all").
