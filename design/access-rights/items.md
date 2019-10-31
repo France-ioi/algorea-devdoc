@@ -156,10 +156,10 @@ To increase it, you need:
 ### Granted permissions table (permissions_granted)
 
 The `permissions_granted` table express the raw permissions given to a group on an item.
-One permission entry matches exactly one group, one item, and one owner. The owner is the group who has given this permission, all permissions given by users are given as a specific group which has the required permissions to do so and which will be able to revoke or modify this permission. There may be several permissions for a same *(group, item)*.
+One permission entry matches exactly one group, one item, and one source. The source is either "groupManagers", "unlock" (more to be added) and defines how this permission was granted and can be modified. There may be several permissions for a same *(group, item)*.
 
 The attributes of this table are the following:
-* group_id, item_id, owner_group_id [PK]
+* group_id, item_id, source [PK]
 * latest_update_on
 * can_view, can_grant_view, can_watch, can_edit, is_owner
 
