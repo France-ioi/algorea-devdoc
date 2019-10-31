@@ -7,7 +7,7 @@ grand_parent: Design
 has_toc: true
 ---
 
-# Access rights on Groups
+# Access rights on groups
 {: .no_toc}
 
 1. TOC
