@@ -17,9 +17,11 @@ has_toc: true
 
 Groups are ways to organize users, mainly to be able to give them permissions. Groups are made of other groups, users are groups themselves (which cannot contain any other groups).
 
-For permissions, our main interests are the `groups_groups` and `group_managers` tables.
+For permissions, our main interests are the following tables:
+* `groups` contains the information about group and their required approvals
 * `groups_groups` is used to represent the group hierarchy between two regular groups, and between a group and a member (user or team), that we will also call "membership". All members in a group get the same access rights.
-* `group_managers` represents the relationships between managers (users) and groups. Managers are typically not (but could be) members of the group they manage. A manager may have different permission on the groups.
+* `group_approvals` contains optional approvals given by member to a group they belong to.
+* `group_managers` represents the relationships between managers (users) and groups. Managers are typically not (but could be) members of the group they manage. Managers may have different permission on a same group.
 
 <div style="max-width:90%;">{% include groups_relations.html %}</div>
 
