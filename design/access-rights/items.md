@@ -84,10 +84,10 @@ Permissions given on an item to a group may be propagated (explicitely) to the i
 The copy of the permission levels from the parent to its children is either equivalent or lower (never increase), which mainly depends on the following attributes on the item-item relationship:
 
 * **content_view_propagation**: *none*, *as_info*, *as_content* -- defines how *can_view="content"* permissions propagate: not at all, as "info" or as "content"
-* **upper_view_levels_propagation**: *use_content_view_propagation*, *content_with_descendants*, *yes* -- defines how *can_view="content_with_descendants"<span>|</span>"solution"* permissions propagate, so propagated to:
+* **upper_view_levels_propagation**: *use_content_view_propagation*, *content_with_descendants*, *as_is* -- defines how *can_view="content_with_descendants"<span>|</span>"solution"* permissions propagate, so propagated to:
    * *use_content_view_propagation*: propagate as the value given in *content_view_propagation*
    * *content_with_descendants*: as *content_with_descendants*
-   * *yes*: propagate as the same value
+   * *as_is*: propagate as the same value
 * **grant_view_propagation**: false, true -- Whether *can_grant_view* propagates (as the same level with, as upper limit, "solution")
 * **watch_propagation**: false, true -- Whether *can_watch* propagates (as the same level with, as upper limit, "answer")
 * **edit_propagation**: false, true -- Whether *can_edit* propagates (as the same level with, as upper limit, "all")
