@@ -27,7 +27,7 @@ Relations (parent-child) among items have several properties which affect propag
 
 The level of visibily the group has on the item:
 
-* **no**: not listed and trying to get it returns not-found or forbidden
+* **none**: not listed and trying to get it returns not-found or forbidden
 * **info**: can view basic database info on the item: title, description, type
 * **content**: can view "info" and content stored by task platforms; for tasks, can try to solve
 * **content_with_descendants**: can view "content" and more of the descendant items (see propagation)
@@ -38,7 +38,7 @@ The level of visibily the group has on the item:
 
 The level of visibility that the group can give on this item to other groups on which it has the right to (cfr group permissions).
 
-* **no**: cannot grant view access
+* **none**: cannot grant view access
 * **content**: can give up to *can_view* "content"
 * **content_with_descendants**: can give up to *can_view* "content_with_descendants"
 * **solution**: can give up to *can_view* "solution"
@@ -49,7 +49,7 @@ The level of visibility that the group can give on this item to other groups on 
 
 The level of observation a group has for an item, on the activity of the users he can watch (cfr group permissions).
 
-* **no**
+* **none**
 * **result**: can view meta data about the submissions, including the scores
 * **answer**: can watch "result" and can look at the detail of the answers
 * **transfer**: can watch "answer" and grant any *can_watch* access to another group
@@ -58,7 +58,7 @@ The level of observation a group has for an item, on the activity of the users h
 
 The level of edition permissions a group has on an item.
 
-* **no**
+* **none**
 * **children**: can attach new child items to the item, and edit propagation rules between the item and some of the children (cfr propagation permissions) [still to be defined: what about relation deletion?]
 * **all**: can edit "children" and can make changes to the parameters, title and content and solution of the item; cannot delete the item.
 * **transfer**: can edit "all" and grant any *can_edit* access to another group
