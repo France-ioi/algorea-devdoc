@@ -84,9 +84,9 @@ Permissions given on an item to a group may be propagated (explicitely) to the i
 The copy of the permission levels from the parent to its children is either equivalent or lower (never increase), which mainly depends on the following attributes on the item-item relationship:
 
 * **content_view_propagation**: *none*, *as_info*, *as_content* -- defines how *can_view="content"* permissions propagate: not at all, as "info" or as "content"
-* **upper_view_levels_propagation**: *use_content_view_propagation*, *content_with_descendants*, *as_is* -- defines how *can_view="content_with_descendants"<span>|</span>"solution"* permissions propagate, so propagated to:
+* **upper_view_levels_propagation**: *use_content_view_propagation*, *as_content_with_descendants*, *as_is* -- defines how *can_view="content_with_descendants"<span>|</span>"solution"* permissions propagate, so propagated to:
    * *use_content_view_propagation*: propagate as the value given in *content_view_propagation*
-   * *content_with_descendants*: as *content_with_descendants*
+   * *as_content_with_descendants*: as *content_with_descendants*
    * *as_is*: propagate as the same value
 * **grant_view_propagation**: false, true -- Whether *can_grant_view* propagates (as the same level with, as upper limit, "solution")
 * **watch_propagation**: false, true -- Whether *can_watch* propagates (as the same level with, as upper limit, "answer")
@@ -105,8 +105,8 @@ The following tables defines which permissions are required to be able to change
 |:------------------------|:----------------------|:-------------------------|:---------------------|
 | info                    | can_grant_view ≥ content        | none |  Never propagates              |
 | content                 | can_grant_view ≥ content        | none | Apply content_view_propagation |
-| content_with_descendants| can_grant_view ≥ content_with_d | none | Only if descendants_and_solution_view_propagation ≥ "descendants".; otherwise apply content_view_propagat. |
-| solution                | can_grant_view ≥ solution       | none | Only if descendants_and_solution_view_propagation ≥ "descendants_and_solution; otherwise apply content_view_propagat. |
+| content_with_descendants| can_grant_view ≥ content_with_d | none | Only if upper_view_levels_propagation ≥ "as_content_with_descendants"; otherwise apply content_view_propagation |
+| solution                | can_grant_view ≥ solution       | none | As "solution" if upper_view_levels_propagation ≥ "as_is", as "content_with_descendants" if upper_view_levels_propagation = "as_content_with_descendants", otherwise apply content_view_propagation |
 
 
 | "can_grant_view" perm granted | Constraint on "giver" | Constraint on "receiver"        | Propagation condition     |
@@ -144,8 +144,8 @@ To increase it, you need:
 | Propagation rule         | Increased to value | Permission needed on the child item  |
 |:-------------------------|:-------------------|:--------------------------|
 | content_view_propagation | *                | can_grant_view ≥ content  |
-| descendants_and_solution_view_propagation   | content_with_descendants | can_grant_view ≥ content_with_descendants  |
-| descendants_and_solution_view_propagation   | solution           | can_grant_view ≥ solution  |
+| upper_view_levels_propagation   | as_content_with_descendants | can_grant_view ≥ content_with_descendants  |
+| upper_view_levels_propagation   | as_is           | can_grant_view ≥ solution  |
 | grant_view_propagation   | true               | can_grant_view ≥ transfer  |
 | watch_propagation        | true               | can_watch ≥ transfer       |
 | edit_propagation         | true               | can_edit ≥ transfer        |
