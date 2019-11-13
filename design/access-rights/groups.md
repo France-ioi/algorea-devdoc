@@ -18,20 +18,20 @@ has_toc: true
 Groups are ways to organize users, mainly to be able to give them permissions. Groups are made of other groups, users are groups themselves (which cannot contain any other groups).
 
 For permissions, our main interests are the following tables:
-* `groups` contains the information about group and their required approvals
+* `groups` contains the information about group and their required approvals.
 * `groups_groups` is used to represent the group hierarchy between two regular groups, and between a group and a member (user or team), that we will also call "membership". All members in a group get the same access rights.
-* `group_approvals` contains optional approvals given by member to a group they belong to.
-* `group_managers` represents the relationships between managers (users) and groups. Managers are typically not (but could be) members of the group they manage. Managers may have different permission on a same group.
+* `group_approvals` contains approvals given by members to a group they belong to.
+* `group_managers` represents the relationships between the managing users and groups. Managers are typically not (but could be) members of the group they manage. Managers may have multiple permissions on a same group.
 
 <div style="max-width:90%;">{% include groups_relations.html %}</div>
 
 ## Management permissions
 
-These permissions may differ from one manager to the other within the same group.
+Within the same group, managers may have different permissions.
 
 * Implicit to all managers: can view the list of members, including members' personal info if they approved (cfr <a href="#approvals">"approvals" section</a>).
 * **can_manage**: *none*, *memberships*, or *memberships_and_group*
-  * "**membership**":
+  * "**memberships**":
      * can invite members, accept/refuse requests, remove members
      * can set how people can join this group
      * can batch-create users in the group (require additional authorization on the user himself)
@@ -39,7 +39,7 @@ These permissions may differ from one manager to the other within the same group
   * "**memberships_and_group**": *memberships* +
      * can change the name, description and type of the group
      * can define what item users are redirected to when they join the group
-     * can change the required approvals (cfr <a href="#approvals">"approvals" section</a>)
+     * can change the required approvals (cfr <a href="#approvals">"approvals"</a>)
      * can delete the group
 * **can_edit_personal_info** (bool): can change member's personal info, for those who have agreed (cfr <a href="#approvals">"approvals"</a>)
 * **can_grant_group_access** (bool): can give all members the access rights to some items (requires the giver to <a href="{{ site.url }}{{ site.baseurl }}/design/access-rights/items/">be allowed to give this permission on the item</a>)
