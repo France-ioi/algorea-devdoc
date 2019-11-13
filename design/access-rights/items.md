@@ -156,7 +156,7 @@ To increase it, you need:
 ### Granted permissions table (permissions_granted)
 
 The `permissions_granted` table express the raw permissions given to a group on an item.
-One permission entry matches exactly one group, one item, and one source. The source is either "group_managers", "unlock" (more to be added) and defines how this permission was granted and can be modified. There may be several permissions for a same *(group, item)*.
+One permission entry matches exactly one group, one item, and one source. The source is either "group_managers" or "unlock" (more to be added), and defines how this permission was granted and can be modified. There may be several permissions for a same *(group, item)*.
 
 The attributes of this table are the following:
 * group_id, item_id, source [PK]
