@@ -75,7 +75,7 @@ In any case, a manager can only use his permissions which requires user approval
 
 Access rights propagates implicitely through group hierarchy. In particular:
 * Access granted to a group applies to all of its members and all members of its descendant groups
-* Permission given to a group manager also applies to all descendant groups.
+* Permission given to a manager on a group also applies to all descendant groups from this group.
 
 ## FAQ / Remarks
 
@@ -89,4 +89,4 @@ The permissions granted by a manager to a group are kept by the group even when 
 
 ### Limits to management permission propagation
 
-As a coroloraly of the other rules, if the manager has a permission which requires approval while a subgroup does not have this requirement, this permission does not apply for the manager on this subgroup.
+As a corollary of the other rules, if the manager has a permission which requires approval while a subgroup does not have this requirement, this permission does not apply for the manager on this subgroup.
