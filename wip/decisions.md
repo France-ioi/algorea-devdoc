@@ -2,7 +2,7 @@
 layout: page
 title: Change Decisions
 nav_order: 20
-parent: Data Model
+parent:  Work in Progress
 ---
 
 # Design Decisions Yet to be Applied

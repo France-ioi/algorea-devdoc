@@ -1,8 +1,7 @@
 ---
 layout: page
-title: Principles of access rights and their propagation
-nav_order: 50
-parent: Design
+title: Access Rights
+nav_order: 20
 has_children: true
 ---
 

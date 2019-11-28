@@ -1,8 +1,8 @@
 ---
 layout: page
-title: Authentication & Authorization workflow
-nav_order: 30
-parent: Design
+title: Auth workflows with the login module
+nav_order: 10
+parent: Authentication & Authorization
 has_children: true
 ---
 

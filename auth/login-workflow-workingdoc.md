@@ -2,8 +2,8 @@
 layout: page
 title: "Auth: Working docs"
 nav_order: 35
-parent: Authentication & Authorization workflow
-grand_parent: Design
+parent: Auth workflows with the login module
+grand_parent: Authentication & Authorization
 ---
 
 # OAuth2 and best practices

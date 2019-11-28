@@ -1,8 +1,8 @@
 ---
 layout: page
-title: UI Workflow
+title: Auth UI Workflows (for token)
 nav_order: 60
-parent: Design
+parent: Authentication & Authorization
 ---
 
 # UI Workflows

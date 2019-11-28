@@ -2,8 +2,7 @@
 layout: page
 title: Access rights on groups
 nav_order: 30
-parent: Principles of access rights and their propagation
-grand_parent: Design
+parent: Access Rights
 has_toc: true
 ---
 

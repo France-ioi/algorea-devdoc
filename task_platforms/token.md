@@ -2,7 +2,7 @@
 layout: page
 title: Token system
 nav_order: 50
-parent: Design
+parent: Interactions with Task Platforms
 ---
 
 # Token system

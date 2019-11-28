@@ -2,8 +2,7 @@
 layout: page
 title: Access rights on items
 nav_order: 10
-parent: Principles of access rights and their propagation
-grand_parent: Design
+parent: Access Rights
 has_toc: true
 ---
 

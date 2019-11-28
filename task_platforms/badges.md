@@ -2,7 +2,7 @@
 layout: page
 title: Badges
 nav_order: 80
-parent: Design
+parent: Interactions with Task Platforms
 ---
 
 # Badges
