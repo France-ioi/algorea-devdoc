@@ -4,6 +4,7 @@ title: Access rights on groups
 nav_order: 30
 parent: Access Rights
 has_toc: true
+permalink: /design/access-rights/groups/
 ---
 
 # Access rights on groups

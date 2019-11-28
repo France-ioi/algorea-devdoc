@@ -4,6 +4,7 @@ title: Access rights on items
 nav_order: 10
 parent: Access Rights
 has_toc: true
+permalink: /design/access-rights/items/
 ---
 
 # Access rights on items
