@@ -56,7 +56,7 @@ Some privileges that the group wants to get on the members may require an approv
 * Let the managers watch all his submissions on the items they are allowed to watch
 
 Expressed by the following attributes of the group:
-* **require_personal_info_access_approval**: *no*, *view*, *edit*. (note that the "*edit*" value can only be set by the system for specific cases, not by any manager)
+* **require_personal_info_access_approval**: *none*, *view*, *edit*. (note that the "*edit*" value can only be set by the system for specific cases, not by any manager)
 * **require_lock_membership_approval_until** (time)
 * **require_watch_approval** (bool)
 
