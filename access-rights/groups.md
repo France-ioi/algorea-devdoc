@@ -56,12 +56,12 @@ Some privileges that the group wants to get on the members may require an approv
 * Let the managers watch all his submissions on the items they are allowed to watch
 
 Expressed by the following attributes of the group:
-* **require_personnal_info_access_approval**: *no*, *view*, *edit*. (note that the "*edit*" value can only be set by the system for specific cases, not by any manager)
+* **require_personal_info_access_approval**: *no*, *view*, *edit*. (note that the "*edit*" value can only be set by the system for specific cases, not by any manager)
 * **require_lock_membership_approval_until** (time)
 * **require_watch_approval** (bool)
 
 Approval of individual members is stored into the membership (`groups_groups` table) as the time of the approval:
-* **personnal_info_access_approved_at**
+* **personal_info_access_approved_at**
 * **lock_membership_approved_at**
 * **watch_approved_at**
 
@@ -69,7 +69,7 @@ Approval of individual members is stored into the membership (`groups_groups` ta
 
 If a manager wants to change the approval required by the group while there are already members, he can choose to either enforce the rule now, so removing all members who have not agreed yet (so normally all), or set all members' membership expiration to a date in the near future. These members should receive a notification and accept all required approval of the group to cancel this expiration.
 
-In any case, a manager can only use his permissions which requires user approval (view user personnal info, watch users' submissions) when the member has approved it.
+In any case, a manager can only use his permissions which requires user approval (view user personal info, watch users' submissions) when the member has approved it.
 
 ## Propagation of access rights
 
