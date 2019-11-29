@@ -42,7 +42,7 @@ Within the same group, managers may have different permissions.
      * can change the required approvals (cfr <a href="#approvals">"approvals"</a>)
      * can delete the group
 * **can_edit_personal_info** (bool): can change member's personal info, for those who have agreed (not visible to managers, only for specific uses) (cfr <a href="#approvals">"approvals"</a>)
-* **can_grant_group_access** (bool): can give all members the access rights to some items (requires the giver to <a href="{{ site.url }}{{ site.baseurl }}/design/access-rights/items/">be allowed to give this permission on the item</a>)
+* **can_grant_group_access** (bool): can give members access rights to some items (requires the giver to <a href="{{ site.url }}{{ site.baseurl }}/design/access-rights/items/">be allowed to give this permission on the item</a>)
 * **can_watch_members** (bool): can watch members' submissions on items. Requires the watcher to <a href="{{ site.url }}{{ site.baseurl }}/design/access-rights/items/">be allowed to watch this item</a>. For members who have agreed (cfr <a href="#approvals">"approvals"</a>).
 
 <a name="approvals"></a>
