@@ -13,17 +13,11 @@ The rights management system is at the heart of the platform, and is based on th
 
 ## Basics on access rights
 
-The two main entities of concern for access rights are "groups" and "items".
-
-Groups
-: Groups are implemented through the `groups` db table. A group can be either a user, a group of users, or a set of groups. The user-group relationship is implemented through the `users.self_group_id` property. The relationship between groups, an acyclic graph, is implemented through `groups_groups` table, the hierarchy is cached through `groups_ancestors`.
-
-Items
-: Items are implemented through the `items` db table. A item represents some content (tasks, chapter, ...) and are structured (acyclic graph) via the `items_items` table, the ancestors hierarchy is cached in `items_ancestors`.
+The two main entities of concern for access rights are "[groups]({{ site.baseurl }}/groups/)" and "[items]({{ site.baseurl }}/items/)". **Groups** are being granted access rights on **items**.
 
 ### "Given" access
 
-Groups may be given access to items (`permissions` table) by a other user or by the platform as a reward for solving an exercise.
+Groups may be given access to items (`permissions_granted` table) by a other user or by the platform as a reward for solving an exercise.
 
 When they first arrive on the platform, users are automatically added to groups that have some access rights on some items. This is how they gain access to the public content when they arrive on the platform. Users may also be added automatically to groups based on other criteria, such as being a verified teacher. Finally, users may join groups voluntarily (using a code, by invitation or on request). The groups a user belongs to will determine what access rights he has.
 
