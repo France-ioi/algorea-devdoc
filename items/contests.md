@@ -2,7 +2,7 @@
 layout: page
 title: Contest management
 nav_order: 80
-parent: Items & co
+parent: Items & Related Entities
 ---
 
 # Contest Management
