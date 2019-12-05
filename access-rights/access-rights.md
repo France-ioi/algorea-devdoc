@@ -17,7 +17,7 @@ The two main entities of concern for access rights are "[groups]({{ site.baseurl
 
 ### "Given" access
 
-Groups may be given access to items (`permissions_granted` table) by a other user or by the platform as a reward for solving an exercise.
+Groups may be given access to items (`permissions_granted` table) by a group manager or by the platform as a reward for solving an exercise.
 
 When they first arrive on the platform, users are automatically added to groups that have some access rights on some items. This is how they gain access to the public content when they arrive on the platform. Users may also be added automatically to groups based on other criteria, such as being a verified teacher. Finally, users may join groups voluntarily (using a code, by invitation or on request). The groups a user belongs to will determine what access rights he has.
 
@@ -26,7 +26,4 @@ When they first arrive on the platform, users are automatically added to groups 
 Access right of a group to an item may be propagated to the descendants of the groups, and (under some conditions) to the descendants of the items.
 
 <span class="label label-green">Key-concept</span>
-Access right propagation from a parent **group** to its descendants is **implicit**. So if a user is part of a group, he has the same access rights as the group. On the other hand, access right propagation from a parent **item** to its descendants is **explicit**, i.e., new entries in the `groups_items` table are created each time new access rights are given to propagate these rights to the children.
-
-
-
+Access right propagation from a parent **group** to its descendants is **implicit**. So if a user is part of a group, he has the same access rights as the group. On the other hand, access right propagation from a parent **item** to its descendants is **explicit**, i.e., new entries in the `groups_items` table are created each time new access rights are given to propagate these rights to the children. The propagation through items follows specific rules described in [this page]({{ site.baseurl }}/design/access-rights/items/).
