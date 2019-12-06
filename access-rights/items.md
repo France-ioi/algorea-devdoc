@@ -156,10 +156,10 @@ To decrease the propagation level (whatever the level), you do not need any spec
 ### Granted permissions table (permissions_granted)
 
 The `permissions_granted` table express the raw permissions given to a group on an item.
-One permission entry matches exactly one group, one item, and one *source group*. The *source group* is the group from which the destination group has received the permission. Only the managers of this *source group* are able to revoke or modify this permission. There may be several permissions for a same *(group, item)*, e.g., multiple access to the same task given to an end-user by several groups he is member of.
+One permission entry matches exactly one group, one item, one *source group* and one *origin*. The *source group* is the group from which the destination group has received the permission. Only the managers of this *source group* are able to revoke or modify this permission. The *origin* is the process which has allocated this permission (group permission, unlocking, ...). There may be several permissions for a same *(group, item)*, e.g., multiple access to the same task given to an end-user by several groups he is member of.
 
 The attributes of this table are the following:
-* group_id, item_id, source_group_id [PK]
+* group_id, item_id, source_group_id, origin [PK]
 * latest_update_on
 * can_view, can_grant_view, can_watch, can_edit, is_owner
 
