@@ -24,7 +24,7 @@ He wants to be able to create a group of "weak students" which is hidden to stud
 
 3.
 A school teacher has 3 classes whose he is manager of.
-He wants to be able to create a super group with the students of his 3 classes so that he can give some common access to all his class.
+He wants to be able to create a super group with the students of his 3 classes so that he can give some common permissions to all his class.
 
 4.
 In the scenario 3, he wants to create a hidden group of weak students as in scenario 2.

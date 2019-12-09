@@ -29,7 +29,7 @@ Within the same group, managers may have different permissions.
      * can delete the group
      * can add/remove managers to the group and give them any permissions
      * can add/remove the group as a subgroup of another group (needs *can_manage:memberships* on the parent fo adding it)
-* **can_grant_group_access** (bool): can give members access rights to some items (requires the giver to [be allowed to give this permission on the item]({{ site.baseurl }}/design/access-rights/items/))
+* **can_grant_group_access** (bool): can give members permissions on items (requires the giver to [be allowed to give this permission on the item]({{ site.baseurl }}/design/access-rights/items/))
 * **can_watch_members** (bool): can watch members' submissions on items. Requires the watcher to [be allowed to watch this item]({{ site.baseurl }}/design/access-rights/items/). For members who have agreed (cfr [approvals]({{ site.baseurl }}/groups/approvals/)).
 * **can_edit_personal_info** (bool): can change member's personal info, for those who have agreed (not visible to managers, only for specific uses) (cfr [approvals]({{ site.baseurl }}/groups/approvals/))
 

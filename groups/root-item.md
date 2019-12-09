@@ -15,7 +15,7 @@ From the group member's point of view, this item is displayed as a root item in 
 
 ## Creation/Deletion of the group root item
 
-Any manager with *can_manage:memberships_and_group* can request the creation/deletion of this item (maximum one per group) through a specific service. The group (so its members) gets view access (*can_view:content*) to it. Each of the current managers (with *can_manage:memberships_and_group*) gets *can_edit:children* and *can_view:content* on it.
+Any manager with *can_manage:memberships_and_group* can request the creation/deletion of this item (maximum one per group) through a specific service. The group (so its members) gets view permission (*can_view:content*) to it. Each of the current managers (with *can_manage:memberships_and_group*) gets *can_edit:children* and *can_view:content* on it.
 
 ## Refresh of the manager permissions
 

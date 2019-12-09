@@ -1,13 +1,13 @@
 ---
 layout: page
-title: Access rights on items
+title: Item Permissions
 nav_order: 10
-parent: Access Rights
+parent: Permissions
 has_toc: true
 permalink: /design/access-rights/items/
 ---
 
-# Access rights on items
+# Item Permissions
 {: .no_toc}
 
 1. TOC
@@ -15,8 +15,8 @@ permalink: /design/access-rights/items/
 
 ## Preambule on data schema
 
-Access rights to items given to groups are expressed in the `permissions_granted` table.
-The results of the explicit propagation of access rights through items is stored in the `permissions_generated` table.
+Permissions to items given to groups are expressed in the `permissions_granted` table.
+The results of the explicit propagation of permissions through items is stored in the `permissions_generated` table.
 Relations (parent-child) among items have several properties which affect propagation.
 
 <div style="max-width:90%;">{% include items_relations.html %}</div>
@@ -38,11 +38,11 @@ The level of visibily the group has on the item:
 
 The level of visibility that the group can give on this item to other groups on which it has the right to (cfr group permissions).
 
-* **none**: cannot grant view access
+* **none**: cannot grant view permission
 * **content**: can give up to *can_view* "content"
 * **content_with_descendants**: can give up to *can_view* "content_with_descendants"
 * **solution**: can give up to *can_view* "solution"
-* **transfer**: can give up to *can_view* "solution" and grant any *can_grant_view* access to another group
+* **transfer**: can give up to *can_view* "solution" and grant any *can_grant_view* permission to another group
 
 
 ### can_watch
@@ -52,7 +52,7 @@ The level of observation a group has for an item, on the activity of the users h
 * **none**
 * **result**: can view meta data about the submissions, including the scores
 * **answer**: can watch "result" and can look at the detail of the answers
-* **transfer**: can watch "answer" and grant any *can_watch* access to another group
+* **transfer**: can watch "answer" and grant any *can_watch* permission to another group
 
 ### can_edit
 
@@ -61,7 +61,7 @@ The level of edition permissions a group has on an item.
 * **none**
 * **children**: can attach new child items to the item, and edit propagation rules between the item and some of the children (cfr propagation permissions) [still to be defined: what about relation deletion?]
 * **all**: can edit "children" and can make changes to the parameters, title and content and solution of the item; cannot delete the item.
-* **transfer**: can edit "all" and grant any *can_edit* access to another group
+* **transfer**: can edit "all" and grant any *can_edit* permission to another group
 
 ### is_owner
 
@@ -136,9 +136,9 @@ The following tables defines which permissions are required to be able to change
 
 ## Creating (defaults) and changing propagation rules
 
-Any user can create relationship between two items at the condition he has at least *can_edit ≥ children* on the parent item and *can_view > none* access to the child. This way, he can build a custom structured chapter with the content he want. However, adding content to item he owns does not give him more access to this content and does not necessarily give him any rights to distribute this content. At creation, by default, the propagation will be set to the maximum values the groups can set (see below), but *content_view_propagation* which is set by default to maximum "as_info".
+Any user can create relationship between two items at the condition he has at least *can_edit ≥ children* on the parent item and *can_view > none* permission to the child. This way, he can build a custom structured chapter with the content he want. However, adding content to item he owns does not give him more permission to this content and does not necessarily give him any rights to distribute this content. At creation, by default, the propagation will be set to the maximum values the groups can set (see below), but *content_view_propagation* which is set by default to maximum "as_info".
 
-For changing propagation rules (on the item-item relationship), the giver group needs *can_edit ≥ children* access on the parent item and the following permissions on the child item to increase the level of propagation:
+For changing propagation rules (on the item-item relationship), the giver group needs *can_edit ≥ children* permission on the parent item and the following permissions on the child item to increase the level of propagation:
 
 | Propagation level increase                                   | Permission needed on the child item        |
 |:-------------------------------------------------------------|:-------------------------------------------|
@@ -156,7 +156,7 @@ To decrease the propagation level (whatever the level), you do not need any spec
 ### Granted permissions table (permissions_granted)
 
 The `permissions_granted` table express the raw permissions given to a group on an item.
-One permission entry matches exactly one group, one item, one *source group* and one *origin*. The *source group* is the group from which the destination group has received the permission. Only the managers of this *source group* are able to revoke or modify this permission. The *origin* is the process which has allocated this permission (group permission, unlocking, ...). There may be several permissions for a same *(group, item)*, e.g., multiple access to the same task given to an end-user by several groups he is member of.
+One permission entry matches exactly one group, one item, one *source group* and one *origin*. The *source group* is the group from which the destination group has received the permission. Only the managers of this *source group* are able to revoke or modify this permission. The *origin* is the process which has allocated this permission (group permission, unlocking, ...). There may be several permissions for a same *(group, item)*, e.g., multiple permissions to the same task given to an end-user by several groups he is member of.
 
 The attributes of this table are the following:
 * group_id, item_id, source_group_id, origin [PK]

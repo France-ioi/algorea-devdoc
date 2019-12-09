@@ -13,7 +13,7 @@ Groups are implemented through the `groups` db table. A group can be either a us
 
 For permissions, our main interests are the following tables:
 * `groups` contains the information about group and their required approvals.
-* `groups_groups` is used to represent the group hierarchy between two regular groups, and between a group and a member (user or team), that we will also call "membership". All members in a group get the same access rights.
+* `groups_groups` is used to represent the group hierarchy between two regular groups, and between a group and a member (user or team), that we will also call "membership".
 * `group_approvals` contains approvals given by members to a group they belong to.
 * `group_managers` represents the relationships between the managing users and groups. Managers are typically not (but could be) members of the group they manage. Managers may have multiple permissions on a same group.
 

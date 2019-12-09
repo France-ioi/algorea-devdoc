@@ -13,18 +13,18 @@ Both a user on his own or a team of users (a group in both cases) can participat
 
 ## Before a contest
 
-Before starting a contest, the participant should be able to see the title and description of the contest (the parent item) but nothing about the tasks themselves. Practically, it means he must have "grayed" access to the parent item and no access at all to the children.
+Before starting a contest, the participant should be able to see the title and description of the contest (the parent item) but nothing about the tasks themselves. Practically, it means he must have "can_view:info" permissipn to the parent item and no access at all to the children.
 
 ## Starting a contest
 
-For starting a contest, the participant goes on the contest item (as he has greyed access) and press a button (if the conditions defined below are met) a button to start the clock for himself.
+For starting a contest, the participant goes on the contest item (as he has "can_view:info" permission) and press a button (if the conditions defined below are met) a button to start the clock for himself.
 
 The UI may not display the button if the conditions are not met and ask if the user wants to participate alone or as one of his team.
 
 ### Conditions for entering
 
 * The item must be a contest, so have a duration
-* The user "pressing the button" can view the contest item (at least grayed access).
+* The user "pressing the button" can view the contest item (at least "can_view:info").
 * The participant must not have started the contest yet (so `group_participations.contest_started_at` is not set)
 * If `items.contest_max_team_size` is set and the participant is a team, validate that the number of users in the team is lower or equals to this number.
 * If `items.contest_entering_condition` (somehow former `sTeamMode`) is:
@@ -36,7 +36,7 @@ The UI may not display the button if the conditions are not met and ask if the u
 ## Changes on entering
 
 * We set in `group_participations`: `started_at` to now, `contest_started_at` to now, `last_activity_at` to now
-* We give access to the tasks (the ones we want the participant to have access at the beginning) by adding him to a dedicated group `items.contestant_group_id` which has a partial access to this contest, with a membership expiring at `now + duration`.
+* We give access to the tasks (the ones we want the participant to view at the beginning) by adding him to a dedicated group `items.contestant_group_id` which has "can_view:content" to this contest, with a membership expiring at `now + duration`.
 
 ## Finishing
 
