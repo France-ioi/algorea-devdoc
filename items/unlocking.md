@@ -30,6 +30,7 @@ If a team unlocks the access to an item, the permission granted is done to the t
 ## Possible future evolutions
 
 ### Granted permission bypassing
+(result of discussions between DLe and Mathias on 11/12/2019)
 
 The fact that you just need some permissions on the destination item to create an unlock rule means you could set that everybody unlocking the a public common item unlock your content, which means that you end up giving an `can_view:content` to everybody while you would not be allowed to do so directly. Even if you need a path to this item to see it, it might be used to abuse users.
 
