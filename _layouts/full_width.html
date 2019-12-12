@@ -8,12 +8,7 @@
     <div class="page-wrap">
       <!-- custom change: height: auto -->
       <div class="side-bar" style="height:60px; width:200px; min-width:100px;">
-        {% assign pages_list = site.html_pages | sort:"nav_order" %}
-        {% for node in pages_list %}
-          {% if page.parent == node.title %}
-            <a href="{{ site.baseurl }}{{ node.url }}" class="site-title fs-6 lh-tight" style="padding:5px">&laquo; Back to doc</a>
-          {% endif %}
-        {% endfor %}
+        <a href="{{ site.baseurl }}/" class="site-title fs-6 lh-tight" style="padding:5px">&laquo; Back to doc</a>
       </div>
     </div>
   </div>
