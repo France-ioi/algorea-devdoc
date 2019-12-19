@@ -55,8 +55,4 @@ In case time extensions (or reduction) should be granted to the participant (or 
 
 ## Still to be discussed/decided
 
-1. Table name for storing participation information: `group_participations`?
-1. Should `can_enter_from` and `can_enter_until` be stored in a separate table (`group_contest_permissions`) or in the global permission table (`group_permissions`).
-1. In what group do we put participants when starting the contest? `items.contestant_group_id`?
-1. As items <-> contest is a composition relation (1 <-> 0-1) and there are multiple attributes related to contest only in `itmes`, shouldn't these specific attributes be moved in a specific `contests` table (keyed by `group_id`)?
-
+1. (19/12/2019) When acting as a team, if everything as done through team permissions, shouldn't we change the above rule to force that the team has "can_view:info" on the contest, not only the user "pressing the button".
