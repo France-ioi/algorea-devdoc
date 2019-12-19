@@ -13,7 +13,7 @@ Both a user on his own or a team of users (a group in both cases) can participat
 
 ## Before a contest
 
-Before starting a contest, the participant should be able to see the title and description of the contest (the parent item) but nothing about the tasks themselves. Practically, it means he must have "can_view:info" permissipn to the parent item and no access at all to the children.
+Before starting a contest, the participant should be able to see the title and description of the contest (the parent item) but nothing about the tasks themselves. Practically, it means he must have "can_view:info" permission to the parent item and no access at all to the children.
 
 ## Starting a contest
 
