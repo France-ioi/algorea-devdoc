@@ -15,7 +15,9 @@ The **type** of an item (his `type` attribute) is important to know the actions 
 |                         | "Chapter"             | "Task"                   | "Course"             |
 |:------------------------|:----------------------|:-------------------------|:---------------------|
 | Main usage              | Container for other items | Exercice to be solved to get a score | Content to be read |
-| Can have children items | Yes                   | No                       | No                   |
-| Can have answers        | No                    | Yes                      | No                   |
-| Can have a score        | Through propagation from children | Through submitted answers | Never                   |
-
+| Have children items     | Yes                   | No                       | No                   |
+| Attempts have answers   | No                    | Yes                      | No                   |
+| Attempts have a score   | Through propagation from children | Through submitted answers | Never                   |
+| Relevant dates for attempts | entered_at (for contests), started_at, validated_at, latest_activity_at | started_at, validated_at, latest_activity_at, score_obtained_at, latest_answer_at, latest_hint_at | started_at, latest_activity_at |
+| Can be a contest | Yes | No | No |
+| Can have several attempts | currently no (later yes) | yes | no |
