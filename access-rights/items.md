@@ -151,13 +151,14 @@ The following tables defines which permissions are required to be able to change
 
 ## Creating (defaults) and changing propagation rules
 
-Any user can create relationship between two items at the condition he has at least *can_edit ≥ children* on the parent item and *can_view > none* permission to the child. This way, he can build a custom structured chapter with the content he want. However, adding content to item he owns does not give him more permission to this content and does not necessarily give him any rights to distribute this content. At creation, by default, the propagation will be set to the maximum values the groups can set (see below), but *content_view_propagation* which is set by default to maximum "as_info".
+Any user can create relationship between two items at the condition he has at least *can_edit ≥ children* on the parent item and *can_view > none* permission to the child. This way, he can build a custom structured chapter with the content he want. However, adding content to item he owns does not give him more permission to this content and does not necessarily give him any rights to distribute this content. At creation, by default, the propagation will be set to the maximum values the groups can set (see below), but *content_view_propagation* which is set by default "as_info" or "none" if the user cannot grant view.
 
 For changing propagation rules (on the item-item relationship), the giver group needs *can_edit ≥ children* permission on the parent item and the following permissions on the child item to increase the level of propagation:
 
 | Propagation level increase                                   | Permission needed on the child item        |
 |:-------------------------------------------------------------|:-------------------------------------------|
-| content_view_propagation to anything                         | can_grant_view ≥ content                   |
+| content_view_propagation to as_info                          | can_grant_view ≥ enter                     |
+| content_view_propagation to as_content                       | can_grant_view ≥ content                   |
 | upper_view_levels_propagation to as_content_with_descendants | can_grant_view ≥ content_with_descendants  |
 | upper_view_levels_propagation to as_is                       | can_grant_view ≥ solution                  |
 | grant_view_propagation to true                               | can_grant_view ≥ solution_with_grant       |
