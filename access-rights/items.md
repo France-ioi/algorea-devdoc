@@ -63,6 +63,10 @@ The level of edition permissions a group has on an item.
 * **all**: can edit "children" and can make changes to the parameters, title and content and solution of the item; cannot delete the item.
 * **transfer**: can edit "all" and grant any *can_edit* permission to another group
 
+### can_make_session_official
+
+Whether (true/false) the group is allowed to associate official sessions to this item.
+
 ### is_owner
 
 Whether (true/false) the group is the owner of this item. Implies the maximum level in all of the above permissions. Can delete the item.
@@ -95,6 +99,7 @@ The propagation of a permission from a parent to its children is either to a sam
 In addition, the following levels **never** propagate:
 * *can_view*="info" (so propagates as "none")
 * *can_grant_view*, *can_watch*, *can_edit*="transfer" (so propagate as the preceding level)
+* *can_make_session_official*=true (so propagates as "false")
 * *is_owner*=true (so propagates as "false")
 
 ## Changing and propagating permissions
@@ -130,6 +135,10 @@ The following tables defines which permissions are required to be able to change
 | all                      | can_edit = transfer   | can_view ≥ content             | Only if edit_propagation |
 | transfer                 | is_owner              | can_view ≥ content             | Never propagates |
 
+| perm granted                    | Constraint on "giver" | Constraint on "receiver"        | Propagation condition     |
+|:--------------------------------|:----------------------|:--------------------------------|:------------------|
+| *can_make_session_official=true | is_owner              | can_view ≥ info                 | Never propagates          |
+
 | perm granted  | Constraint on "giver" | Constraint on "receiver"        | Propagation condition     |
 |:--------------|:----------------------|:--------------------------------|:------------------|
 | is_owner=true | is_owner              | none                            | Never propagates          |
@@ -161,7 +170,7 @@ One permission entry matches exactly one group, one item, one *source group* and
 The attributes of this table are the following:
 * group_id, item_id, source_group_id, origin [PK]
 * latest_update_on
-* can_view, can_grant_view, can_watch, can_edit, is_owner
+* can_view, can_grant_view, can_watch, can_edit, can_make_session_official, is_owner
 
 ### Generated permissions table (permissions_generated)
 
@@ -169,7 +178,7 @@ The `permissions_generated` table represents the actual permissions that the gro
 
 The attribute of this table are the following:
 * group_id, item_id [PK]
-* can_view_generated, can_grant_view_generated, can_watch_generated, can_edit_generated, is_owner_generated
+* can_view_generated, can_grant_view_generated, can_watch_generated, can_edit_generated, can_make_session_official_generated, is_owner_generated
 
 ## FAQ / Remarks
 
