@@ -46,7 +46,7 @@ The level of visibility that the group can give on this item to other groups on 
 * **content**: can give up to *can_view* "content"
 * **content_with_descendants**: can give up to *can_view* "content_with_descendants"
 * **solution**: can give up to *can_view* "solution"
-* **transfer**: can give up to *can_view* "solution" and grant any *can_grant_view* permission to another group
+* **solution_with_grant**: can give up to *can_view* "solution" and grant any *can_grant_view* permission to another group
 
 
 ### can_watch
@@ -56,7 +56,7 @@ The level of observation a group has for an item, on the activity of the users h
 * **none**
 * **result**: can view meta data about the submissions, including the scores
 * **answer**: can watch "result" and can look at the detail of the answers
-* **transfer**: can watch "answer" and grant any *can_watch* permission to another group
+* **answer_with_grant**: can watch "answer" and grant any *can_watch* permission to another group
 
 ### can_edit
 
@@ -65,7 +65,7 @@ The level of edition permissions a group has on an item.
 * **none**
 * **children**: can attach new child items to the item, and edit propagation rules between the item and some of the children (cfr propagation permissions) [still to be defined: what about relation deletion?]
 * **all**: can edit "children" and can make changes to the parameters, title and content and solution of the item; cannot delete the item.
-* **transfer**: can edit "all" and grant any *can_edit* permission to another group
+* **all_with_grant**: can edit "all" and grant any *can_edit* permission to another group
 
 ### can_make_session_official
 
@@ -102,7 +102,7 @@ The propagation of a permission from a parent to its children is either to a sam
 
 In addition, the following levels **never** propagate:
 * *can_view*="info" (so propagates as "none")
-* *can_grant_view*, *can_watch*, *can_edit*="transfer" (so propagate as the preceding level)
+* *can_grant_view*="solution_with_grant", *can_watch*="answer_with_grant", *can_edit*="all_with_grant" (so propagate as the preceding level)
 * *is_owner*=true (so propagates as "false")
 
 As *can_make_session_official* and *can_enter_\** do not aggregate, they do not propagate as well.
@@ -119,27 +119,27 @@ The following tables defines which permissions are required to be able to change
 | solution                | can_grant_view ≥ solution       | none | As "solution" if upper_view_levels_propagation ≥ "as_is", as "content_with_descendants" if upper_view_levels_propagation = "as_content_with_descendants", otherwise apply content_view_propagation |
 
 
-| "can_grant_view" perm granted | Constraint on "giver" | Constraint on "receiver"        | Propagation condition     |
-|:------------------------------|:----------------------|:--------------------------------|:---------------------|
-| enter                   | can_grant_view = transfer   | can_view ≥ info                 | Only if grant_view_propagation |
-| content                 | can_grant_view = transfer   | can_view ≥ content              | Only if grant_view_propagation |
-| content_with_descendants| can_grant_view = transfer   | can_view ≥ content_with_d       | Only if grant_view_propagation |
-| solution                | can_grant_view = transfer   | can_view ≥ solution             | Only if grant_view_propagation |
-| transfer                | is_owner                    | can_view ≥ solution             | Never propagates |
+| "can_grant_view" perm granted | Constraint on "giver"                | Constraint on "receiver"        | Propagation condition     |
+|:------------------------------|:-------------------------------------|:--------------------------------|:---------------------|
+| enter                         | can_grant_view = solution_with_grant | can_view ≥ info                 | Only if grant_view_propagation |
+| content                       | can_grant_view = solution_with_grant | can_view ≥ content              | Only if grant_view_propagation |
+| content_with_descendants      | can_grant_view = solution_with_grant | can_view ≥ content_with_d       | Only if grant_view_propagation |
+| solution                      | can_grant_view = solution_with_grant | can_view ≥ solution             | Only if grant_view_propagation |
+| solution_with_grant           | is_owner                             | can_view ≥ solution             | Never propagates |
 
 
-| "can_watch" perm granted | Constraint on "giver" | Constraint on "receiver"        | Propagation condition     |
-|:-------------------------|:----------------------|:--------------------------------|:---------------------|
-| result                   | can_watch = transfer   | can_view ≥ content             | Only if watch_propagation |
-| answer                   | can_watch = transfer   | can_view ≥ content             | Only if watch_propagation |
-| transfer                 | is_owner               | can_view ≥ content            | Never propagates |
+| "can_watch" perm granted | Constraint on "giver"         | Constraint on "receiver" | Propagation condition     |
+|:-------------------------|:------------------------------|:-------------------------|:---------------------|
+| result                   | can_watch = answer_with_grant | can_view ≥ content       | Only if watch_propagation |
+| answer                   | can_watch = answer_with_grant | can_view ≥ content       | Only if watch_propagation |
+| answer_with_grant        | is_owner                      | can_view ≥ content       | Never propagates |
 
 
-| "can_edit" perm granted | Constraint on "giver" | Constraint on "receiver"        | Propagation condition     |
-|:-------------------------|:----------------------|:--------------------------------|:---------------------|
-| children                 | can_edit = transfer   | can_view ≥ content             | Only if edit_propagation |
-| all                      | can_edit = transfer   | can_view ≥ content             | Only if edit_propagation |
-| transfer                 | is_owner              | can_view ≥ content             | Never propagates |
+| "can_edit" perm granted  | Constraint on "giver"     | Constraint on "receiver" | Propagation condition     |
+|:-------------------------|:--------------------------|:-------------------------|:---------------------|
+| children                 | can_edit = all_with_grant | can_view ≥ content       | Only if edit_propagation |
+| all                      | can_edit = all_with_grant | can_view ≥ content       | Only if edit_propagation |
+| all_with_grant           | is_owner                  | can_view ≥ content       | Never propagates |
 
 | perm granted                    | Constraint on "giver" | Constraint on "receiver"        | Propagation condition |
 |:--------------------------------|:----------------------|:--------------------------------|:----------------------|
@@ -160,9 +160,9 @@ For changing propagation rules (on the item-item relationship), the giver group 
 | content_view_propagation to anything                         | can_grant_view ≥ content                   |
 | upper_view_levels_propagation to as_content_with_descendants | can_grant_view ≥ content_with_descendants  |
 | upper_view_levels_propagation to as_is                       | can_grant_view ≥ solution                  |
-| grant_view_propagation to true                               | can_grant_view ≥ transfer                  |
-| watch_propagation to true                                    | can_watch ≥ transfer                       |
-| edit_propagation to true                                     | can_edit ≥ transfer                        |
+| grant_view_propagation to true                               | can_grant_view ≥ solution_with_grant       |
+| watch_propagation to true                                    | can_watch ≥ answer_with_grant              |
+| edit_propagation to true                                     | can_edit ≥ all_with_grant                  |
 
 To decrease the propagation level (whatever the level), you do not need any specific permissions on the child item.
 
@@ -190,4 +190,4 @@ The attribute of this table are the following:
 
 ### "is_owner" aggregation and propagation
 As a consequence of these rules, when *is_owner* is set to *true* only the *is_owner* attribute is modified in the
-`permissions_granted` table. It is aggregation (so into `permissions_generated` table) which make *is_owner* set all "can_*" to their maximum value. For propagation, while "is_owner" is not propagated, the levels it involves in all other permissions are propagated as they had been granted directly (so "can_edit:transfer" propagates to "can_edit:all").
+`permissions_granted` table. It is aggregation (so into `permissions_generated` table) which make *is_owner* set all "can_*" to their maximum value. For propagation, while "is_owner" is not propagated, the levels it involves in all other permissions are propagated as they had been granted directly (so "can_edit:all_with_grant" propagates to "can_edit:all").
