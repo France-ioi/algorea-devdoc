@@ -113,7 +113,7 @@ The following tables defines which permissions are required to be able to change
 
 | "can_view" perm granted | Constraint on "giver" | Constraint on "receiver" | Propagation rule     |
 |:------------------------|:----------------------|:-------------------------|:---------------------|
-| info                    | can_grant_view ≥ content        | none |  Never propagates              |
+| info                    | can_grant_view ≥ enter          | none |  Never propagates              |
 | content                 | can_grant_view ≥ content        | none | Apply content_view_propagation |
 | content_with_descendants| can_grant_view ≥ content_with_d | none | Only if upper_view_levels_propagation ≥ "as_content_with_descendants"; otherwise apply content_view_propagation |
 | solution                | can_grant_view ≥ solution       | none | As "solution" if upper_view_levels_propagation ≥ "as_is", as "content_with_descendants" if upper_view_levels_propagation = "as_content_with_descendants", otherwise apply content_view_propagation |
