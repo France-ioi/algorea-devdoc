@@ -176,7 +176,7 @@ One permission entry matches exactly one group, one item, one *source group* and
 The attributes of this table are the following:
 * group_id, item_id, source_group_id, origin [PK]
 * latest_update_on
-* can_view, can_grant_view, can_watch, can_edit, can_make_session_official, is_owner
+* can_view, can_enter, can_grant_view, can_watch, can_edit, can_make_session_official, is_owner
 
 ### Generated permissions table (permissions_generated)
 
