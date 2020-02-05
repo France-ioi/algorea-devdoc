@@ -77,7 +77,7 @@ Whether (true/false) the group is the owner of this item. Implies the maximum le
 
 We call *aggregation* the merge of the multiple granted permissions (from possibily different groups) to one permission tuple (indexed by group, item).
 
-For each permission attribute (can_view, can_grant_view, can_watch, can_edit, and is_owner), we take its maximum level among all values. In addition, "is_owner=true" makes every other attribute get its maximum possible value.
+For each permission attribute but *can_make_session_official* (so *can_view*, *can_grant_view*, *can_watch*, *can_edit*, and *is_owner*), we take its maximum level among all values. In addition, "is_owner=true" makes every other attribute get its maximum possible value.
 
 <a name="propagation"></a>
 
@@ -99,8 +99,9 @@ The propagation of a permission from a parent to its children is either to a sam
 In addition, the following levels **never** propagate:
 * *can_view*="info" (so propagates as "none")
 * *can_grant_view*, *can_watch*, *can_edit*="transfer" (so propagate as the preceding level)
-* *can_make_session_official*=true (so propagates as "false")
 * *is_owner*=true (so propagates as "false")
+
+As *can_make_session_official* does not aggregate, it does not propagate as well.
 
 ## Changing and propagating permissions
 
@@ -135,9 +136,9 @@ The following tables defines which permissions are required to be able to change
 | all                      | can_edit = transfer   | can_view ≥ content             | Only if edit_propagation |
 | transfer                 | is_owner              | can_view ≥ content             | Never propagates |
 
-| perm granted                    | Constraint on "giver" | Constraint on "receiver"        | Propagation condition     |
-|:--------------------------------|:----------------------|:--------------------------------|:------------------|
-| *can_make_session_official=true | is_owner              | can_view ≥ info                 | Never propagates          |
+| perm granted                    | Constraint on "giver" | Constraint on "receiver"        | Propagation condition |
+|:--------------------------------|:----------------------|:--------------------------------|:----------------------|
+| *can_make_session_official=true | is_owner              | can_view ≥ info                 | N/A                   |
 
 | perm granted  | Constraint on "giver" | Constraint on "receiver"        | Propagation condition     |
 |:--------------|:----------------------|:--------------------------------|:------------------|
@@ -178,7 +179,7 @@ The `permissions_generated` table represents the actual permissions that the gro
 
 The attribute of this table are the following:
 * group_id, item_id [PK]
-* can_view_generated, can_grant_view_generated, can_watch_generated, can_edit_generated, can_make_session_official_generated, is_owner_generated
+* can_view_generated, can_grant_view_generated, can_watch_generated, can_edit_generated, is_owner_generated
 
 ## FAQ / Remarks
 
