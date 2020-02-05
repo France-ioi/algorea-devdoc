@@ -33,12 +33,16 @@ The level of visibily the group has on the item:
 * **content_with_descendants**: can view "content" and more of the descendant items (see propagation)
 * **solution**: can view "content", solutions and discussions
 
+### can_enter_*
+
+**can_enter_from** and **can_enter_until** are time from and until which the group can "enter" the item, i.e. can create an attempt under some conditions.
 
 ### can_grant_view
 
 The level of visibility that the group can give on this item to other groups on which it has the right to (cfr group permissions).
 
 * **none**: cannot grant view permission
+* **enter**: can give *can_enter_\** permission
 * **content**: can give up to *can_view* "content"
 * **content_with_descendants**: can give up to *can_view* "content_with_descendants"
 * **solution**: can give up to *can_view* "solution"
@@ -77,7 +81,7 @@ Whether (true/false) the group is the owner of this item. Implies the maximum le
 
 We call *aggregation* the merge of the multiple granted permissions (from possibily different groups) to one permission tuple (indexed by group, item).
 
-For each permission attribute but *can_make_session_official* (so *can_view*, *can_grant_view*, *can_watch*, *can_edit*, and *is_owner*), we take its maximum level among all values. In addition, "is_owner=true" makes every other attribute get its maximum possible value.
+For each permission attribute but *can_make_session_official* and *can_enter_\** (so *can_view*, *can_grant_view*, *can_watch*, *can_edit*, and *is_owner*), we take its maximum level among all values. In addition, "is_owner=true" makes every other attribute get its maximum possible value.
 
 <a name="propagation"></a>
 
@@ -101,7 +105,7 @@ In addition, the following levels **never** propagate:
 * *can_grant_view*, *can_watch*, *can_edit*="transfer" (so propagate as the preceding level)
 * *is_owner*=true (so propagates as "false")
 
-As *can_make_session_official* does not aggregate, it does not propagate as well.
+As *can_make_session_official* and *can_enter_\** do not aggregate, they do not propagate as well.
 
 ## Changing and propagating permissions
 
@@ -117,6 +121,7 @@ The following tables defines which permissions are required to be able to change
 
 | "can_grant_view" perm granted | Constraint on "giver" | Constraint on "receiver"        | Propagation condition     |
 |:------------------------------|:----------------------|:--------------------------------|:---------------------|
+| enter                   | can_grant_view = transfer   | can_view ≥ info                 | Only if grant_view_propagation |
 | content                 | can_grant_view = transfer   | can_view ≥ content              | Only if grant_view_propagation |
 | content_with_descendants| can_grant_view = transfer   | can_view ≥ content_with_d       | Only if grant_view_propagation |
 | solution                | can_grant_view = transfer   | can_view ≥ solution             | Only if grant_view_propagation |
