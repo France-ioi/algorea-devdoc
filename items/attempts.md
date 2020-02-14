@@ -49,10 +49,10 @@ The following attributes are propagated, so their values in chapter's result is 
 
 Note that the `started_at` attribute is **not** propagated, it is a property of the "result" itself.
 
-### Propagation optimization: not propagating the invible items
+### Propagation optimization: not propagating the non-visible items
 
 In order not to create many results for parents of items which have been included by many users in their private chapters, we do not create new results for items which do not have ancestors that the participants can actually view.
 
 ### Propagation to explicit-entry items
 
-In order not display results to a contest which has not been started yet by a participant, we do not auto-create result by propagaton for the items which requires explicit-entry.
+In order not display results to a contest which has not been started yet by a participant, we do not auto-create result by propagaton for the items which requires explicit-entry (on the schema, on T2 and T3 to C4 and C5).
