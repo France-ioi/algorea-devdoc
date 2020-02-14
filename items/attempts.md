@@ -24,6 +24,8 @@ In the following, we show a scenario of attempts for a given user. The attempt "
 
 The default attempt (with id 0) is created automatically when a new user or team is created. The other attempts are created explicitely by the user or one member of the team. For explicit-entry chapters (contests for instance), the attempt is created when entering (after having checked that the conditions are met).
 
+A manually-created attempt (all but default) have a "parent attempt" (`parent_attempt_id` attribute), i.e., the attempt from which this one was created. We also retain the item on which this attempt was created (`root_item_id` attribute). This is used in result propagation.
+
 ## Result creation
 
 The results can be created:
@@ -37,7 +39,7 @@ Explicit creations set the `started_at` attribute, while the implicit creation l
 
 ## Result propagation to parents (item's parents)
 
-Each time one of the propagated information is changed in a attempt, the results are repropagated to its parents. In the case of multiple attempts for the same items, an aggregation occurs (typically the max value for each attribute).
+Each time one of the propagated information is changed in a attempt, the results are repropagated to its parents. An aggregation occurs (typically the max value for each attribute) when there are multiple attempts for the same parent. In practice, it happens only from the root item of an attempt to its parent (on the schema, on T2 and T3 to C4 and C5)
 
 The following attributes are propagated, so their values in chapter's result is a "summary" of the descendant attempts. (for attribute description, see [the table structure](https://franceioi-algorea.s3.eu-west-3.amazonaws.com/dbdoc/tables/attempts.html))
 * `latest_activity`: the latest activity across all descendants
