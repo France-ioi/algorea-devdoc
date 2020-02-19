@@ -5,31 +5,29 @@ nav_order: 300
 parent: Work in Progress
 ---
 
-# Navigation through items and attempt/result creation
+# UI Workflow for loading an item on an attempt
 
 From such an interface:
 
 <img src="https://france-ioi.github.io/algorea-designs/img/03.Activities_00.Header_d.Attempt_a.Open.png" >
 
-We assume the frontend gets as URL something like: `http://www.example.info/content/1/2/3/4#9/5` (in whatsoever format), where `1/2/3/4/5` is the breadcrumb, ending by the content id `5` (to be displayed in the right pane), and `9` is the `attempt_id` to be displayed, here on `4` (but it may be on any item). The breadcrumb is always given. As we may get shared/external URL, the attempt may not be given. If several attempts are given, only the last one is relevant.
+We assume the frontend gets its path in one the following form: `/1/2/3/4/5?attempt_id=9` or `/1/2/3/4/5?parent_attempt_id=9` or `/1/2/3/4/5` (in whatsoever format), where `1/2/3/4/5` is the breadcrumb, ending by what we will call the **current item** `5` to be displayed in the right pane, and either the attempt of the current item (`5`) or of its parent (`4`), or no attempt.
 
-### The attempt parameter
+The breadcrumb is always given and a list of items from a root item to the current item.
 
-If given, the attempt is the context in which the item has to be displayed, so constraining the attempt of all items to its left (`1`,`2`,`3`,`4` here). The attempts for the items on its right (`5` here) are decided by other rules defined below (in "The content").
+When navigating to item ancestors, children, or siblings, the frontend must always provide the attempt to stay in a similar "attempt context" as the previous page. When a link is shared with other users or when we link to an independant item, the attempt may be missing. In this case, the frontend has first to retrieve the attempt context before loading the content.
 
-If the frontend knows (has saved) what attempt to use for one of the item on the right, it should rewrite the URL using these preferences. In our example, it would need to know what attempt to use for the current user, item `5` under attempt `9` (so `9` itself or a forked attempt from `9`).
+Providing the parent attempt (`parent_attempt_id` parameter) is reserved for cases when the user does not have attempts for the current item.
 
-To give other examples: If the path is `/content/1/2#9/3/4/5`, the item `1` and `2` have to be on attempt `9` or its ancestors, while items `3`, `4`, and `5` are not constrained. If the path `/content/1/2/3/4/5#9`, the full path is constrainted.
+### Finding the attempt when it is not provided
 
-If no attempt is given and the frontend does not anything about attempt for this case, attempt `0` is used.
+If no attempt (so no `attempt_id` nor `parent_attempt_id`) is given, the frontend has to get it before displaying the page. Either the frontend remember the last attempt used by the current user when last visiting the current item or its parent, or it requests this information to the backend. In both case, the url is then rewritten with the attempt in it.
 
-### The default result for an item
-
-TODO: on the left of the constraint: via a the attempt, on the right, the one with the most recent "latest_activity"?
+TODO start or create result?
 
 ### Loading the components
 
-Once the URL has been parsed and the attempt deduced, the header, left menu, and right content have to be loaded. This should be doable in parallel (without need from the result from one to load the other) so that it is faster and each frontend component can be independant.
+Once the URL has been parsed, the header, left menu, and right content have to be loaded. This should be doable in parallel (without need from the response from one to load the other) so that it is faster and each frontend component can be independant.
 
 We need services for: (described in details below)
 - the breadcrumb
@@ -38,105 +36,76 @@ We need services for: (described in details below)
 
 ## Loading the breadcrumb
 
-From a list of `item_id` and an attempt (given or deduced, see above) on one of the item, the breadcrumb service:
+From a list of `item_id` and a current-item or parent attempt, the breadcrumb service:
 
 - verifies that the item list forms a valid path (each is the parent of the next)
 - verifies that the first item is a root (`is_root`) or the item of a group the current user is member of
 - for all items, returns
   - the item title (in a appropriate language)
-  - whether this participant has several results (within the parent attempt) for this item
-  - if any, the default result (see above) info:
-    - the attempt_id
-    - its order among the other results (within the parent attempt) using an order on `started_at`
+  - attempt id for this item (result) from which the current-item or parent attempt is a descendant (null for the current item if parent attempt was given)
+  - if the item allows multiple attempts, the order of this attempt result among the other results (within the parent attempt) using an order on `started_at`
+
+The attempt of each item is either the same attempt as its child or the parent attempt of this attempt.
 
 ### Frontend
 
-As shown [here](https://france-ioi.github.io/algorea-designs/03.Activities_00.Header_d.Attempt), the frontend does display the order only if there is more than one attempt for this item within its parent and the result has an order.
+As shown [here](https://france-ioi.github.io/algorea-designs/03.Activities_00.Header_d.Attempt), the frontend does display the attempt order in the breadcrumb, but only for items which supports multiple attempts.
 
-If a forbidden (403) error is received, the UI should retry to refresh this page by dropping the attempt (may be copy/pasted url with invalid attempt).
-
-For link attached to each element of the breadcrumb, the attempt given is right-most known attempt for the given element.
+If a forbidden (403) error is received, the frontend should retry to refresh this page by dropping the attempt (may be copy/pasted url with invalid attempt).
 
 ## Loading the left menu
 
-From the id of parent item and the result id so (item_id + attempt_id + implicit participant_id), returns:
+From the id of the parent item and the attempt id (of itself or one of its children), returns:
 - for the parent:
   - item id, item title, item type,
   - access rights
-- for each child of the parent:
+  - attempt id
+- for each child item of the parent:
   - item id, item title, item type, explicit_entry,
-  - whether it has children,
+  - whether the item has children,
   - access rights,
   - best score: among all attempts of the participant on this item,
-  - score, validated: among all results of this participants, on this item, within its parent attempt
+  - a list of the results within its parent attempt, with:
+    - attempt id
+    - score
+    - validated
+    - start time
+    - latest activity
 
-Opening a chapter (by pressing the "+" button in front of it), request the same info, rooted on the expended chapter.
+The path of the link to each child uses as attempt:
+- if the child has no results, the parent attempt
+- if the child has one result, use its attempt
+- if the child has several results, use the most recent attempt known by the frontend for this participant and item (if any)
+- otherwise the attempt with the most recent activity
 
-### Links to items
+### Expending a chapter
 
-To build the links to the parent and child items, the frontend can easily
-TODO
-
+When expending a chapter in the left menu ("+" button or arrow), the same query as the one loading the menu is called, with expended chapter id and, as attempt:
+- if the item is the current page and an attempt is given, use this attempt
+- if this item has no results yet, create one (TODO, start or create?) and use its attempt
+- it it has attempts, use the latest attempt known by the frontend for this participant and item
+- if the frontend has no saved preferences, use the attempt with the most recent activity
 
 ## The content (right pane)
 
 The frontend needs to:
-- load the item info (contain )
-- load all results of attempt on this item (within its parent)
-- if no result, can_view>=content and not an explicit-entry item, start a result (if *can_view>=content*)
-- request a task token
+1. load the item info, from the item id and its current page attempt id or the attempt of its parent
+  - info from the `items` table
+  - a list of the results within its parent attempt, with:
+    - attempt id
+    - attempt creation time
+    - attempt creator
+    - score
+    - validated
+    - start time
+    - latest activity
+2. select the attempt (only if the current user has can_view>=content)
+  - if there no result and it is not an explicit-entry item: create one (i.e., start it) giving the parent attempt
+  - if there is one result but not started (`started_at` is null) and it is not an explicit-entry item: start it, giving the attempt
+  - if there is one result already started, use this one
+  - if there are multiple results, the frontend chooses the most recent known for this participant and item
+  - if there are multiple results and the frontend does not have preferences, use the attempt with the most recent activity
+  - otherwise, do not select attempt
+3. if an attempt has been selected and the item is a task, request a task token
 
-When exercice "4. Exercice lorem ipsum", the menu is loaded rooted at its parent, with no children listed by default (if the page was a chapter). The page knows the id of the parent through the breadcrumb given to the frontend via the URL.
-
-So the request looks like: `GET /attempts/{attempt_id}/items/{item_id}/as-nav-tree`. The `group_id` is implictely the current user, if he is in "team mode", the optional query string `?as_team_id={group_id}` is added. If not known, the `attempt_id` given can be "0".
-
-This results returns for instance for `GET /attempts/{attempt_id}/items/{item_id}/parent-as-nav-tree`
-```json
-{
-  "id": "123",
-  "string": {
-    "title": "Entry reading",
-    "language_tag": "fr"
-  },
-  "type": "Chapter",
-  "allows_multiple_attempts": false,
-  "explicit_entry": false,
-  "access_rights": {
-    "can_view": "content",
-    "other_perm": "..."
-  },
-  "best_score": 80, /* among all participant's attempts, even different from attempt_id and children */
-  "score": 50, /* score from result given as input */
-  "validated": false, /* validated from result given as input */
-  "children": [
-    {
-      "id": "456",
-      "string": {
-        "title": "4. Exercice lorem ipsum",
-        "language_tag": "fr"
-      },
-      "type": "Task",
-      "allows_multiple_attempts": true,
-      "explicit_entry": false,
-      "access_rights": {
-        "can_view": "content",
-        "other_perm": "..."
-      },
-      "order": 0,
-      "best_score": 100, /* among all participant's attempts, even different from attempt_id and children */
-      "results": [ /* all results (possibly none) children of the parent attempt_id given of as input */
-        {
-          "attempt_id": "111",
-          "score": 100,
-          "validated": true,
-          "started_at":
-        }
-      ]
-    },
-    {
-      "same attributes": "..."
-    }
-  ]
-}
-```
-
+TODO: 2 options, we consider an attempts not started as "non existing", or we just start it implicitely afterwards
