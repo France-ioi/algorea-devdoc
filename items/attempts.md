@@ -7,9 +7,9 @@ parent: Items & Related Entities
 
 # Attempts, Results, and Propagation
 
-**Results** are, for a given participant (user or team), the score, starting time, validation status, ... which has been obtained on a given item, for an attempt. Results may be the aggregation of several answers (for tasks) or from the results of child items (for chapters and skills).
+**Results** are, for a given participant (user or team), the score, starting time, validation status, ... which has been obtained on a given item, for an attempt. For tasks, a result is the aggregation of several answers. For chapters and skills, a result is the aggregaton from the results of child items.
 
-By default, all results are related to a default **attempt** (with id "0") but a participants may decide to redo a task or a full chapter from scratch, so as a new **attempts**. For some tasks, re-trying them in another attempt create another variation of the same task. Only items which supports multiple attempts (`items.allow_multiples_attempts`) can a several attempt for a same participant.
+By default, all results are related to a default **attempt** (with id "0") but a participants may decide to redo a task or a full chapter from scratch, so as a new **attempt**. For some tasks, re-trying them in another attempt create another variation of the same task. Only items which supports multiple attempts (`items.allow_multiples_attempts`) can have several attempts for a same participant.
 
 ## Design
 
@@ -29,19 +29,19 @@ A manually-created attempt (all but default) have a "parent attempt" (`parent_at
 ## Result creation
 
 The results can be created:
-- explictely, when the user starts working on an item, in practice:
-  - on task, ...
-  - on chapter, ...
-  - on explicit-entry items (contests typically), when they "enter"
-- implicitely, when the results are propagated from a task to its ancestors (see result propagation below)
+1. automatically, when the user starts working on an item, in practice, when the user has *can_view>=content* and:
+  - on task, when opening it (before a task token is explicitely created)
+  - on chapter, when expending it in the left menu, or when opening it
+2. explicitely manually on explicit-entry items (contests typically), when they "enter"
+3. implicitely at propagation, when the results are propagated from a task to its ancestors (see result propagation below)
 
-Explicit creations set the `started_at` attribute, while the implicit creation leaves it null.
+1 and 2 set the `started_at` attribute, while the implicit creation at propagation leaves it null.
 
-## Result propagation to parents (item's parents)
+## Result propagation to parents
 
-Each time one of the propagated information is changed in a attempt, the results are repropagated to its parents. An aggregation occurs (typically the max value for each attribute) when there are multiple attempts for the same parent. In practice, it happens only from the root item of an attempt to its parent (on the schema, on T2 and T3 to C4 and C5)
+Each time one of the propagated information is changed in a result, it is repropagated to its parents (i.e., in the ancestor result of the parent item). An aggregation occurs (typically the max value for each attribute) when there are multiple attempts for the same parent. In practice, it happens only from the root item of an attempt to its parent (on the schema, on T2 and T3 to C4 and C5)
 
-The following attributes are propagated, so their values in chapter's result is a "summary" of the descendant attempts. (for attribute description, see [the table structure](https://franceioi-algorea.s3.eu-west-3.amazonaws.com/dbdoc/tables/attempts.html))
+The following attributes are propagated, so their values in the result of a chapter is a "summary" of the descendant results. (for attribute description, see [the table structure](https://franceioi-algorea.s3.eu-west-3.amazonaws.com/dbdoc/tables/attempts.html))
 * `latest_activity`: the latest activity across all descendants
 * `tasks_tried`, `tasks_with_help`: the sum of all descendants
 * `score_computed`: the weighted sum of children scores (note that the score can be overriden manually for any item, or a bonus/malus can be given)
@@ -55,4 +55,4 @@ In order not to create many results for parents of items which have been include
 
 ### Propagation to explicit-entry items
 
-In order not display results to a contest which has not been started yet by a participant, we do not auto-create result by propagaton for the items which requires explicit-entry (on the schema, on T2 and T3 to C4 and C5).
+In order not display results to a contest which has not been started yet by a participant, we do not auto-create result by propagaton for the items which requires explicit-entry (on the schema, on the attempt "0" from C4/C5 to C2).
