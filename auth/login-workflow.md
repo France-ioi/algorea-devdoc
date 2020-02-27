@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Auth workflows with the login module
+title: Login Workflows
 nav_order: 10
 parent: Authentication & Authorization
 has_children: true
@@ -14,12 +14,12 @@ The previous AlgoreaPlaform workflow and the different options are described in 
 
 The following workflow using OAuth2 "authorization code" looks the more approriate to Algorea. Actually, the main difference with what has been done so far is that the *access token* is used by the frontend directly.
 
-<iframe frameborder="0" style="width:100%;height:440px;" src="https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=loginsuccessful-authcode-full.drawio#Uhttps%3A%2F%2Fdrive.google.com%2Fa%2Fsmad.be%2Fuc%3Fid%3D1LnKvL_pudCBs9miqOlYJdAjtwe5CIIsw%26export%3Ddownload"></iframe>
+{% include login_workflow.html %}
 
 # Logout Workflow
 
-<iframe frameborder="0" style="width:100%;height:474px;" src="https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=logout.drawio#Uhttps%3A%2F%2Fdrive.google.com%2Fa%2Fsmad.be%2Fuc%3Fid%3D13yhLJA3MTP0peFQT-T2mtVm8l9VaG081%26export%3Ddownload"></iframe>
+{% include logout_workflow.html %}
 
 # Token Refresh
 
-<iframe frameborder="0" style="width:100%;height:434px;" src="https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=tokenrefresh.drawio#Uhttps%3A%2F%2Fdrive.google.com%2Fa%2Fsmad.be%2Fuc%3Fid%3D1P-YMuir4xO6j64akwz3yYKpQYuCrIkZH%26export%3Ddownload"></iframe>
+{% include token_refresh_workflow.html %}

@@ -2,7 +2,7 @@
 layout: page
 title: "Auth: Working docs"
 nav_order: 35
-parent: Auth workflows with the login module
+parent: Login Workflows
 grand_parent: Authentication & Authorization
 ---
 
@@ -22,7 +22,7 @@ These recent recommendations are to use, for SPAs, the "authorization code" work
 
 # AlgoreaPlatform workflow (on 06/2019)
 
-<iframe frameborder="0" style="width:100%;height:460px;" src="https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=loginsuccessful-AlgoreaPlatform%20on%2006%2F2019%20(authorization%20code%20scheme).drawio#Uhttps%3A%2F%2Fdrive.google.com%2Fa%2Fsmad.be%2Fuc%3Fid%3D1to6M8Ul3uc7Va20mRnagSXZC0xvvdZgE%26export%3Ddownload"></iframe>
+{% include algoreaplatform_auth.html %}
 
 It uses a tweaked "authorization code" workflow through an authorization popup.
 
@@ -35,7 +35,7 @@ Some remarks:
 
 ## Using "implicit" workflow
 
-<iframe frameborder="0" style="width:100%;height:400px;" src="https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=loginsuccessful-implicitworkflow.drawio#Uhttps%3A%2F%2Fdrive.google.com%2Fa%2Fsmad.be%2Fuc%3Fid%3D1EqffIrBANSMb6SzmoDKPZEosTgIzYVG9%26export%3Ddownload"></iframe>
+{% include implicit_auth_workflow.html %}
 
 Some remarks:
 - The implicit workflow cannot use *refresh token* as it is considered unsecure to store it in the SPA. The refresh may be done through "silent authentication", i.e., requesting the auth popup (or an iframe) to use the session with the auth server to ask for a new *access token*.
@@ -43,7 +43,7 @@ Some remarks:
 
 ## Using "authorization code " workflow
 
-<iframe frameborder="0" style="width:100%;height:440px;" src="https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=loginsuccessful-authorization%20code%20workflow.drawio#Uhttps%3A%2F%2Fdrive.google.com%2Fa%2Fsmad.be%2Fuc%3Fid%3D1jzh6gSgmFL3CtRwR2_2JH4aV353n0EFj%26export%3Ddownload"></iframe>
+{% include authorization_code_workflow.html %}
 
 Some remarks:
 - As OAuth2 defines that apps such as SPAs are not allowed to store refresh token, there is no "OAuth" way to get a new *access token* when it has expired. One way to proceed is to use "silent authentication" as defined above for the implicit workflow.
@@ -52,7 +52,7 @@ Some remarks:
 
 The following workflow using OAuth2 "authorization code" looks the more approriate to Algorea. Actually, the main difference with what has been done so far is that the *access token* is used by the frontend directly.
 
-<iframe frameborder="0" style="width:100%;height:440px;" src="https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=loginsuccessful-authcode-full.drawio#Uhttps%3A%2F%2Fdrive.google.com%2Fa%2Fsmad.be%2Fuc%3Fid%3D1LnKvL_pudCBs9miqOlYJdAjtwe5CIIsw%26export%3Ddownload"></iframe>
+{% include login_workflow.html %}
 
 ## Refreshing tokens
 
