@@ -7,8 +7,13 @@ parent: Authentication & Authorization
 
 # LTI Authentication Workflow
 
-When our platform acts as a LTI provider, the LTI consumer will typically embed one of our items in an iframe, by sending a LTI launch request with a set of LTI parameters to authenticate the user. The workflow is the following:
+When our platform acts as a LTI provider, the LTI consumer will typically call our infrastructure with "LTI Launch Request" providing LTI parameters. These can be handled by the login-module which can verify them and create a local user if needed.
 
-<span class="label label-yellow">Currently reworking it</span>
+Our current two use cases are:
+* A platform using our items in an embedded iframe. The tasks and chapters are loaded via a POST request which is redirected to the content to be displayed. The score can also be sent back to the platform (not detailed here).
+* A LTI-enabled website redirects their users to our platforms so that the user can utilize our platform without further authentication.
 
-Note also, that if the user goes on the frontend outside the LTI context, the frontend should detect it and log the user out.
+In both cases, the LTI Launch request is a POST with LTI authentication parameters, which can be redirected to the actual content:
+
+{% include lti.html %}
+
