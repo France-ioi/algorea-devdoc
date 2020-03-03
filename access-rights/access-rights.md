@@ -21,7 +21,7 @@ When they first arrive on the platform, users are automatically added to groups 
 
 ### Propagation
 
-Permissions of a group to an item may be propagated to the descendants of the groups, and (under some conditions) to the descendants of the items.
+Permissions of a group to an item are propagated to the descendants of the groups (but team members), and (under some conditions) to the descendants of the items.
 
 <span class="label label-green">Key-concept</span>
-Permission propagation from a parent **group** to its descendants is **implicit**. So if a user is part of a group, he has the same permissions as the group. On the other hand, permission propagation from a parent **item** to its descendants is **explicit**, i.e., new entries in the `groups_items` table are created each time new permissions are given to propagate these rights to the children. The propagation through items follows specific rules described in [this page]({{ site.baseurl }}/design/access-rights/items/).
+Permission propagation from a parent **group** to its descendants is **implicit**. So if a user is part of a group, he has the same permissions as the group (except from team to users where no permission is propagated). On the other hand, permission propagation from a parent **item** to its descendants is **explicit**, i.e., new entries in the `groups_items` table are created each time new permissions are given to propagate these rights to the children. The propagation through items follows specific rules described in [this page]({{ site.baseurl }}/design/access-rights/items/).
