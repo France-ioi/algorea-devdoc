@@ -27,7 +27,7 @@ If no attempt (neither `attempt_id` nor `parent_attempt_id`) is given, the front
 
 ### Participant (team participation)
 
-For all the services mentioned in this guide, the item `results` are identified by their `attempt_id` and `item_id`. In practice results are also identified by the their `participant_id`. The participant is by default the current user, except if the `team_id` query parameter is given, in which case the given id is used as participant (after verifying the user is part of this team).
+For all the services mentioned in this guide, the item `results` are identified by their `attempt_id` and `item_id`. In practice results are also identified by the their `participant_id`. The participant is by default the current user, except if the `as_team_id` query parameter is given, in which case the given id is used as participant (after verifying the user is part of this team).
 
 ### Loading the components
 
