@@ -105,7 +105,7 @@ If there is no result or the selected result is not started, create/start it<sup
 ## The content (right pane)
 
 The frontend needs to:
-1. load the item info, from the item id and its current page attempt id or the attempt of its parent <sup>[6](#srv6)</sup>
+- load the item info, from the item id and its current page attempt id or the attempt of its parent <sup>[6](#srv6)</sup>
   - info from the `items` table
   - a list of the results within its parent attempt, with:
     - attempt id
@@ -115,7 +115,7 @@ The frontend needs to:
     - validated
     - start time
     - latest activity
-2. select the attempt (only if the current user has can_view>=content)
+- select the attempt (only if the current user has can_view>=content)
   - if there no result or there is one result but not started (`started_at` is null), and it is not an explicit-entry item: start one <sup>[5](#srv5)</sup>
   - if it is an explicit-entry item, choose the ongoing attempt (started, not ended, allowing submissions), if any
   - if it is not an explicit-entry item:
@@ -123,7 +123,7 @@ The frontend needs to:
     - and there are multiple results, the frontend chooses the most recent known for this participant and item
     - and there are multiple results and the frontend does not have preferences, use the attempt with the most recent activity
   - otherwise, do not select attempt
-3. if an attempt has been selected and the item is a task, request a task token <sup>[7](#srv7)</sup>
+- if an attempt has been selected and the item is a task, request a task token <sup>[7](#srv7)</sup>
 
 ## Service URLs
 
