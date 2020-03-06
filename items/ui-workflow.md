@@ -117,9 +117,11 @@ The frontend needs to:
     - latest activity
 2. select the attempt (only if the current user has can_view>=content)
   - if there no result or there is one result but not started (`started_at` is null), and it is not an explicit-entry item: start one <sup>[5](#srv5)</sup>
-  - if there is one result already started, use this one
-  - if there are multiple results, the frontend chooses the most recent known for this participant and item
-  - if there are multiple results and the frontend does not have preferences, use the attempt with the most recent activity
+  - if it is an explicit-entry item, choose the ongoing attempt (started, not ended, allowing submissions), if any
+  - if it is not an explicit-entry item:
+    - and there is one result already started, use this one
+    - and there are multiple results, the frontend chooses the most recent known for this participant and item
+    - and there are multiple results and the frontend does not have preferences, use the attempt with the most recent activity
   - otherwise, do not select attempt
 3. if an attempt has been selected and the item is a task, request a task token <sup>[7](#srv7)</sup>
 
