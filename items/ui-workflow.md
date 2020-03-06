@@ -64,13 +64,15 @@ If a forbidden (403) error is received, the frontend should retry to refresh thi
 
 From the id of the parent item and the attempt id (of itself or one of its children) <sup>[3](#srv3)</sup>, returns:
 - for the parent:
-  - item id, item title, item type,
+  - item id, item title (+language), item type,
   - access rights
   - attempt id
+  - whether it is a root
 - for each child item of the parent:
-  - item id, item title, item type, explicit_entry,
-  - whether the item has children,
+  - item id, item title (+language), item type, explicit_entry,
+  - whether the item has visible children,
   - access rights,
+  - requires_explicit_entry, entry_participant_type, no_score
   - best score: among all attempts of the participant on this item,
   - a list of the results within its parent attempt, with:
     - attempt id
@@ -78,10 +80,13 @@ From the id of the parent item and the attempt id (of itself or one of its child
     - validated
     - start time (may be null)
     - latest activity (may be null)
+    - attempt's allow_submissions_until
+    - ended_at
 
 The path of the link to each child uses as attempt:
 - if the child has no results, the parent attempt
 - if the child has one result, use its attempt
+- if the child requires explicit entry, the ongoing attempt (started, not ended, allowing submissions)
 - if the child has several results, use the most recent attempt known by the frontend for this participant and item (if any)
 - otherwise the attempt with the most recent activity
 
@@ -124,7 +129,7 @@ Suggested urls (draft)
 
 1. <a name="srv1"></a>Start a path of results with attempt_id selected by the backend: `POST /attempts/active/items/{ids}/start`
 2. <a name="srv2"></a>Get breadcrumb info: `GET /items/{ids}/breadcrumbs?(parent_)attempt_id={id}`
-3. <a name="srv3"></a>Get navigation info: `GET /items/{item_id}/as-nav-tree?(parent_)attempt_id={id}`
+3. <a name="srv3"></a>Get navigation info: `GET /items/{item_id}/as-nav-tree?(child_)attempt_id={id}`
 4. <a name="srv4"></a>Create a result from a parent attempt_id: `POST /attempts/{parent_attempt_id}/items/{item_id}`
 5. <a name="srv5"></a>Start an attempt for an item (its result): `POST /attempts/{attempt_id}/items/{item_id}/start`
 6. <a name="srv6"></a>Get item info: `GET /items/{item_id}?(parent_)attempt_id`
