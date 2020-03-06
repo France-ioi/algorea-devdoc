@@ -41,14 +41,14 @@ We need services for: (described in details below)
 
 ## Loading the breadcrumb
 
-From a list of item ids and a current item or parent attempt, the breadcrumb service<sup>[2](#srv2)</sup>:
+From a list of item ids and a current-item's or parent's attempt, the breadcrumb service<sup>[2](#srv2)</sup>:
 
 - verifies that the item list forms a valid path (each item is the parent of the next one)
 - verifies that the first item is a root (`is_root`) or the item of a group the current user is member of
 - verifies that all item results but the last one are started
 - for all items, returns
   - the item title (in a appropriate language)
-  - attempt id for this item (result) from which the current item or parent attempt is a descendant (null for the current item if parent attempt was given)
+  - attempt id for this item (result) from which the current-item's or parent's attempt is a descendant (null for the current item if parent attempt was given)
   - if the item allows multiple attempts, the order of this attempt result among the other results (within the parent attempt) using an order on `started_at`
 
 The attempt of each item is either the same attempt as its child or the parent attempt of this attempt.
