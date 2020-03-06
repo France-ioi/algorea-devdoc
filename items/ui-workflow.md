@@ -43,7 +43,7 @@ We need services for: (described in details below)
 
 From a list of item ids and a current item or parent attempt, the breadcrumb service<sup>[2](#srv2)</sup>:
 
-- verifies that the item list forms a valid path (each is the parent of the next)
+- verifies that the item list forms a valid path (each item is the parent of the next one)
 - verifies that the first item is a root (`is_root`) or the item of a group the current user is member of
 - verifies that all item results but the last one are started
 - for all items, returns
