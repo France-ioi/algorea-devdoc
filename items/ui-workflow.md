@@ -94,15 +94,13 @@ The path of the link to each child uses as attempt:
 
 When expending a chapter in the left menu ("+" button or arrow), the same query as the one loading the menu is called, with expended chapter id and, as attempt:
 - if the item is the current page and an attempt is given, use this attempt
-- if this item has no results yet, create one and use its attempt
+- if this item has no results yet, create one<sup>[5](#srv5)</sup> and use its attempt
 - if the item has one result, use its attempt
 - if the item requires explicit entry, use the ongoing attempt (started, not ended, allowing submissions) if any
 - if the item has several results, use the most recent attempt known by the frontend for this participant and item (if any)
 - otherwise use the attempt with the most recent activity
 
-If there is no result, create it <sup>[4](#srv4)</sup> before calling the GET service.
-
-If the selected result is not started, start it<sup>[5](#srv5)</sup> before calling the GET service.
+If there is no result or the selected result is not started, create/start it<sup>[5](#srv5)</sup> before calling the GET service.
 
 ## The content (right pane)
 
@@ -118,8 +116,7 @@ The frontend needs to:
     - start time
     - latest activity
 2. select the attempt (only if the current user has can_view>=content)
-  - if there no result and it is not an explicit-entry item: create one <sup>[4](#srv4)</sup>
-  - if there is one result but not started (`started_at` is null) and it is not an explicit-entry item: start it <sup>[5](#srv5)</sup>
+  - if there no result or there is one result but not started (`started_at` is null), and it is not an explicit-entry item: start one <sup>[5](#srv5)</sup>
   - if there is one result already started, use this one
   - if there are multiple results, the frontend chooses the most recent known for this participant and item
   - if there are multiple results and the frontend does not have preferences, use the attempt with the most recent activity
@@ -133,7 +130,6 @@ Suggested urls (draft)
 1. <a name="srv1"></a>Start a path of results with attempt_id selected by the backend: `POST /attempts/active/items/{ids}/start`
 2. <a name="srv2"></a>Get breadcrumb info: `GET /items/{ids}/breadcrumbs?(parent_)attempt_id={id}`
 3. <a name="srv3"></a>Get navigation info: `GET /items/{item_id}/as-nav-tree?(child_)attempt_id={id}`
-4. <a name="srv4"></a>Create a result from a parent attempt_id: `POST /attempts/{parent_attempt_id}/items/{item_id}`
 5. <a name="srv5"></a>Start an attempt for an item (its result): `POST /attempts/{attempt_id}/items/{item_id}/start`
 6. <a name="srv6"></a>Get item info: `GET /items/{item_id}?(parent_)attempt_id`
 7. <a name="srv7"></a>Request a task token: `POST /attempts/{attempt_id}/items/{item_id}/generate-task-token`
