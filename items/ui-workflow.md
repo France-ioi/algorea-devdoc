@@ -86,7 +86,7 @@ From the id of the parent item and the attempt id (of itself or one of its child
 The path of the link to each child uses as attempt:
 - if the child has no results, the parent attempt
 - if the child has one result, use its attempt
-- if the child requires explicit entry, the ongoing attempt (started, not ended, allowing submissions)
+- if the child requires explicit entry, use the ongoing attempt (started, not ended, allowing submissions) if any
 - if the child has several results, use the most recent attempt known by the frontend for this participant and item (if any)
 - otherwise the attempt with the most recent activity
 
@@ -95,11 +95,14 @@ The path of the link to each child uses as attempt:
 When expending a chapter in the left menu ("+" button or arrow), the same query as the one loading the menu is called, with expended chapter id and, as attempt:
 - if the item is the current page and an attempt is given, use this attempt
 - if this item has no results yet, create one and use its attempt
-- it it has attempts, use the latest attempt known by the frontend for this participant and item
-- if the frontend has no saved preferences, use the attempt with the most recent activity
+- if the item has one result, use its attempt
+- if the item requires explicit entry, use the ongoing attempt (started, not ended, allowing submissions) if any
+- if the item has several results, use the most recent attempt known by the frontend for this participant and item (if any)
+- otherwise use the attempt with the most recent activity
 
-If there were no result or the result is not started yet, start it (respectively <sup>[4](#srv4)</sup> and <sup>[5](#srv5)</sup>) before calling the GET service.
+If there is no result, create it <sup>[4](#srv4)</sup> before calling the GET service.
 
+If the selected result is not started, start it<sup>[5](#srv5)</sup> before calling the GET service.
 
 ## The content (right pane)
 
