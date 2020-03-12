@@ -25,3 +25,12 @@ Permissions of a group to an item are propagated to the descendants of the group
 
 <span class="label label-green">Key-concept</span>
 Permission propagation from a parent **group** to its descendants is **implicit**. So if a user is part of a group, he has the same permissions as the group (except from team to users where no permission is propagated). On the other hand, permission propagation from a parent **item** to its descendants is **explicit**, i.e., new entries in the `groups_items` table are created each time new permissions are given to propagate these rights to the children. The propagation through items follows specific rules described in [this page]({{ site.baseurl }}/design/access-rights/items/).
+
+## Specific permissions
+
+### Granting additional time for timed activities
+
+In order for a user to be able to grant (or change) additional time given to a group, for a timed item, the user needs:
+* "can_grant_view ≥ enter" on the timed item
+* "can_watch ≥ result" on the timed item
+* to be a manager of the group with "can_grant_group_access" and "can_watch_members"
