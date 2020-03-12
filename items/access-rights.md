@@ -1,8 +1,8 @@
 ---
 layout: page
-title: Permissions
-nav_order: 20
-has_children: true
+title: Permissions in General
+nav_order: 10
+parent: Items & Related Entities
 ---
 
 # Permissions and their propagation

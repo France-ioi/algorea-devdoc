@@ -1,8 +1,8 @@
 ---
 layout: page
-title: Item Permissions
-nav_order: 10
-parent: Permissions
+title: Permissions on Items
+nav_order: 15
+parent: Items & Related Entities
 has_toc: true
 permalink: /design/access-rights/items/
 ---
