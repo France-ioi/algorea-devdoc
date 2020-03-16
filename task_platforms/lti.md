@@ -15,10 +15,12 @@ Our current two use cases are:
 * A platform using our items in an embedded iframe. The tasks and chapters are loaded via a POST request which is redirected to the content to be displayed. The score can also be sent back to the platform (not detailed here).
 * A LTI-enabled website redirects their users to our platforms so that the user can utilize our platform without further authentication.
 
-In both cases, the LTI Launch request is a POST with LTI authentication parameters, which can be redirected to the actual content:
+In both cases, the LTI Launch request is a POST with LTI authentication parameters, which can be redirected to the actual content. In the following workflow, the first case includes a "content_id", the second one does not.
 
 {% include lti_launch.html %}
 
 ## Sending scores (LTI Outcome)
+
+If a content_id has been provided with the launch request, the score of the item can be sent back the LTI consumer, with the following workflow:
 
 {% include lti_send_scores.html %}
