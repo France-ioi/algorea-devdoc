@@ -1,13 +1,17 @@
 ---
 layout: page
-title: LTI Auth Workflow
+title: LTI Workflows
 nav_order: 80
-parent: Authentication & Authorization
+parent: Interactions with Other Platforms
 ---
 
 # LTI
 
-## Authentication Workflow (LTI Launch Request)
+Learning Tools Interoperability (LTI) is a method for a learning systems to invoke and to communicate with other systems. This is done using OAuth2, OpenID Connect, and JWT. In LTI, a system can act as a consumer (consuming external resources) or provider.
+
+Currently, our backend acts a LTI **provider**
+
+## Authentication (LTI Launch Request)
 
 When our platform acts as a LTI provider, the LTI consumer will typically call our infrastructure with "LTI Launch Request" providing LTI parameters. These can be handled by the login-module which can verify them and create a local user if needed.
 
