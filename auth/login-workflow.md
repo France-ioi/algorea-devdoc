@@ -12,7 +12,7 @@ The previous AlgoreaPlaform workflow and the different options are described in 
 
 # OAuth Login Workflow
 
-The following workflow using OAuth2 "authorization code" looks the more approriate to Algorea. Actually, the main difference with what has been done so far is that the *access token* is used by the frontend directly.
+The following workflow uses OAuth2 "authorization code" workflow which is the only one which now recommended for SPAs.
 
 {% include login_workflow.html %}
 
