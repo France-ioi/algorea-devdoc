@@ -38,6 +38,7 @@ We need services for: (described in details below)
 - the left menu (load the tree and load a subtree when "+" is pressed)
 - the content (right pane)
 
+It is currently assumed that the header of the right pane, which embed some elements which depends on the results, can be built from the left menu data.
 
 ## Loading the breadcrumb
 
