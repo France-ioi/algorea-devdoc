@@ -31,7 +31,7 @@ For all the services mentioned in this guide, the item `results` are identified 
 
 ### Loading the components
 
-Once the URL has been parsed, the header, left menu, and right content have to be loaded. This should be doable in parallel (without need from the response from one to load the other) so that it is faster and each frontend component can be independant.
+Once the URL has been parsed, the header, left menu, and right content have to be loaded. This should be doable in parallel (without need from the response from one to load the other) so that it is faster and each frontend component can be independent.
 
 We need services for: (described in details below)
 - the breadcrumb
