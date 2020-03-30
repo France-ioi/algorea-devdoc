@@ -29,6 +29,13 @@ If no attempt (neither `attempt_id` nor `parent_attempt_id`) is given, the front
 
 For all the services mentioned in this guide, the item `results` are identified by their `attempt_id` and `item_id`. In practice results are also identified by the their `participant_id`. The participant is by default the current user, except if the `as_team_id` query parameter is given, in which case the given id is used as participant (after verifying the user is part of this team).
 
+### Group observation
+
+When a user (e.g., a teacher) with the `can_watch_members` permission watches a group, he can see results from this group on the item he can watch (`can_watch:result` on item). In this case, all results displayed are those (aggregated) from the group.
+
+The navigation is still performed using the attempt of the user (the observer) so that we track what he has viewed (so started). The addition of the observed group information is done via the `observed_group_id` url parameter given in some services <sup>[3](#srv3),[8](#srv8)</sup>.
+
+
 ### Loading the components
 
 Once the URL has been parsed, the header, left menu, and right content have to be loaded. This should be doable in parallel (without need from the response from one to load the other) so that it is faster and each frontend component can be independent.
@@ -126,6 +133,7 @@ The frontend needs to:
     - if there are multiple results, the frontend chooses the most recent known for this participant, item and parent attempt
     - if there are multiple results and the frontend does not have preferences, use the attempt with the most recent activity
 - if an attempt has been selected and the item is a task, request a task token <sup>[6](#srv6)</sup>
+- if an attempt has been selected and the item is a chapter or skill, fetch the children <sup>[8](#srv8)</sup>
 
 ## Service URLs
 
@@ -133,8 +141,9 @@ Suggested urls (draft)
 
 1. <a name="srv1"></a>Start a path of results with attempt_id selected by the backend: `POST /attempts/active/items/{ids}/start`
 1. <a name="srv2"></a>Get breadcrumb info: `GET /items/{ids}/breadcrumbs?(parent_)attempt_id={id}`
-1. <a name="srv3"></a>Get navigation info: `GET /items/{item_id}/as-nav-tree?(child_)attempt_id={id}`
+1. <a name="srv3"></a>Get navigation info: `GET /items/{item_id}/as-nav-tree?(child_)attempt_id={id}(&observed_group_id={group_id})`
 1. <a name="srv4"></a>Start an attempt for an item (its result): `POST /attempts/{attempt_id}/items/{item_id}/start`
 1. <a name="srv5"></a>Get item info: `GET /items/{item_id}`
 1. <a name="srv6"></a>Request a task token: `POST /attempts/{attempt_id}/items/{item_id}/generate-task-token`
-1. <a name="srv7"></a>List results/attempts for an item: `Get /items/{item_id}/attempts/(parent_)attempt_id={id}`
+1. <a name="srv7"></a>List results/attempts for an item: `GET /items/{item_id}/attempts/(parent_)attempt_id={id}`
+1. <a name="srv8"></a>List children of a chapter or skill: `GET /attempts/{attempt_id}/items/{item_id}/children(&observed_group_id={group_id})`
