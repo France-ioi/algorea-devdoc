@@ -111,6 +111,8 @@ As *can_make_session_official* and *can_enter_\** do not aggregate, they do not 
 
 The following tables defines which permissions are required to be able to change the permission of another groups, and summarize how these permissions propagates.
 
+Note that a group manager which can change group permissions (`can_grant_group_access`) can always decrease a permission to any lower level.
+
 | "can_view" perm granted | Constraint on "giver" | Constraint on "receiver" | Propagation rule     |
 |:------------------------|:----------------------|:-------------------------|:---------------------|
 | info                    | can_grant_view ≥ enter          | none |  Never propagates              |
