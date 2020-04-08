@@ -33,7 +33,7 @@ For all the services mentioned in this guide, the item `results` are identified 
 
 When a user (e.g., a teacher) with the `can_watch_members` permission watches a group, he can see results from this group on the item he can watch (`can_watch:result` on item). In this case, all results displayed are those (aggregated) from the group.
 
-The navigation is still performed using the attempt of the user (the observer) so that we track what he has viewed (so started). The addition of the observed group information is done via the `observed_group_id` url parameter given in some services <sup>[3](#srv3),[8](#srv8)</sup>.
+The navigation is still performed using the attempt of the user (the observer) so that we track what he has viewed (so started). The addition of the observed group information is done via the `watched_group_id` url parameter given in some services <sup>[3](#srv3),[8](#srv8)</sup>.
 
 
 ### Loading the components
@@ -141,9 +141,9 @@ Suggested urls (draft)
 
 1. <a name="srv1"></a>Start a path of results with attempt_id selected by the backend: `POST /attempts/active/items/{ids}/start`
 1. <a name="srv2"></a>Get breadcrumb info: `GET /items/{ids}/breadcrumbs?(parent_)attempt_id={id}`
-1. <a name="srv3"></a>Get navigation info: `GET /items/{item_id}/as-nav-tree?(child_)attempt_id={id}(&observed_group_id={group_id})`
+1. <a name="srv3"></a>Get navigation info: `GET /items/{item_id}/as-nav-tree?(child_)attempt_id={id}(&watched_group_id={group_id})`
 1. <a name="srv4"></a>Start an attempt for an item (its result): `POST /attempts/{attempt_id}/items/{item_id}/start`
 1. <a name="srv5"></a>Get item info: `GET /items/{item_id}`
 1. <a name="srv6"></a>Request a task token: `POST /attempts/{attempt_id}/items/{item_id}/generate-task-token`
 1. <a name="srv7"></a>List results/attempts for an item: `GET /items/{item_id}/attempts/(parent_)attempt_id={id}`
-1. <a name="srv8"></a>List children of a chapter or skill: `GET /attempts/{attempt_id}/items/{item_id}/children(&observed_group_id={group_id})`
+1. <a name="srv8"></a>List children of a chapter or skill: `GET /attempts/{attempt_id}/items/{item_id}/children(&watched_group_id={group_id})`
