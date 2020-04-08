@@ -33,7 +33,7 @@ For all the services mentioned in this guide, the item `results` are identified 
 
 When a user (e.g., a teacher) with the `can_watch_members` permission watches a group, he can see results from this group on the item he can watch (`can_watch:result` on item). In this case, all results displayed are those (aggregated) from the group.
 
-The navigation is still performed using the attempt of the user (the observer) so that we track what he has viewed (so started). The addition of the observed group information is done via the `watched_group_id` url parameter given in some services <sup>[3](#srv3),[8](#srv8)</sup>.
+The navigation is still performed using the attempt of the user (the observer) so that we track what he has viewed (so started). The observed group information is requested by passing the `watched_group_id` url parameter given in some services <sup>[3](#srv3),[8](#srv8)</sup>.
 
 
 ### Loading the components
