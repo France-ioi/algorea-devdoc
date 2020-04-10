@@ -9,7 +9,9 @@ parent: Items & Related Entities
 
 **Results** are, for a given participant (user or team), the score, starting time, validation status, ... which has been obtained on a given item, for an attempt. For tasks, a result is the aggregation of several answers. For chapters and skills, a result is the aggregaton from the results of child items.
 
-By default, all results are related to a default **attempt** (with id "0") but a participant may decide to redo a task or a full chapter from scratch, so as a new **attempt**. For some tasks, creating doing another attempt generates a variation of the same task. Only items which supports multiple attempts (`items.allow_multiples_attempts`) can have several attempts for a same participant.
+By default, all results are related to a default **attempt** (with id "0") but a participant may decide to redo a task or a full chapter from scratch, so as a new **attempt**. For some tasks, creating another attempt generates a variation of the same task. Only items which supports multiple attempts (`items.allow_multiples_attempts`) can have several attempts for a same participant. Some chapters are marked as requiring explicit-entry. For those, there is no default attempt but only manually-created ones.
+
+Starting a result on an item is required for exploring content, so for obtaining a task token on it and, on chapters and skills, for listing their content.
 
 ## Design
 
