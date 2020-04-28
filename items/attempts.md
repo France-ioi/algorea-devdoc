@@ -34,10 +34,14 @@ The results are created:
 1. when the user starts working on an item. In practice, when the user has *can_view>=content* and:
   - on task, opens its page (before a task token is explicitely created)
   - on chapter, opens its page or expends it in the left menu
-2. manually on explicit-entry items (contests typically), when the user presses "enter"
+2. manually when creating an attempt on explicit-entry items (contests typically), when the user presses "enter"
 3. at result propagation, when results are propagated from a task to its ancestors (see result propagation below)
 
 1 and 2 set the `started_at` attribute, while the creation at propagation leaves it null.
+
+### Restrictions and validation for result (and attempt) creation
+
+As also explained in the [UI Workflow]({{ site.baseurl }}/items/ui-workflow/), a user can only start a result if all items from one of its root items to this item are started. As a consequence, the full path of items must be provided when a result (and so an attempt) is being created. The full path must be [verified]({{ site.baseurl }}/items/ui-workflow/#loading-the-breadcrumb).
 
 ## Result propagation to parents
 
