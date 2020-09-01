@@ -248,7 +248,7 @@ PLATFORMS
 
 DEPENDENCIES
   github-pages
-  just-the-docs
+  just-the-docs (= 0.2.6)
   tzinfo-data
 
 BUNDLED WITH

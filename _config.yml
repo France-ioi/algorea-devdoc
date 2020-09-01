@@ -3,7 +3,7 @@ title: Algorea DevDoc
 url: "//france-ioi.github.io"
 baseurl: "/algorea-devdoc"
 
-remote_theme: pmarsceill/just-the-docs
+remote_theme: pmarsceill/just-the-docs@v0.2.6
 # Color scheme currently only supports "dark" or nil (default)
 color_scheme: nil
 
