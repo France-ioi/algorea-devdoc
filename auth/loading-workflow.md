@@ -40,9 +40,9 @@ If *code* and *state* are provided as parameters, it means we are back from the 
 In this case, the current expiration, if any, is removed and the OAuth authentication continues... (see login workflows)
 On success, the token is stored in the app state (but not stored)
 
-### Case 2: Expiration stored (still valid of not)
+### Case 2: Otherwise
 
-FIXME: does not work in case of temporary user.
+FIXME: does not work in case of temporary user. Using LM is not really working as well if the LM does not accept the callback url.
 
 If an expiration is stored, we consider the user was logged in the last time he visited the website. So the application
 redirects to the login-module, which redirects immediately to the platform with either the code & state which will allow
