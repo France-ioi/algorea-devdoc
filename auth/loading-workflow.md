@@ -42,6 +42,8 @@ On success, the token is stored in the app state (but not stored)
 
 ### Case 2: Expiration stored (still valid of not)
 
+FIXME: does not work in case of temporary user.
+
 If an expiration is stored, we consider the user was logged in the last time he visited the website. So the application
 redirects to the login-module, which redirects immediately to the platform with either the code & state which will allow
  the application to get a token, or without credentials indicating that the user was not authenticated (LM service yet to be done).
