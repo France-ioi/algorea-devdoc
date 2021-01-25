@@ -1,6 +1,6 @@
 ---
 layout: page
-title: App Loading
+title: Other auth workflows
 nav_order: 65
 parent: Authentication & Authorization
 ---

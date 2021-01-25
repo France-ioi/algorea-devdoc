@@ -9,6 +9,7 @@ parent: Authentication & Authorization
 
 Read [Token Storage Strategies](../token-storage/) first.
 
+
 ## Cookie-only token
 
 If token are only stored in cookies, the SPA never has the hand on it. However, the SPA knows and stores (in local storage)
@@ -31,24 +32,18 @@ In this case, just start a temporary session by requesting a new temporary sessi
 
 ## Reauth session storage
 
-If cookies are not used, no token can have been stored by the browser. However, the expiration may still have been stored, indicating that
-last time the website was used, there was a session open.
+If cookies are not used, no token can have been stored by the browser.
 
 ### Case 1: Login callback
 
 If *code* and *state* are provided as parameters, it means we are back from the login-module after a successful login.
-In this case, the current expiration, if any, is removed and the OAuth authentication continues... (see login workflows)
-On success, the token is stored in the app state (but not stored)
+In this case, the OAuth authentication continues (see login workflows) and on success, the token is stored in the app state (but not stored)
 
 ### Case 2: Otherwise
 
-FIXME: does not work in case of temporary user. Using LM is not really working as well if the LM does not accept the callback url.
+The application, when starting, redirects to the login-module, which redirects immediately to the platform with either the code & state (which will allow the application to get a token), or indicating that the user was not authenticated (LM service yet to be done). In the later case, the app starts a temporary session.
 
-If an expiration is stored, we consider the user was logged in the last time he visited the website. So the application
-redirects to the login-module, which redirects immediately to the platform with either the code & state which will allow
- the application to get a token, or without credentials indicating that the user was not authenticated (LM service yet to be done).
 
-### Case 3: Nothing stored
+## Note on local dev
 
-Just start a temporary session.
-
+For local development with an online backend, the cookie option cannot be used as we do not have the same domain or https. The reauth option may be difficult to put into place as well if localhost if not an accepted callback domain.
