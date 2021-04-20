@@ -70,3 +70,9 @@ This website is deployed on http://dev.algorea.org/branch/design/ and the code o
   - the rest: may be useful (some part might be outdated)
 * [Design branch deployed](http://dev.algorea.org/branch/design/)
 * [Commented designs](https://france-ioi.github.io/algorea-designs/)
+
+And docs of framework/libraries we use:
+* [Angular](https://angular.io/guide/architecture)
+* RxJS: [learnRxJS](https://www.learnrxjs.io/) and [RxJS-dev](https://rxjs-dev.firebaseapp.com/guide/overview)
+* [Primeng](https://www.primefaces.org/primeng/showcase/)
+* [Typescript](https://www.typescriptlang.org/docs/handbook/intro.html)
