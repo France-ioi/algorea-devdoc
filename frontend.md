@@ -61,6 +61,11 @@ The "design" git branch is a specific branch which contains an old mock-up of th
 
 This website is deployed on http://dev.algorea.org/branch/design/ and the code on https://github.com/France-ioi/AlgoreaFrontend/tree/design. It might be useful to copy-paste some components or part of component from this branch. Most of time, it requries major rework, but that may be better than nothing (mainly for design aspect).
 
+## Various (Software) Design Choices
+
+* A component or services which defines a subject has to complete it on destroy (to prevent any current or future memory leaks)
+* Observables are not given as input to components.
+
 
 ## Important ressources
 
