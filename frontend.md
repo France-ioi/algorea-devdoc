@@ -59,13 +59,16 @@ Note that some of these designs might be outdated, same for the design-branch on
 
 The "design" git branch is a specific branch which contains an old mock-up of the website. This is an important resource as it implements (in design only) many features which have not been fully implemented yet.
 
-This website is deployed on http://dev.algorea.org/branch/design/ and the code on https://github.com/France-ioi/AlgoreaFrontend/tree/design. It might be useful to copy-paste some components or part of component from this branch. Most of time, it requries major rework, but that may be better than nothing (mainly for design aspect).
+This website is deployed on https://d39se6ub293skr.cloudfront.net/branch/design/ and the code on https://github.com/France-ioi/AlgoreaFrontend/tree/design. It might be useful to copy-paste some components or part of component from this branch. Most of time, it requries major rework, but that may be better than nothing (mainly for design aspect).
 
 ## Various (Software) Design Choices
 
 * A component or services which defines a subject has to complete it on destroy (to prevent any current or future memory leaks)
 * Observables are not given as input to components.
 
+## Various Style Choices
+
+* Code block (`if`s, loops, ...) are either used with brackets on multiple lines, or a without bracket on a single line (if there is a single instruction in the block of course).
 
 ## Important ressources
 
@@ -73,7 +76,7 @@ This website is deployed on http://dev.algorea.org/branch/design/ and the code o
   - [API](../api/): the most important
   - [the db schema](../dbschema): may be useful
   - the rest: may be useful (some part might be outdated)
-* [Design branch deployed](http://dev.algorea.org/branch/design/)
+* [Design branch deployed](https://d39se6ub293skr.cloudfront.net/branch/design/)
 * [Commented designs](https://france-ioi.github.io/algorea-designs/)
 
 And docs of framework/libraries we use:
