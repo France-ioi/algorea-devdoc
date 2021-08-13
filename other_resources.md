@@ -15,7 +15,7 @@ nav_order: 300
 ## Design
 
 * [Commented designs](https://france-ioi.github.io/algorea-designs)
-* [Frontend (SPA) demo](https://d39se6ub293skr.cloudfront.net/branch/design/)
+* [Frontend (SPA) demo](https://d39se6ub293skr.cloudfront.net/branch/design/index.html)
 
 ## Deployment
 
