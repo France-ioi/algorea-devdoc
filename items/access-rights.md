@@ -34,3 +34,9 @@ In order for a user to be able to grant (or change) additional time given to a g
 * "can_grant_view ≥ enter" on the timed item
 * "can_watch ≥ result" on the timed item
 * to be a manager of the group with "can_grant_group_access" and "can_watch_members"
+
+### Permissions to view other's permissions
+
+In order for a user U to view another permission given by GS to G on content C, the user requires:
+* either the permission to watch C ("can_watch ≥ result") and to watch G (so "can_watch_members" on an ancestor of G).
+* or the permission the grant permission on C ("can_grant_view ≥ enter") and to grant permission to G (so "can_grant_group_access" of an ancestor of G).
