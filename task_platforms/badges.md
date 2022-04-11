@@ -15,7 +15,7 @@ Badges are used to prove to a destination platform that you have reached some ob
 
 ## Badge processing by the backend
 
-In practice, for the backend, badges are just interpreted as group memberships, which may give some specific permissions using the usual permission mechanism on the backend. The badges are transmitted from the login-module to the backend via the update of the profile. The `aBadges` attribute of the profile is an array of entries with the following format:
+In practice, for the backend, badges are just interpreted as group memberships, which may give some specific permissions using the usual permission mechanism on the backend. The badges are transmitted from the login-module to the backend via the update of the profile. The `aBadges` attribute of the profile is an __array__ of badges in the following format:
 
 ```js
 {
@@ -30,12 +30,13 @@ In practice, for the backend, badges are just interpreted as group memberships, 
     ]
   },
   manager: bool, // whether the user should be manager of the group of owners of that badge
+  last_update: string, // time (ISO8701 format) of the latest change on this badget
   code: string, // ignored by backend, probably won't be sent anymore
   data: any // ignored by backend, can be anything
 }
 ```
 
-Once the profile is processed, the backend must check if the user belongs to all groups specified in the badges. Groups are identified by their `url` with are stored in `groups.text_id`. So, for each group of the list:
+Each time the profile is updated, the backend must check, for every badge which has changed since the last profile update, if the user belongs to the group specified in the badge. Groups are identified by their `url` with are stored in `groups.text_id`. So, for each group:
 - if the group exists, and the user is already member (or manager is `manager` is `true`) of it : do nothing
 - if the group exists, and the user is not already member (or manager is `manager` is `true`) of it : make him member of the group
 - if the group does not exist, create a group with `badge_info.name` as name and type "Other", add it to the group identified by `url` of the last element from `badge_info.group_path`. If this later group does not exist, create it (with the given name, and current user managership) and put it the previous group from `badge_info.group_path`, etc.
