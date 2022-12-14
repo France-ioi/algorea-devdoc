@@ -1,7 +1,8 @@
 ---
 layout: page
 title: Frontend dev Bootstrapping
-nav_order: 250
+nav_order: 150
+parent: Ops (installation, running, ...)
 ---
 
 # Frontend dev Bootstrapping
