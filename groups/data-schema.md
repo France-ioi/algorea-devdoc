@@ -9,7 +9,7 @@ parent: Groups & Related Entities
 
 Groups are implemented through the `groups` db table. A group can be either a user, a group of users, or a set of groups. The user-group relationship is implemented through the `users.self_group_id` property. The relationship between groups, an acyclic graph, is implemented through `groups_groups` table, the hierarchy is cached through `groups_ancestors`.
 
-Both `groups_groups` and `groups_ancestors` tables have a `expires_at` field. If `expires_at` contains a date in the past, then the relation has expired. This is used for contests which are only available until a specific date.
+Both `groups_groups` and `groups_ancestors` tables have a `expires_at` field. If `expires_at` contains a date in the past, then the relation has expired. This is used for revoking access to contest tasks once user's participation has ended.
 
 If you only care about non-expired group relations, you may prefer to use the `groups_groups_active` and `groups_ancestors_active`. Those are SQL Views that represents the content of the respective `groups_groups` and `groups_ancestors` tables, but only with non-expired entries.
 
