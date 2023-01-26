@@ -2,10 +2,10 @@
 layout: page
 title: Drafts
 nav_order: 999
-parent: forum
+parent: Forum
 ---
 
-This is a summary of discussions (in French) we had in January 2023. 
+This is a summary of discussions (in French) we had in January 2023.
 These have been either translated to design decisions or left for later. They are just pasted here for the records, it is not needed to read this page.
 
 ~~~
@@ -161,7 +161,7 @@ Si l'utilisateur n'a de droit de can_request_help
 - propos 2 - non, c'est la façon de lui retirer accès
 - propos 3 - oui, pdt 15 jours après la fermeture
 
-Qui peut fermer un thread? 
+Qui peut fermer un thread?
 - propos 1: l'initiateur (il faut retenir qui c'est)
 - propos 2: tous ceux qui peuvent y écrire
 

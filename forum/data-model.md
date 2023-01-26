@@ -2,7 +2,7 @@
 layout: page
 title: Data model
 nav_order: 10
-parent: forum
+parent: Forum
 ---
 
 # Data model

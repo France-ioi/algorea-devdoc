@@ -2,7 +2,7 @@
 layout: page
 title: Forum Permissions
 nav_order: 20
-parent: forum
+parent: Forum
 ---
 
 # Forum Permissions
@@ -18,18 +18,18 @@ In order to be allowed to open a thread on an item, a user needs a specific item
 
 ### Propagation
 
-This permission propagates as the other item permissions with a specific `help_request_propagation` boolean property on `items_items`, which behaves as the other propagation rules. 
+This permission propagates as the other item permissions with a specific `help_request_propagation` boolean property on `items_items`, which behaves as the other propagation rules.
 
 ### Changing and propagating permissions
 
 Constraint on receiver: none
 
-Constraint on giver: requires "can_grant_view ≥ content" 
+Constraint on giver: requires "can_grant_view ≥ content"
 
 ## Writing in a thread
 
 In order to write in a thread, the **thread needs to be opened** and the user needs to either:
-- be the participant of the thread (TODO: CHECK) 
+- be the participant of the thread (TODO: CHECK)
 - have can_watch>=answer permission on the item AND on the participant
 - be part of the group the participant has requested help to AND (have can_watch>=answer on the item OR have `validated` the item)
 
@@ -37,7 +37,7 @@ In order to write in a thread, the **thread needs to be opened** and the user ne
 ## Listing / reading a thread
 
 In order to have a thread listed and be able to view it (in read-only if not authorized to write), the user needs to either:
-- be the participant of the thread AND 
+- be the participant of the thread AND
     - if the thread is open: nothing more (TODO: CHECK)
     - if the thread is closed: yes (TODO: CHECK)
 - have observation permission on the item
@@ -47,7 +47,7 @@ In order to have a thread listed and be able to view it (in read-only if not aut
 
 (TODO: check)
 
-- the participant of a thread: can always switch a thread (TODO: check) from open to another other status. He can only switch it from not-open to an open status if he is allowed to request help on this item 
+- the participant of a thread: can always switch a thread (TODO: check) from open to another other status. He can only switch it from not-open to an open status if he is allowed to request help on this item
 - a user who has can_watch>=answer on the item AND on the participant: can always switch a thread from open to another status and can switch from not-open to an open status
 - a user who can write on the thread can switch from an open status to another open status. He cannot switch from a not-open status to an open status.
 
