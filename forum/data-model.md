@@ -17,7 +17,7 @@ The main "entities" in forum are "threads", they correspond to a discussion thre
 
 As a forum thread has `participant, item` as key, which does not correspond to any existing table, it has to be implemented on its own table. It also requires specific permissions which are described on the permission page.
 
-One of the major property of a thread (except PK) is the status. It can be:
+One of the major property of a thread (except its PK) is the status. It can be:
 - waiting_for_participant: the thread is opened, waiting for the participant to answer
 - waiting_for_trainer: the thread is opened, waiting for the trainer to answer
 - closed: the thread is currently closed (may be reopened later), meaning the participant's questions have been answered
@@ -29,7 +29,7 @@ The *waiting_for_participant* and *waiting_for_trainer* status will be simplifie
 
 The whole forum-related data is implemented in a single DynamoDB table. Its primary key (partition key) is `PK`, a the sort key is `time`.
 
-### Thread events
+### Thread events (TO BE UPDATED)
 
 Thread events have as PK: `THREADEV#${participantId}#${itemId}`, `time` corresponsponds to the time of the event.
 
@@ -43,7 +43,7 @@ Thread events have as PK: `THREADEV#${participantId}#${itemId}`, `time` correspo
 | `thread_closed`  | `user_id` |
 | `message `       | `user_id`, `content`
 
-### Thread subscriptions
+### Thread subscriptions (TO BE UPDATED)
 
 Thread events have as PK: `THREADSUB#${participantId}#${itemId}`.
 
