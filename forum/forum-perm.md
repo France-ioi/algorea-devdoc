@@ -16,15 +16,20 @@ In a nutshell:
 
 In order to open a thread for an item, a user needs a specific item permission: "can request help to" which allows the user to request help to a given group for an item and its descendants depending on propagation rules.
 
+### Granting the permission to another user
+
+To grant `can_request_help_to(g)` permission to a user for an item, the giver needs to have "can_grant_view ≥ content" for this item.
+The group `g` needs to be visible to both the giver and the receiver, or be the all-users group of the plaforom.
+
+There is no constraint on the prior permissions of the receiver.
+
 ### Propagation
 
-This permission propagates as the other item permissions with a specific `help_request_propagation` boolean property on `items_items`, which behaves as the other propagation rules. The propagation of the permissions through items is not pre-computed (it cannot be as the `group` parameter could not be).
+This permission propagates as the other item permissions with a specific `request_help_propagation` boolean property on `items_items`, which behaves as the other propagation rules. The propagation of the permissions through items is not pre-computed (it cannot be as the `group` parameter could not be).
 
-### Changing and propagating permissions
+### Default and changing propagation rules
 
-Constraint on receiver: none
-
-Constraint on giver: requires "can_grant_view ≥ content"
+In order to change the `request_help_propagation` propagation rule between a chapter and its child to `true`, the permission requirement on the child item is to have "can_grant_view ≥ content". The permission requirement on the parent is [the same as the other permissions]({{ site.baseurl }}/design/access-rights/items/#creating-defaults-and-changing-propagation-rules).
 
 ### In practice
 
