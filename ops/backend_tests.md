@@ -72,6 +72,9 @@ To avoid un-determinedness due to time, you can use the following in the definit
   ...
 ```
 
+### Other custom definitions
+
+You'll find the other definitions in [testhelpers/feature_context](https://github.com/France-ioi/AlgoreaBackend/blob/master/testhelpers/feature_context.go)
 
 ## Ressources
 
