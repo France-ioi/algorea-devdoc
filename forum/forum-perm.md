@@ -33,7 +33,7 @@ In order to change the `request_help_propagation` propagation rule between a cha
 
 ### In practice
 
-In practice, in order to verify that the user `U` "can request help to" a group `G` on an item `I` we need to verify whether one of the ancestors (including himself) of `U` has the `can_request_help_to(g)` on `I`, recursively on `I`'s ancestors while `help_request_propagation=1`, for `G` being a descendant of `g`.
+In practice, in order to verify that the user `U` "can request help to" a group `G` on an item `I` we need to verify whether one of the ancestors (including himself) of `U` has the `can_request_help_to(g)` on `I`, recursively on `I`'s ancestors while `request_help_propagation=1`, for `G` being a descendant of `g`.
 
 ## Writing in a thread
 
