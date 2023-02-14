@@ -21,6 +21,7 @@ One of the major property of a thread (except its PK) is the status. It can be:
 - waiting_for_participant: the thread is opened, waiting for the participant to answer
 - waiting_for_trainer: the thread is opened, waiting for the trainer to answer
 - closed: the thread is currently closed (may be reopened later), meaning the participant's questions have been answered
+
 In addition to these three status, it is worth mentioning a PK may not have entries in the forum table, if it has never been created. Such a case is equivalent to "closed" in many aspects.
 The *waiting_for_participant* and *waiting_for_trainer* status will be simplified to *open* in the explanation of this doc.
 
