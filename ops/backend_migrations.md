@@ -9,16 +9,18 @@ parent: Ops (installation, running, ...)
 
 We use the package [sql-migrate](https://github.com/rubenv/sql-migrate) to handle database migrations.
 
-Each migration is a *.sql file named `$NUMBER$_migration_name.sql` located in `db/migrations/`.
+Each migration is a *.sql file named `$DATETIME$_migration_name.sql` located in `db/migrations/`.
 
-The migrations are run in ascending order of `$NUMBER$`.
+`$DATETIME$` format is `YYMMDDHHII` -> 2301011000 for the 1st of January 2023 at 10:00.
+
+The migrations are run in ascending order of filename, thus in ascending order of `$DATETIME$`.
 
 The table `gorp_migration` in the database keeps track of which migrations have been run, *by filename*, and when.
 
 
 ## Create a migration
 
-In order to create a new migration, create the migration file `$NUMBER$_migration_name.sql`. Make sure that `$NUMBER$` is higher than the previous migrations by some margin, to allow the possibility of creating another migration in between if needed, and to avoid conflicts with others current work.
+In order to create a new migration, create the migration file `$DATETIME$_migration_name.sql`.
 
 The file is split between two blocks: `-- +migrate Up` to make the migrations, and `-- +migrate Down` to undo it.
 
