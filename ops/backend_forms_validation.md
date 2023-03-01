@@ -72,7 +72,7 @@ func excludeIncrementIfSetValidator(messageCountField validator.FieldLevel) bool
 
 The validators use the *Reflection API* which is a little tricky. Check the custom validators already implemented or the [standard validators implementation](https://github.com/France-ioi/validator/blob/v9/baked_in.go) for examples.
 
-**Warning / Current limitation**: You can generate a validation error on a field that is not provided in the input, otherwise it will be ignored. Which means, if a field is required but not set, you have to generate the error on a field that is provided.
+**Warning / Current limitation**: You cannot generate a validation error on a field that is not provided in the input, otherwise it will be ignored. Which means, if a field is required but not set, you have to generate the error on a field that is provided.
 
 ### Validator translations
 
