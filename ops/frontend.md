@@ -71,6 +71,13 @@ This website is [deployed here](https://d39se6ub293skr.cloudfront.net/branch/des
 
 * Code block (`if`s, loops, ...) are either used with brackets on multiple lines, or a without bracket on a single line (if there is a single instruction in the block of course).
 
+## Avoiding memory leaks
+
+A few rules to follow in our code to prevent memory leaks: (these are not always required but following these simple rules do not cost much and prevent more leaks from happening, even when code afterwards.m
+- Every component or service defining its own subject must `complete` it on destroy
+- In every component or service, `subscribe()` should store its subscription, and make sure to `unsubscribe` on destroy.
+- For every sevices used as component provider (root injected service never really destroy) and in every component, the `shareReplay()` and `share()` should be applied on observables which are sure to complete in the same time frame as the component/service (observables of other non-http service are usually not guaranteed to complete before the end of the app). If it is not clear it is the case, the `shareReplay`/`share` should be either preceded by a `takeUntil(destroy$)` where `destroy$` is a subject which emits on destroy, or use the `refCount:true` parameter if it is clear that all subscribers will unsubscribe (not the case for exported properties).
+
 ## Important ressources
 
 * [This website](../):
