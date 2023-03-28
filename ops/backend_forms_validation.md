@@ -58,21 +58,68 @@ In case you have a validation that doesn't fit one of the standard ones, you can
 
 ```
 type datatype struct {
-	MessageCount *int `json:"message_count" validate:"gte=0,exclude_increment_if_set"`
+	Status string `json:"status" validate:"status_must_be_closed"`
 }
 
-formData.RegisterValidation("exclude_increment_if_set", excludeIncrementIfSetValidator)
+formData.RegisterValidation("status_must_be_closed", statusMustBeClosed)
 
-// excludeIncrementIfSetValidator validates that message_count and message_count_increment are not both set
-func excludeIncrementIfSetValidator(messageCountField validator.FieldLevel) bool {
-	return messageCountField.Field().Interface() == nil ||
-		messageCountField.Top().Elem().FieldByName("MessageCountIncrement").Interface() == nil
+func statusMustBeClosed(statusField validator.FieldLevel) bool {
+  status := statusField.Field().String()
+	return status == "closed"
 }
 ```
 
 The validators use the *Reflection API* which is a little tricky. Check the custom validators already implemented or the [standard validators implementation](https://github.com/France-ioi/validator/blob/v9/baked_in.go) for examples.
 
 **Warning / Current limitation**: You cannot generate a validation error on a field that is not provided in the input, otherwise it will be ignored. Which means, if a field is required but not set, you have to generate the error on a field that is provided.
+
+
+### Arguments for validator
+
+If you need to access some arguments in your custom validators, you can use the following pattern:
+
+```
+type datatype struct {
+	Status string `json:"status" validate:"helper_group_id_set_if_non_open_to_open_status"`
+}
+
+formData.RegisterValidation("helper_group_id_set_if_non_open_to_open_status",	constructHelperGroupIDSetIfNonOpenToOpenStatus(oldThread.Status))
+
+func constructHelperGroupIDSetIfNonOpenToOpenStatus(oldStatus string) validator.Func {
+	...
+	return func(fl validator.FieldLevel) bool {
+	  // oldStatus is available in the validator function
+	  ...
+		return true
+	}
+}
+```
+
+
+### Optional arguments / default value
+
+You might need to know whether an optional argument to a service has been provided or if the zero value have been provided. (e.g. specifying "message_count": 0 might be different from not providing "message_count" at all). In this case, use a pointer:
+
+```
+type datatype struct {
+	MessageCount *int `json:"message_count" validate:"omitempty,gte=0,exclude_increment_if_message_count_set"`
+}
+
+formData.RegisterValidation("exclude_increment_if_message_count_set", excludeIncrementIfMessageCountSetValidator)
+```
+
+Note that when it is a pointer, and you need to access its value from a custom validator, you need to access it from the **top** of the structure:
+
+```
+func excludeIncrementIfMessageCountSetValidator(messageCountField validator.FieldLevel) bool {
+  messageCountPtr := messageCountField.Top().Elem().FieldByName("MessageCount").Interface().(*int)
+
+  if messageCountPtr == nil {
+    ...
+  }
+}
+```
+
 
 ### Validator translations
 
