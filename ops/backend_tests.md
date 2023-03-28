@@ -47,6 +47,22 @@ Feature: Create a 'saved' answer
 
 You'll find how to run only the tests marked with a specific tag in [AlgoreaBackend's README](https://github.com/France-ioi/AlgoreaBackend/blob/master/README.md).
 
+
+### Debug
+
+You might want to use your IDE debug functionalities from a Gherkin scenario in order to use breakpoints, step by step execution and deep inspection.
+
+GoLand doesn't yet (2023) allows to run it from a feature file. Here's a workaround:
+
+Add a specific tag in your *.feature file for the target scenario. Then go in the /bdd_test.go and update the following line:
+
+    testhelpers.RunGodogTests(t, "tagName")
+
+Put your tag name as the second argument.
+
+Then, add a breakpoint where you want and run the function TestBDD with your debugger.
+
+
 ### Compute table `groups_ancestors`:
 
 You might want to have elements in the table `groups_ancestors`. For this, you only have to populate the table `groups_groups`, and then add the following definition:
