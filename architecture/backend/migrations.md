@@ -1,8 +1,8 @@
 ---
 layout: page
-title: Backend database migrations
-nav_order: 1100
-parent: Ops (installation, running, ...)
+title: Database Migrations
+nav_order: 200
+parent: Backend
 ---
 
 # Database migration

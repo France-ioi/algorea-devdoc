@@ -1,8 +1,8 @@
 ---
 layout: page
-title: Backend forms and validation
-nav_order: 1200
-parent: Ops (installation, running, ...)
+title: Forms and Validation
+nav_order: 300
+parent: Backend
 ---
 
 # Parsing, validation and persistence

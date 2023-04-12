@@ -1,8 +1,8 @@
 ---
 layout: page
-title: Backend dev Tests
-nav_order: 1000
-parent: Ops (installation, running, ...)
+title: Tests
+nav_order: 100
+parent: Backend
 ---
 
 # Tests
