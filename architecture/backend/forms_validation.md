@@ -1,11 +1,13 @@
 ---
 layout: page
-title: Backend forms and validation
-nav_order: 1200
-parent: Ops (installation, running, ...)
+title: Forms and Validation
+nav_order: 300
+parent: Backend
 ---
 
 # Parsing, validation and persistence
+
+**Important:** The validator package is currently stuck at version 9 in a [forked repository](https://github.com/France-ioi/validator/). We need to find out why and how we can instead depend on the lastest version.
 
 Here's the process to retrieve user data from a POST request, validate it, and save it into the database:
 
@@ -30,11 +32,6 @@ updateData := formData.ConstructMapForDB()
 // Update...
 record.UpdateColumn(updateData)
 ```
-
-## Validation
-
-**Important:** The validator package is currently stuck at version 9 in a [forked repository](https://github.com/France-ioi/validator/). We need to find out why and how we can instead depend on the lastest version.
-
 
 ### Fields validation
 
