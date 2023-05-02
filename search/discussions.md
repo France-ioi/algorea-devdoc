@@ -1,0 +1,52 @@
+---
+layout: page
+title: Discussions
+nav_order: 99
+parent: Search
+---
+
+# Discussions
+
+## Architecture of the search mechanism. Damien Leroy and Geoffray Huck. 2/05/2023
+
+The requirement is the following: create a search mechanism across all items (title, subtitle, description and content which comes from crawling) which are visible by the user. A new search REST service serves as an API in front of the OpenSearch database which collects all the searchable info from the db, but it does not know about the permissions. So an initial solution would be to run the search on the OpenSearch db and then to ask the backend to filter among the results, those which are visible to the user. This has to be in an sane way, both in terms of "security" and "architecture".
+
+### Solution 1: let the frontend do the 2 calls
+
+Let the frontend call the search service without any form of authorization/authentication, get all ids that match, then call the backend to filter the results.
+
+Main drawback: Security wise, this allow using the search service as an oracle to know some information about content we cannot see. We could even imagine writing a bot using search to guess exactly what is the title/content of invisible items (by trying every word)
+
+### Solution 2: let the search service call the backend, using directly backend crendentials
+
+Put the search service on the same "cookie path" as the backend so that the frontend uses the backend cookie when calling it. Then, let the search service use the cookie it receives to call the backend itself to filter the results before returning them.
+
+Main drawback: This "leaks" the cookie which is supposed to be used for frontend-backend communication to a third party (the search service): Not great in terms of microservice architecture.
+
+### Solution 3: let the search service call the backend, using directly backend crendentials
+
+Require the frontend to first request a specific token to the backend, then call the search service with this token which then calls itself the backend using this token for authentication/authorization.
+
+Main drawbacks:
+- More complex workflow for the frontend
+- Require a new authentication method for the backend
+- Have a service calls another service in cascade is not great in terms of microservice architecture
+
+### Addressing security concern of solution 1
+
+In order to adress the security concern raised in solution 1, the search service could encrypt (using a shared symmetric key between the search service and the backend) results to be checked by the backend.
+
+This require the backend to return as well the metadata that we need to display in the search results.
+
+### Improving speed of search
+
+In order to improve the search speed, we could leave a split the output of the search service between the "public" content that we know are visible to the user and so can be visible (the search service can return the metadata), and the possibly-not-visible ids. Only the latter would be sent to the backend, making the backend request faster and allowing the frontend to display already the public results while the other ones are being fetched.
+
+(TODO) Remaining issues: encrypting the ids prevent the user to map the non-visible ids to a content but it still allows a dictionnary attack a described in soluton 1.
+
+### Progressive development
+
+This solution allows developing a working version in steps:
+- only public content can be returned first
+- non-public ids may not be encrypted initially
+
