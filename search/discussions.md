@@ -7,7 +7,7 @@ parent: Search
 
 # Discussions
 
-## Architecture of the search mechanism. Damien Leroy and Geoffray Huck. 2/05/2023
+## Architecture of the search mechanism. Damien Leroy and Geoffrey Huck. 2/05/2023
 
 The requirement is the following: create a search mechanism across all items (title, subtitle, description and content which comes from crawling) which are visible by the user. A new search REST service serves as an API in front of the OpenSearch database which collects all the searchable info from the db, but it does not know about the permissions. So an initial solution would be to run the search on the OpenSearch db and then to ask the backend to filter among the results, those which are visible to the user. This has to be in an sane way, both in terms of "security" and "architecture".
 
