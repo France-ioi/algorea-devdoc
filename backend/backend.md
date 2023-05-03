@@ -3,8 +3,7 @@ layout: page
 title: Backend
 nav_order: 100
 has_children: true
-parent: Architecture
-permalink: /architecture/backend/
+permalink: /backend
 ---
 
 # Backend Architecture
