@@ -42,7 +42,13 @@ This require the backend to return as well the metadata that we need to display 
 
 In order to improve the search speed, we could leave a split the output of the search service between the "public" content that we know are visible to the user and so can be visible (the search service can return the metadata), and the possibly-not-visible ids. Only the latter would be sent to the backend, making the backend request faster and allowing the frontend to display already the public results while the other ones are being fetched.
 
-(TODO) Remaining issues: encrypting the ids prevent the user to map the non-visible ids to a content but it still allows a dictionnary attack a described in soluton 1.
+#### Remaining issues: encrypting the ids prevent the user to map the non-visible ids to a content but it still allows a dictionnary attack a described in soluton 1.
+
+Some possibilities:
+- The search service always return a fixed size encrypted result. But we would have to check that we cannot guess anything by looking at the encrypted result, and this would take more unnecessary bandwidth
+- The search service doesn't return the ids, but an encrypted token containing a search id. The backend would get the search result with the search id in a key/value database. It would require something more in the architecture, and add latency.
+- The search service sends the item ids along with an searchID to the backend, the searchID is returned to the customer. The backend filters the ids when the customer sends the searchID. This have the caveat of having a search->backend call.
+
 
 ### Progressive development
 
