@@ -44,10 +44,15 @@ In order to improve the search speed, we could leave a split the output of the s
 
 #### Remaining issues: encrypting the ids prevent the user to map the non-visible ids to a content but it still allows a dictionnary attack a described in soluton 1.
 
-Some possibilities:
-- The search service always return a fixed size encrypted result. But we would have to check that we cannot guess anything by looking at the encrypted result, and this would take more unnecessary bandwidth
-- The search service doesn't return the ids, but an encrypted token containing a search id. The backend would get the search result with the search id in a key/value database. It would require something more in the architecture, and add latency.
-- The search service sends the item ids along with an searchID to the backend, the searchID is returned to the customer. The backend filters the ids when the customer sends the searchID. This have the caveat of having a search->backend call.
+Some possibilities: (by Geoffrey)
+1. The search service always return a fixed size encrypted result. But we would have to check that we cannot guess anything by looking at the encrypted result, and this would take more unnecessary bandwidth
+2. The search service doesn't return the ids, but an encrypted token containing a search id. The backend would get the search result with the search id in a key/value database. It would require something more in the architecture, and add latency.
+3. The search service sends the item ids along with an searchID to the backend, the searchID is returned to the customer. The backend filters the ids when the customer sends the searchID. This have the caveat of having a search->backend call.
+
+Comments of these possibilities (by Damien):
+1. This works only if the ids are returned (and not metadata). Actually, passing the public content directly and encrypting the non-public cannot work, even with possibility 1. You could still write a search request which returns public content with low score and so which would be returned only if your other search term does not match. In this way, you would still have a way to guess the content of non-visible elements.
+2. This requires services to know each others and an addition store, so add a lot of operational complexity.
+3. This requires search-specific store in backend, a way to communicate between service (with its specific authentication)
 
 #### Progressive development
 
