@@ -32,7 +32,7 @@ Main drawbacks:
 - Require a new authentication method for the backend
 - Have a service calls another service in cascade is not great in terms of microservice architecture
 
-### Solution 4: Addressing security concern of solution 1
+### Solution 4: let the frontend do the 2 calls, encrypt non-public
 
 In order to adress the security concern raised in solution 1, the search service could encrypt (using a shared symmetric key between the search service and the backend) results to be checked by the backend.
 
@@ -54,9 +54,18 @@ Comments of these possibilities (by Damien):
 2. This requires services to know each others and an addition store, so add a lot of operational complexity.
 3. This requires search-specific store in backend, a way to communicate between service (with its specific authentication)
 
-#### Progressive development
+### Solution 5: let the frontend do the 2 calls, encrypted non-public and clear others
 
-This solution allows developing a working version in steps:
-- only public content can be returned first
-- non-public ids may not be encrypted initially
+To avoid the caveat of solution 4, the search service may allow two types of request:
+- search only across public content and include in the response the score and the metadata (title, subtitle, description, ...) so that the frontend can directly display the results without further request
+- search only across non-public content, and return a fixed-sized response containing an encrypted list of ids+score (may require padding), the frontend would pass this response to the backend for the filtering out the non-visible ids and fetching the metadata.
 
+The frontend would need to merge to two answers sorted by search score, and possibly drop some of the public results with the lowest scores.
+
+Possible improvements:
+- the 2 requests may be done in a single request to the search service
+- a temporary user would not need to request the non-public content
+- to speed up search: for some large groups of the platform, content may be tagged, in the search engine, if this group can see this content; then the backend could generate a token proving that the user belongs to these groups so the search results for this content could be returned with the non-encrypted content.
+
+Remaining caveats:
+- Let us consider the user want 10 results so request 10 public ones, and 10 non-public ones... after getting the response from the backend, it knows there were no result in this set. The user does not know if the request was empty or if none of the ids was visible to him... so how does he if he should ask the search service for "page 2" (possible page 2 of non-visible items have highest search score than the public content)?
