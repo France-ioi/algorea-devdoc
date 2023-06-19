@@ -194,3 +194,11 @@ The attribute of this table are the following:
 ### "is_owner" aggregation and propagation
 As a consequence of these rules, when *is_owner* is set to *true* only the *is_owner* attribute is modified in the
 `permissions_granted` table. It is aggregation (so into `permissions_generated` table) which make *is_owner* set all "can_*" to their maximum value. For propagation, while "is_owner" is not propagated, the levels it involves in all other permissions are propagated as they had been granted directly (so "can_edit:all_with_grant" propagates to "can_edit:all").
+
+### couldn't we remove "is_owner_generated" from "permissions_generated" and retrieve it from "permissions_granted" since its value is not propagated?
+`permissions_granted` may have more than one row for a `(group_id, item_id)` couple,
+it's primary key also includes `source_group_id` and `origin`.
+This means that if we wanted to retrieve the `is_owner` for a specific `(group_id, item_id)`,
+we would have to aggregate all corresponding rows and verify if at least one of them have `is_owner=1`.
+
+For simplicity and performance, we keep `is_owner_generated` in `permissions_generated` (20/06/2023 - see [related issue](https://github.com/France-ioi/AlgoreaBackend/issues/966) ).
