@@ -7,6 +7,11 @@ parent: Backend
 
 # Architecture Decisions: Gherkin
 
+Whenever developing new feature, those rules MUST be followed.
+
+When making changes on existing features, consider whether updating the code adds value giving the time it would take.
+Whenever you find something difficult to understand, or notice you spent much more time than reasonable to do something, consider refactoring.
+
 
 ## Use higher-level features to use domain/business notions that'd already been tested in another test
 
