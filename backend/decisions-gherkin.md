@@ -13,6 +13,20 @@ When making changes on existing features, consider whether updating the code add
 Whenever you find something difficult to understand, or notice you spent much more time than reasonable to do something, consider refactoring.
 
 
+## Use simple dates and URLs in tests
+
+Date: 20/06/2023
+
+Why?
+
+It will make the tests easier to follow.
+
+Many older tests use urls such as `http://taskplatform.mblockelet.info/task.html?taskId=403449543672183936`,
+or dates such as `2019-07-10 04:02:28`.
+
+Consider simplifications such as `http://taskplatform/TASK_ID`,
+and `2020-01-01 00:00:00`, with variations only on seconds, minutes, or days, depending on what you want to be highlighted.
+
 ## Use higher-level features to use domain/business notions that'd already been tested in another test
 
 Date: 19/04/2023
