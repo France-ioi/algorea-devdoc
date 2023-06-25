@@ -7,6 +7,52 @@ parent: Backend
 
 # Architecture Decisions: Gherkin
 
+Whenever developing new feature, those rules MUST be followed.
+
+When making changes on existing features, consider whether updating the code adds value giving the time it would take.
+Whenever you find something difficult to understand, or notice you spent much more time than reasonable to do something, consider refactoring.
+
+
+## Don't define the content of `permissions_generated`
+
+Date: 20/06/2023
+
+Why?
+
+Because you can easily end up with inconsistent permissions. Also, the tests should not be aware of whether the SQL uses `permissions_generated` or `permissions_granted`.
+
+Many older tests define the content `permissions_generated` directly, but this table should be generated using the content of `permissions_granted`, and not defined by hand.
+
+There is a Gherkin feature to define permissions:
+```
+And there are the following item permissions:
+  | item | group | can_view | can_watch | ... |
+```
+
+This feature also have the benefit of permitting the use of references (@...).
+When you use this feature, `permissions_granted` is populated, and `permissions_generated` is automatically computed.
+So, consistency is guaranteed.
+
+It may be difficult to update older tests because sometimes, non-consistent permissions are defined
+(ie. if you define `permissions_granted` with the required permissions, you would end up with a different `permissions_generated` than the one defined in the tests).
+
+If you run into one of those cases, consider whether there is a benefit to update the tests.
+
+
+## Use simple dates and URLs in tests
+
+Date: 20/06/2023
+
+Why?
+
+It will make the tests easier to follow.
+
+Many older tests use urls such as `http://taskplatform.mblockelet.info/task.html?taskId=403449543672183936`,
+or dates such as `2019-07-10 04:02:28`.
+
+Consider simplifications such as `http://taskplatform/TASK_ID`,
+and `2020-01-01 00:00:00`, with variations only on seconds, minutes, or days, depending on what you want to be highlighted.
+
 
 ## Use higher-level features to use domain/business notions that'd already been tested in another test
 
