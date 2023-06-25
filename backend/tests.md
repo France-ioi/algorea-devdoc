@@ -17,7 +17,7 @@ The unit tests are implemented like regular go tests. Next to a `filename.go` fi
 
 ## Integration tests with vanilla GO
 
-Complete integration tests, calling the API methods and verifying the returned data, are implement with Gherkin (see section bellow).
+Complete integration tests, calling the API methods and verifying the returned data, are implement with Gherkin (see section below).
 
 Some tests of functions that require a database are implemented in a `feature_name_integration_test.go`.
 It can save you a lot of time to verify that such a file exists when you modify an existing feature.
