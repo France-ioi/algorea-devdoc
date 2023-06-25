@@ -15,7 +15,17 @@ A coverage of 100% is expected.
 
 The unit tests are implemented like regular go tests. Next to a `filename.go` file is a `filename_test.go` which contains the tests.
 
-## Integration tests
+## Integration tests with vanilla GO
+
+Complete integration tests, calling the API methods and verifying the returned data, are implement with Gherkin (see section below).
+
+Some tests of functions that require a database are implemented in a `feature_name_integration_test.go`.
+It can save you a lot of time to verify that such a file exists when you modify an existing feature.
+
+Such tests are written as a normal Go test, with a system to load fixtures into the database.
+See `app/api/items/path_from_root_integration_test.go` for an example.
+
+## Integration tests with Gherkin
 
 We use the Behaviour-Driven Development framework Cucumber with Gherkin to write our integration tests.
 This allows writing tests in *almost* natural language and interact with a real database.
