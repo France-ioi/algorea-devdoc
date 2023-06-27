@@ -13,11 +13,19 @@ permalink: /design/access-rights/items/
 1. TOC
 {:toc}
 
-## Preambule on data schema
+## Preamble
+
+Permissions a `Group` has on an `Item` are the result of [**Aggregation**](#aggregation-of-permissions-from-multiple-sources) and [**Propagation**](#aggregation-of-permissions-from-multiple-sources).
 
 Permissions to items given to groups are expressed in the `permissions_granted` table.
-The results of the explicit propagation of permissions through items is stored in the `permissions_generated` table.
-Relations (parent-child) among items have several properties which affect propagation.
+Permissions given to a group are implicitly given to its children.
+This process is called **Aggregation**.
+
+The permissions given for an item may transfer to its children if it is explicitly defined in the parent-child relation.
+Multiple properties exist to define which permissions transfer or not.
+This process is called **Propagation**.
+
+The result of both **Aggregation** and **Propagation** is stored into the `permissions_generated` table.
 
 <div style="max-width:90%;">{% include items_relations.html %}</div>
 
@@ -79,15 +87,29 @@ Whether (true/false) the group is the owner of this item. Implies the maximum le
 
 ## Aggregation of permissions from multiple sources
 
-We call *aggregation* the merge of the multiple granted permissions (from possibily different groups) to one permission tuple (indexed by group, item).
+We call *aggregation* the merge of multiple granted permissions to one permission tuple `(group, item)` representing the permissions one group has on an item.
+Those granted permissions may have initially been given to different groups (the group itself or any of its ancestors).
 
-For each permission attribute but *can_make_session_official* and *can_enter_\** (so *can_view*, *can_grant_view*, *can_watch*, *can_edit*, and *is_owner*), we take its maximum level among all values. In addition, "is_owner=true" makes every other attribute get its maximum possible value.
+In addition, those granted permissions may have been given from multiple `source groups`,
+and come from different `origin`.
+See details in the [section on database table permissions_granted](#granted-permissions-table-permissions_granted).
+
+For each permission attribute but *can_make_session_official* and *can_enter_\** (so *can_view*, *can_grant_view*, *can_watch*, *can_edit*, and *is_owner*), we take its **maximum level** among all values. In addition, "is_owner=true" makes every other attribute get its maximum possible value.
+
+### UI for granting permissions
+
+This image shows the result of **Aggregation** for the permission `can_grant_view` given to `Group` on an `Item`:
+- **Nothing** is the permission granted directly to `Group`
+- **Solution** is the aggregated permission `Group` has, coming from the permissions given to any of its ancestors
+- Note that starting at the third level of permission, **Content**, the text is gray: it means the current-user doesn't have the right to give permissions from this point
+
+![UI for granting permissions]({{ site.url }}{{ site.baseurl }}/assets/screen_permissions_view.png)
 
 <a name="propagation"></a>
 
 ## Propagation across parent-child items
 
-Permissions given on an item to a group may be propagated (explicitely) to the item's children, under some conditions and depending on the permissions. This propagation computation is relaunched each time a permission is changed or an item added/removed. It is computed on the changed node (the group-item relation node) based on its parents, and then propagated to its children. When there are several parents, the higher permission among parents is kept.
+Permissions given on an item to a group may be propagated explicitly to the item's children, under some conditions and depending on the permissions. This propagation computation is relaunched each time a permission is changed or an item added/removed. It is computed on the changed node (the group-item relation node) based on its parents, and then propagated to its children. When there are several parents, the higher permission among parents is kept.
 
 The propagation of a permission from a parent to its children is either to a same level or a lower one (never increase), and depends on the following attributes on the item-item relationship:
 
@@ -101,9 +123,9 @@ The propagation of a permission from a parent to its children is either to a sam
 * **edit_propagation**: false, true -- Whether *can_edit* propagates (as the same level with, as upper limit, "all")
 
 In addition, the following levels **never** propagate:
-* *can_view*="info" (so propagates as "none")
-* *can_grant_view*="solution_with_grant", *can_watch*="answer_with_grant", *can_edit*="all_with_grant" (so propagate as the preceding level)
-* *is_owner*=true (so propagates as "false")
+* *can_view*="info" (propagates as "none")
+* *can_grant_view*="solution_with_grant", *can_watch*="answer_with_grant", *can_edit*="all_with_grant" (propagate as the preceding level)
+* *is_owner*=true (propagates as "false")
 
 As *can_make_session_official* and *can_enter_\** do not aggregate, they do not propagate as well.
 
