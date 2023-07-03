@@ -67,3 +67,11 @@ Must be descendant of a school. <span class="label label-yellow">Draft</span>
 ### Base
 
 ### Other
+
+
+## Group visibility
+
+A group is visible to a user if one of the following conditions is fulfilled:
+- The group is an ancestor of a group that the user has joined (or the group itself)
+- The group is an ancestor of a group of which the user is a manager (or the group itself)
+- The group is public (`is_public` is true)
