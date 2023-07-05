@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Forms and Validation
+title: Forms, Validation and Persistence
 nav_order: 300
 parent: Backend
 ---
@@ -21,6 +21,7 @@ formData := formdata.NewFormData(&input)
 
 // Add custom validators and translations here...
 
+// Then we parse the request and call the validators.
 err = formData.ParseJSONRequestData(r)
 if err != nil {
   return service.ErrInvalidRequest(err)
@@ -32,6 +33,8 @@ updateData := formData.ConstructMapForDB()
 // Update...
 record.UpdateColumn(updateData)
 ```
+
+## Validation
 
 ### Fields validation
 
@@ -127,6 +130,30 @@ formData.RegisterTranslation("tag", "the value should be positive!")
 ```
 
 `tag` is the tag used in field's *struct tags*. It can be a custom validator like `exclude_increment_if_set`, or a standard one like `gte=0`.
+
+
+## Save in database
+
+The `ConstructMapForDB()` automatically generates a map that can be used to update the database from the input data.
+
+It's possible that the field names used in the input don't match the fields present in the database.
+
+In this case, you can specify the database field name manually with the `sql` metadata:
+
+```
+  type setCanRequestHelpTo struct {
+    ID *int64 `json:"id" sql:"column:can_request_help_to"`
+    IsAllUsersGroup bool `json:"is_all_users_group"`
+  }
+```
+
+Here, the `ID` field, if set, will be mapped with the key `can_request_help_to`.
+
+It is also possible to completely ignore the field with `sql:"-"`.
+
+Note: The metadata `gorm:` is also used sometimes.
+At the point of writing this, I'm not sure about the difference.
+It looks like the usage is the same.
 
 
 ## Resources
