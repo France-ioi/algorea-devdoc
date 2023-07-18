@@ -21,11 +21,13 @@ Permissions to items given to groups are expressed in the `permissions_granted` 
 Permissions given to a group are implicitly given to its children.
 This process is called **Aggregation**.
 
+The result of **Aggregation** is computed with SQL.
+
 The permissions given for an item may transfer to its children if it is explicitly defined in the parent-child relation.
 Multiple properties exist to define which permissions transfer or not.
 This process is called **Propagation**.
 
-The result of both **Aggregation** and **Propagation** is stored into the `permissions_generated` table.
+The result of **Propagation** is stored into the `permissions_generated` table.
 
 <div style="max-width:90%;">{% include items_relations.html %}</div>
 
@@ -87,21 +89,40 @@ Whether (true/false) the group is the owner of this item. Implies the maximum le
 
 ## Aggregation of permissions from multiple sources
 
-We call *aggregation* the merge of multiple granted permissions to one permission tuple `(group, item)` representing the permissions one group has on an item.
-Those granted permissions may have initially been given to different groups (the group itself or any of its ancestors).
+We call **aggregation** the merge of all permissions a *group* has on an *item*, granted either:
+- Directly to the group
+- To an ancestor of the group
 
-In addition, those granted permissions may have been given from multiple `source groups`,
+This notion is generalized to a *user*, with permissions granted either:
+- Directly to the user
+- To any group he is a member of
+- To any ancestor of a group he is a member of
+
+From those granted permissions, here's how the permissions are **aggregated**:
+- `can_view`: we take the maximum among all values
+- `can_grant_view`: we take the maximum among all values
+- `can_watch`: we take the maximum among all values
+- `can_edit`: we take the maximum among all values
+- `is_owner`: if *true* for any granted permission, then *true*. Note that when *true* it makes all above permissions get its maximum possible value.
+- `can_enter_from`:
+  * `NOW()` if it is currently open for any granted permission (if current time is between `can_enter_from` and `can_enter_until`)
+  * otherwise, the sooner date `can_enter_from` of any granted permission located in the future
+  * otherwise, `infinite / never` (year 9999)
+- `can_make_session_official`: if *true* for any granted permission, then *true*
+- `can_request_help_to`: is a *group id* and is not aggregated
+
+Note: those granted permissions that are aggregated may have been given from multiple `source groups`,
 and come from different `origin`.
 See details in the [section on database table permissions_granted](#granted-permissions-table-permissions_granted).
 
-For each permission attribute but *can_make_session_official* and *can_enter_\** (so *can_view*, *can_grant_view*, *can_watch*, *can_edit*, and *is_owner*), we take its **maximum level** among all values. In addition, "is_owner=true" makes every other attribute get its maximum possible value.
-
 ### UI for granting permissions
 
-This image shows the result of **Aggregation** for the permission `can_grant_view` given to `Group` on an `Item`:
-- **Nothing** is the permission granted directly to `Group`
-- **Solution** is the aggregated permission `Group` has, coming from the permissions given to any of its ancestors
-- Note that starting at the third level of permission, **Content**, the text is gray: it means the current-user doesn't have the right to give permissions from this point
+This image shows the result of **Aggregation** for the permission `can_grant_view` given to a `Group` on an `Item`.
+It is viewed from the point of view of a specific `source_group` (the group from which the permission is granted),
+and for a specific `origin` (what process granted the permission).
+- **Nothing** is the permission granted directly to `Group` by the specific `source_group`, for the specific `origin`.
+- **Solution** is the **aggregated** permission `Group` has, coming from the permissions given to any of its ancestors, and by other `source_group`, and other `origin`.
+- Note that starting at the third level of permission, **Content**, the text is gray: it means the current-user doesn't have the right to give permissions from this point.
 
 ![UI for granting permissions]({{ site.url }}{{ site.baseurl }}/assets/screen_permissions_view.png)
 
@@ -196,26 +217,34 @@ To decrease the propagation level (whatever the level), you do not need any spec
 ### Granted permissions table (permissions_granted)
 
 The `permissions_granted` table express the raw permissions given to a group on an item.
-One permission entry matches exactly one group, one item, one *source group* and one *origin*. The *source group* is the group from which the destination group has received the permission. Only the managers of this *source group* are able to revoke or modify this permission. The *origin* is the process which has allocated this permission (group permission, unlocking, ...). There may be several permissions for a same *(group, item)*, e.g., multiple permissions to the same task given to an end-user by several groups he is member of.
+One permission entry matches exactly one `group`, one `item`, one `source_group` and one `origin`.
+
+The `source_group` is the group from which the destination group has received the permission.
+Only the managers of this `source_group` are able to revoke or modify this permission.
+
+The `origin` is the process which has allocated this permission (group permission, unlocking, ...).
+There may be several permissions for a same *(`group`, `item`)*, e.g.,
+multiple permissions to the same task given to an end-user by several groups he is a member of.
 
 The attributes of this table are the following:
-* group_id, item_id, source_group_id, origin [PK]
-* latest_update_on
-* can_view, can_enter, can_grant_view, can_watch, can_edit, can_make_session_official, is_owner
+* `group_id`, `item_id`, `source_group_id`, `origin` [PK]
+* `latest_update_on`
+* `can_view, can_enter`, `can_grant_view`, `can_watch`, `can_edit`, `can_make_session_official`, `is_owner`
 
 ### Generated permissions table (permissions_generated)
 
 The `permissions_generated` table represents the actual permissions that the group has, considering the <a href="#aggregation">aggregation</a> and the <a href="#propagation">propagation</a>. This table could be completely rebuild from `permissions_granted`.
 
 The attribute of this table are the following:
-* group_id, item_id [PK]
-* can_view_generated, can_grant_view_generated, can_watch_generated, can_edit_generated, is_owner_generated
+* `group_id`, `item_id` [PK]
+* `can_view_generated`, `can_grant_view_generated`, `can_watch_generated`, `can_edit_generated`, `is_owner_generated`
 
 ## FAQ / Remarks
 
 ### "is_owner" aggregation and propagation
-As a consequence of these rules, when *is_owner* is set to *true* only the *is_owner* attribute is modified in the
-`permissions_granted` table. It is aggregation (so into `permissions_generated` table) which make *is_owner* set all "can_*" to their maximum value. For propagation, while "is_owner" is not propagated, the levels it involves in all other permissions are propagated as they had been granted directly (so "can_edit:all_with_grant" propagates to "can_edit:all").
+As a consequence of these rules, when `is_owner` is set to *true* only the `is_owner` attribute is modified in the
+`permissions_granted` table. It is the aggregation (so into `permissions_generated` table) which make `is_owner` set all `can_*` to their maximum value.
+For propagation, while `is_owner` is not propagated, the levels it involves in all other permissions are propagated as they had been granted directly (so "`can_edit`:all_with_grant" propagates to "`can_edit`:all").
 
 ### couldn't we remove "is_owner_generated" from "permissions_generated" and retrieve it from "permissions_granted" since its value is not propagated?
 `permissions_granted` may have more than one row for a `(group_id, item_id)` couple,
