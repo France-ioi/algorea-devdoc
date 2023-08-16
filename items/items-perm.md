@@ -21,7 +21,7 @@ Permissions to items given to groups are expressed in the `permissions_granted` 
 Permissions given to a group are implicitly given to its children.
 This process is called **Aggregation**.
 
-The result of **Aggregation** is computed with SQL.
+The result of **Aggregation** is computed on the fly in SQL queries.
 
 The permissions given for an item may transfer to its children if it is explicitly defined in the parent-child relation.
 Multiple properties exist to define which permissions transfer or not.
@@ -117,11 +117,11 @@ See details in the [section on database table permissions_granted](#granted-perm
 
 ### UI for granting permissions
 
-This image shows the result of **Aggregation** for the permission `can_grant_view` given to a `Group` on an `Item`.
-It is viewed from the point of view of a specific `source_group` (the group from which the permission is granted),
-and for a specific `origin` (what process granted the permission).
-- **Nothing** is the permission granted directly to `Group` by the specific `source_group`, for the specific `origin`.
-- **Solution** is the **aggregated** permission `Group` has, coming from the permissions given to any of its ancestors, and by other `source_group`, and other `origin`.
+This image shows the result of **Aggregation** for the `group_membership` origin,
+for the permission `can_grant_view`, given to a `Group` on an `Item`.
+It is viewed from the point of view of a specific `source_group` (the group from which the permission is granted).
+- **Nothing** is the permission granted directly to `Group` by the specific `source_group`.
+- **Solution** is the **aggregated** permission `Group` has, coming from the permissions given to any of its ancestors, and by other `source_group`.
 - Note that starting at the third level of permission, **Content**, the text is gray: it means the current-user doesn't have the right to give permissions from this point.
 
 ![UI for granting permissions]({{ site.url }}{{ site.baseurl }}/assets/screen_permissions_view.png)
@@ -229,7 +229,7 @@ multiple permissions to the same task given to an end-user by several groups he 
 The attributes of this table are the following:
 * `group_id`, `item_id`, `source_group_id`, `origin` [PK]
 * `latest_update_on`
-* `can_view, can_enter`, `can_grant_view`, `can_watch`, `can_edit`, `can_make_session_official`, `is_owner`
+* `can_view`, `can_enter`, `can_grant_view`, `can_watch`, `can_edit`, `can_make_session_official`, `is_owner`
 
 ### Generated permissions table (permissions_generated)
 
