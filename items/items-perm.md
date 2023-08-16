@@ -157,15 +157,16 @@ Any user can create relationship between two items at the condition he has at le
 
 For changing propagation rules (on the item-item relationship), the giver group needs *can_edit ≥ children* permission on the parent item and the following permissions on the child item to increase the level of propagation:
 
-| Propagation level increase                                   | Permission needed on the child item        |
-|:-------------------------------------------------------------|:-------------------------------------------|
-| content_view_propagation to as_info                          | can_grant_view ≥ enter                     |
-| content_view_propagation to as_content                       | can_grant_view ≥ content                   |
-| upper_view_levels_propagation to as_content_with_descendants | can_grant_view ≥ content_with_descendants  |
-| upper_view_levels_propagation to as_is                       | can_grant_view ≥ solution                  |
-| grant_view_propagation to true                               | can_grant_view ≥ solution_with_grant       |
-| watch_propagation to true                                    | can_watch ≥ answer_with_grant              |
-| edit_propagation to true                                     | can_edit ≥ all_with_grant                  |
+| Propagation level increase                                   | Permission needed on the child item       |
+|:-------------------------------------------------------------|:------------------------------------------|
+| content_view_propagation to as_info                          | can_grant_view ≥ enter                    |
+| content_view_propagation to as_content                       | can_grant_view ≥ content                  |
+| upper_view_levels_propagation to as_content_with_descendants | can_grant_view ≥ content_with_descendants |
+| upper_view_levels_propagation to as_is                       | can_grant_view ≥ solution                 |
+| grant_view_propagation to true                               | can_grant_view ≥ solution_with_grant      |
+| watch_propagation to true                                    | can_watch ≥ answer_with_grant             |
+| edit_propagation to true                                     | can_edit ≥ all_with_grant                 |
+| request_help_propagation to true                             | can_grant_view ≥ content                  |
 
 To decrease the propagation level (whatever the level), you do not need any specific permissions on the child item.
 
