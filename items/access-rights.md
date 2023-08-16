@@ -21,7 +21,9 @@ When they first arrive on the platform, users are automatically added to groups 
 
 ### Propagation
 
-Permissions of a group to an item are propagated to the descendants of the groups (but team members), and (under some conditions) to the descendants of the items.
+Permissions of a group to an item are propagated to the descendants of the groups
+(but not from a group of type `Team` to its members),
+and (under some conditions) to the descendants of the items.
 
 <span class="label label-green">Key-concept</span>
 Permission propagation from a parent **group** to its descendants is **implicit**. So if a user is part of a group, he has the same permissions as the group (except from team to users where no permission is propagated). On the other hand, permission propagation from a parent **item** to its descendants is **explicit**, i.e., new entries in the `groups_items` table are created each time new permissions are given to propagate these rights to the children. The propagation through items follows specific rules described in [this page]({{ site.baseurl }}/design/access-rights/items/).
@@ -37,6 +39,6 @@ In order for a user to be able to grant (or change) additional time given to a g
 
 ### Permissions to view other's permissions
 
-In order for a user U to view another permission given by GS to G on content C, the user requires:
-* either the permission to watch C ("can_watch ≥ result") and to watch G (so "can_watch_members" on an ancestor of G).
-* or the permission to grant permission on C ("can_grant_view ≥ enter") and to grant permission to G (so "can_grant_group_access" of an ancestor of G).
+In order for a `User` to view another permission given by `GroupSource` to `Group` on `Item`, the user requires:
+* either the permission to **watch `Item`** ("can_watch ≥ result") and to **watch `Group`** ("can_watch_members" on an ancestor of `Group`).
+* or the permission to **grant permission on `Item`** ("can_grant_view ≥ enter") and to **grant permission to `Group`** ("can_grant_group_access" of an ancestor of `Group`).
