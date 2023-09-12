@@ -1,11 +1,24 @@
 ---
 layout: page
-title: "Architecture Decisions: Doc & Code Style"
+title: "Architecture Decisions: Services & Code Style"
 nav_order: 1000
 parent: Backend
 ---
 
-# Architecture Decisions: Code Style
+# Architecture Decisions: Services & Code Style
+
+## Fields that are not visible to the user due to access rights must not appear in the response at all
+
+Date: 12/09/2023
+
+Why?
+- We want to be able to distinguish between `null` values and values that are not visible to the user.
+
+Examples:
+- The name is visible and has a value: `{"id": 1, "name": "John"}`
+- The name is visible but is set to `null`: `{"id": 1, "name": null}`
+- The name is not visible: `{"id": 1}`
+
 
 ## Swagger documentation for Responses and Requests must always specify `Nullable` and `required: true` when applicable
 
