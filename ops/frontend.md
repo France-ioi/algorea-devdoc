@@ -15,7 +15,7 @@ Code is hosted on https://github.com/France-ioi/AlgoreaFrontend. This is also wh
   - "Angular Language Service"
   - "EditorConfig for VS Code"
   - "ESLint"
-- Node 14 (recommanded) or 12
+- Node (use the same version as it is used in CI: `.circleci/config.yml` > node image version)
 - Try to make the [project](https://github.com/France-ioi/AlgoreaFrontend) run locally as describe in the readme file
 
 ## Development workflow
@@ -46,25 +46,14 @@ See the [readme](https://github.com/France-ioi/AlgoreaFrontend#internationalizat
 ## Authentication
 
 Not much is possible on the platform for an unauthorized user.
-To test the platform as an authenticated user (required for most dev), change the token used by your browser in "developper tools > Storage > Session Storage > access_token" to a value given by the administrator of the platform.
+To test the platform as an authenticated user (required for most dev), you can force your browser to use a specific token (cannot be written here, but ask Damien L.) but setting "forced_token" to a given value in your "Storage > Session Storage" (through DevTools).
 
 ## Design
 
 For the design of this platform, we mainly use [prime-ng](https://www.primefaces.org/primeng/showcase/) library that we customize.
 
-[Static mockups of the website](https://france-ioi.github.io/algorea-designs/) are also available as a base for work for new features. Some of these designs have implemented in the design branch (see below).
-
-Note that some of these designs might be outdated, same for the design-branch ones.
-
-### Design branch
-
-The "design" git branch is a specific branch which contains an old mock-up of the website. This is an important resource as it implements (in design only) many features which have not been fully implemented yet.
-
-This website is [deployed here](https://d39se6ub293skr.cloudfront.net/branch/design/index.html) and the code on [Github](https://github.com/France-ioi/AlgoreaFrontend/tree/design/index.html). It might be useful to copy-paste some components or part of component from this branch. Most of time, it requries major rework, but that may be better than nothing (mainly for design aspect).
-
 ## Various (Software) Design Choices
 
-* A component or services which defines a subject has to complete it on destroy (to prevent any current or future memory leaks)
 * Observables are not given as input to components.
 
 ## Various Style Choices
@@ -73,7 +62,7 @@ This website is [deployed here](https://d39se6ub293skr.cloudfront.net/branch/des
 
 ## Avoiding memory leaks
 
-A few rules to follow in our code to prevent memory leaks: (these are not always required but following these simple rules do not cost much and prevent more leaks from happening, even when code afterwards.m
+A few rules to follow in our code to prevent memory leaks: (these are not always required but following these simple rules do not cost much and prevent more leaks from happening, even when code afterwards.)
 - Every component or service defining its own subject must `complete` it on destroy
 - In every component or service, `subscribe()` should store its subscription, and make sure to `unsubscribe` on destroy.
 - For every sevices used as component provider (root injected service never really destroy) and in every component, the `shareReplay()` and `share()` should be applied on observables which are sure to complete in the same time frame as the component/service (observables of other non-http service are usually not guaranteed to complete before the end of the app). If it is not clear it is the case, the `shareReplay`/`share` should be either preceded by a `takeUntil(destroy$)` where `destroy$` is a subject which emits on destroy, or use the `refCount:true` parameter if it is clear that all subscribers will unsubscribe (not the case for exported properties).
@@ -81,11 +70,9 @@ A few rules to follow in our code to prevent memory leaks: (these are not always
 ## Important ressources
 
 * [This website](../):
-  - [API](../api/): the most important
+  - [API](../api/): the most important... typically you should pick the latest version
   - [the db schema](../dbschema): may be useful
   - the rest: may be useful (some part might be outdated)
-* [Design branch deployed](https://d39se6ub293skr.cloudfront.net/branch/design/index.html)
-* [Commented designs](https://france-ioi.github.io/algorea-designs/)
 
 And docs of framework/libraries we use:
 * [Angular](https://angular.io/guide/architecture)
