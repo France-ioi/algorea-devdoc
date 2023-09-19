@@ -16,6 +16,8 @@ In a nutshell:
 
 In order to open a thread for an item, a user needs a specific item permission: "can request help to" which allows the user to request help to a given group for an item and its descendants depending on propagation rules.
 
+**Note:** When the user is the owner of the item, he can always request help to groups visible to him.
+
 ### Granting the permission to another user
 
 To grant `can_request_help_to(g)` permission to a user for an item, the giver needs to have "can_grant_view ≥ content" for this item.
