@@ -7,6 +7,26 @@ parent: Backend
 
 # Development Processes
 
+
+## Tackling a new task
+
+1. Understand the context of the services or parts that are impacted: how it is used by the frontend, what are the parameters, what do the response contain. See [Algorea API documentation](https://france-ioi.github.io/algorea-devdoc/api/). Take the time to understand, or you might lose a lot more in later steps. **As a rule of thumb, everything you try to ignore to go faster will go against you later.**
+
+2. Clarify the task if there is any discrepancy between what you understand from the first step, and what has to be done.
+
+3. Once everything is clear, write the first test, and make it fail, using a TDD approach. The TDD approach might be difficult to follow in some specific cases, but it should be the default approach.
+
+4. Make the test pass.
+
+5. Refactor.
+
+6. At this point, you can consider doing a commit. **The commit message must be clear and explain the choices made.**
+
+7. If there is more to do, go back to step 3.
+
+8. When everything is done and in a working state, follow with the checklist for a new PR.
+
+
 ## Checklist for a new PR
 
 - [ ] If the change is linked to an issue present in the [Planning](https://github.com/orgs/France-ioi/projects/2),
