@@ -66,6 +66,22 @@ See [Architecture Decisions documents]({{ site.baseurl }}/backend/).
 ![Ask for a review]({{ site.url }}{{ site.baseurl }}/assets/dev-process-ask-review.png)
 
 
+## The PR review process
+
+You must answer to all the comments made by the reviewer.
+
+**Do not click on the "Resolve conversation" button.** Otherwise, the reviewer might miss your answer.
+
+If you disagree with a comment, you must explain why and propose an alternative.
+
+If you don't understand a comment, ask for clarification.
+
+If you agree with a comment, make the change and answer to the comment **starting with "fixed."** to let the reviewer know that you made the change.
+
+Once all the comments are addressed, ask for a review again, using the button on the right of the page, next to the reviewer's name.
+
+
+
 ## Algorea Planning
 
 The [Planning](https://github.com/orgs/France-ioi/projects/2) contains the planned developments and the people assigned to each item.
