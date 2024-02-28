@@ -13,6 +13,44 @@ When making changes on existing features, consider whether updating the code add
 Whenever you find something difficult to understand, or notice you spent much more time than reasonable to do something, consider refactoring.
 
 
+## Don't verify randomly generated IDs in the tests
+
+Date: 23/02/2024
+
+Why?
+
+The details of the discussion is here: [discussion on Github](https://github.com/France-ioi/AlgoreaBackend/pull/1030),
+and the reasons are the same as the decision right below.
+
+It makes the tests brittle: whenever the random generator is used, the IDs will change, and the tests will fail.
+
+Even using references in this situation is very tricky and must be done, as discussed in the link above.
+
+
+## For old tests verifying randomly generated IDs, if the IDs change, update them with the new ones, don't use references
+
+Date: 23/02/2024
+
+**This applies only to old gherkin tests.** For new tests, see the decision right above.
+
+Why?
+
+The details of the discussion is here: [discussion on Github](https://github.com/France-ioi/AlgoreaBackend/pull/1030).
+
+We didn't find an acceptable solution that works all the time without rewriting the old tests.
+So for now, we decided to just update the IDs when they change.
+
+If you can and if it makes sense, consider generating new IDs after the ones that are already tested,
+this will avoid having to update all the other IDs.
+
+It would be possible to simplify it a little bit using a new Gherkin feature like:
+```
+  And I reset the random id generator to use sequence numbers starting at XXX
+```
+
+It hasn't been done yet, but it would be a good idea if a change requires updating many of those tests.
+
+
 ## Don't define the content of `permissions_generated`
 
 Date: 20/06/2023
