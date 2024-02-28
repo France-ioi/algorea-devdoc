@@ -9,28 +9,59 @@ parent: Backend
 
 ## Checklist for a new PR
 
-- [ ] If the change is linked to an issue present in the [Planning](https://github.com/orgs/France-ioi/projects/2),
-set its status to `in progress`
-- [ ] If it addresses an issue, make sure the issue is linked in the `Development` tab on the right.
-This will allow the issue to be closed automatically when the commit is merge,
-and update its status if it is present in the planning.
-- [ ] Add a description of what the PR is about
-- [ ] If choices were made, describe the reason you made them and the alternatives you considered with a trade-off analysis.
+### If the change is linked to an issue present in the [Planning](https://github.com/orgs/France-ioi/projects/2):
+
+- [ ] Set the issue's status to "in progress" in the planning.
+
+![Change the status to "in progress"]({{ site.url }}{{ site.baseurl }}/assets/dev-process-status-update.png)
+
+### If the PR fully resolves the issue:
+
+- [ ] Make sure the issue is linked in the "Development" tab on the right page of the PR. This will allow the issue to be closed automatically when the commit is merge, and update its status if it is present in the planning. You can also add "fixes #issue_number" in the description to link it automatically.
+
+![Link the issue in the PR]({{ site.url }}{{ site.baseurl }}/assets/dev-process-link-issue.png)
+
+### If the PR only refers to the issue, without fully resolving it:
+
+- [ ] Add "Related to #issue_number" at the top of the description of the PR.
+
+### For all PRs:
+
+- [ ] Add a description of what the PR is about.
+- [ ] If you made choices in the implementation, describe the reason you made them and the alternatives you considered with a trade-off analysis: **list the PRO and CON of each alternative**.
 
 
-- **If a change is related to a service:**
-  * [ ] Make sure the swagger documentation is properly updated
-  * [ ] the description renders correctly
-  * [ ] all the field and their annotations are correct for the request and response
+### If a change is related to a service, make sure:
 
-Launch local:
-`swagger generate spec --scan-models -o ./swagger.yaml && swagger validate ./swagger.yaml && swagger serve ./swagger.yaml`.
+- [ ] the swagger documentation is properly updated and formatted.
+- [ ] it renders correctly. Verify locally with "swagger generate spec --scan-models -o ./swagger.yaml && swagger validate ./swagger.yaml && swagger serve ./swagger.yaml".
+- [ ] the fields of the request and response have the correct annotations (required, Nullable, ...).
 
-**Small tip:** You need to have two empty lines between paragraphs, otherwise the generated documentation will have everything on the same line.
+See [Architecture Decisions: Services & Code Style]({{ site.baseurl }}/backend/decisions-services-code-style/).
 
-- [ ] The changes must follow all guidelines present in: [Architecture Decisions documents]({{ site.baseurl }}/backend/)
-- [ ] Commits should be atomic: only contain one thing
-- [ ] The commit message must be clear and explain the choices made
+**Swagger tip:** You need to have 2 empty lines between paragraphs, otherwise the generated documentation will have everything on the same line.
+
+### If a change is related to the database, make sure:
+
+- [ ] the migration files follow the Database Migrations guidelines.
+- [ ] the migration files are tested for both the "Up" and "Down" parts.
+- [ ] make sure you didn't delete any index in case you modified a table.
+
+See [Database Migrations]({{ site.baseurl }}/backend/migrations/).
+
+### For all PRs:
+
+- [ ] The changes must follow all the architecture decisions documents.
+- [ ] Commits should be atomic: only contain one thing.
+- [ ] All commit messages must be clear, stating which service or part they affect, why we want to change it, and explain the reason of the choices made.
+
+See [Architecture Decisions documents]({{ site.baseurl }}/backend/).
+
+### When all the elements are checked, and all tests pass, you can ask for a review:
+
+- [ ] Ask for a review from the person in charge of the service or the part of the code you modified, in the "Reviewers" tab on the right page of the PR.
+
+![Ask for a review]({{ site.url }}{{ site.baseurl }}/assets/dev-process-ask-review.png)
 
 
 ## Algorea Planning
