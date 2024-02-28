@@ -17,7 +17,7 @@ parent: Backend
 
 ### If the PR fully resolves the issue:
 
-- [ ] Make sure the issue is linked in the "Development" tab on the right page of the PR. This will allow the issue to be closed automatically when the commit is merge, and update its status if it is present in the planning. You can also start the description of the PR with "fixes #issue_number" to link it automatically, but you should check that it worked.
+- [ ] Make sure the issue is linked in the "Development" tab on the right page of the PR. This will allow the issue to be closed automatically when the commit is merge, and update its status if it is present in the planning. You can also add "fixes #issue_number" in the description to link it automatically.
 
 ![Link the issue in the PR]({{ site.url }}{{ site.baseurl }}/assets/dev-process-link-issue.png)
 
