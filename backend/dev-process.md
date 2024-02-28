@@ -5,6 +5,8 @@ nav_order: 10
 parent: Backend
 ---
 
+{% include clickable-checkboxes.html %}
+
 # Development Processes
 
 ## Checklist for a new PR
