@@ -47,11 +47,6 @@ parent: Backend
 
 - [ ] Add "Related to #issue_number" at the top of the description of the PR.
 
-### For all PRs:
-
-- [ ] Add a description of what the PR is about.
-- [ ] If you made choices in the implementation, describe the reason you made them and the alternatives you considered with a trade-off analysis: **list the PRO and CON of each alternative**.
-
 
 ### If a change is related to a service, make sure:
 
@@ -76,8 +71,11 @@ See [Database Migrations]({{ site.baseurl }}/backend/migrations/).
 - [ ] The changes must follow all the architecture decisions documents.
 - [ ] Commits should be atomic: only contain one thing.
 - [ ] All commit messages must be clear, stating which service or part they affect, why we want to change it, and explain the reason of the choices made.
+- [ ] Add a description of what the PR is about.
+- [ ] If you made choices in the implementation, describe the reason you made them and the alternatives you considered with a trade-off analysis: **list the PRO and CON of each alternative**.
 
 See [Architecture Decisions documents]({{ site.baseurl }}/backend/).
+
 
 ### When all the elements are checked, and all tests pass, you can ask for a review:
 
