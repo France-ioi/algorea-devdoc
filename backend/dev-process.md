@@ -51,7 +51,7 @@ parent: Backend
 ### If a change is related to a service, make sure:
 
 - [ ] the swagger documentation is properly updated and formatted.
-- [ ] it renders correctly. Verify locally with "swagger generate spec --scan-models -o ./swagger.yaml && swagger validate ./swagger.yaml && swagger serve ./swagger.yaml".
+- [ ] it renders correctly. Verify locally with the command: "**make serve-swagger**".
 - [ ] the fields of the request and response have the correct annotations (required, Nullable, ...).
 
 See [Architecture Decisions: Services & Code Style]({{ site.baseurl }}/backend/decisions-services-code-style/).
