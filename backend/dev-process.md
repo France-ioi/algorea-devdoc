@@ -63,6 +63,7 @@ See [Architecture Decisions: Services & Code Style]({{ site.baseurl }}/backend/d
 - [ ] the migration files follow the Database Migrations guidelines.
 - [ ] the migration files are tested for both the "Up" and "Down" parts.
 - [ ] make sure you didn't delete any index in case you modified a table.
+- [ ] did you change or create new queries? Provide an explanation about why the query need or don't need an index. Add an index if it's needed.
 
 See [Database Migrations]({{ site.baseurl }}/backend/migrations/).
 
