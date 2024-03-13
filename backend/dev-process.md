@@ -47,16 +47,11 @@ parent: Backend
 
 - [ ] Add "Related to #issue_number" at the top of the description of the PR.
 
-### For all PRs:
-
-- [ ] Add a description of what the PR is about.
-- [ ] If you made choices in the implementation, describe the reason you made them and the alternatives you considered with a trade-off analysis: **list the PRO and CON of each alternative**.
-
 
 ### If a change is related to a service, make sure:
 
 - [ ] the swagger documentation is properly updated and formatted.
-- [ ] it renders correctly. Verify locally with "swagger generate spec --scan-models -o ./swagger.yaml && swagger validate ./swagger.yaml && swagger serve ./swagger.yaml".
+- [ ] it renders correctly. Verify locally with the command: "**make serve-swagger**".
 - [ ] the fields of the request and response have the correct annotations (required, Nullable, ...).
 
 See [Architecture Decisions: Services & Code Style]({{ site.baseurl }}/backend/decisions-services-code-style/).
@@ -68,6 +63,7 @@ See [Architecture Decisions: Services & Code Style]({{ site.baseurl }}/backend/d
 - [ ] the migration files follow the Database Migrations guidelines.
 - [ ] the migration files are tested for both the "Up" and "Down" parts.
 - [ ] make sure you didn't delete any index in case you modified a table.
+- [ ] did you change or create new queries? Provide an explanation about why the query need or don't need an index. Add an index if it's needed.
 
 See [Database Migrations]({{ site.baseurl }}/backend/migrations/).
 
@@ -76,8 +72,11 @@ See [Database Migrations]({{ site.baseurl }}/backend/migrations/).
 - [ ] The changes must follow all the architecture decisions documents.
 - [ ] Commits should be atomic: only contain one thing.
 - [ ] All commit messages must be clear, stating which service or part they affect, why we want to change it, and explain the reason of the choices made.
+- [ ] Add a description of what the PR is about.
+- [ ] If you made choices in the implementation, describe the reason you made them and the alternatives you considered with a trade-off analysis: **list the PRO and CON of each alternative**.
 
 See [Architecture Decisions documents]({{ site.baseurl }}/backend/).
+
 
 ### When all the elements are checked, and all tests pass, you can ask for a review:
 
