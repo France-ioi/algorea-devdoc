@@ -24,7 +24,7 @@ and the reasons are the same as the decision right below.
 
 It makes the tests brittle: whenever the random generator is used, the IDs will change, and the tests will fail.
 
-Even using references in this situation is very tricky and must be done, as discussed in the link above.
+Even using references in this situation is very tricky and must not be done, as discussed in the link above.
 
 
 ## For old tests verifying randomly generated IDs, if the IDs change, update them with the new ones, don't use references
