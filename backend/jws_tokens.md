@@ -51,7 +51,7 @@ For unit tests, a specific public and private key defined in `tokentest/sample_k
 To generate a token using those keys, you can use the function `generateSignedTestToken` defined in `token/token_test.go`.
 It will allow you to create a token with the information you want inside.
 
-Whenever you decrypt a token in your test (unmarshal), be sure to first path the `time.Now`, otherwise it will get rejected because the date doesn`t match:
+Whenever you decrypt a token in your test (unmarshal), be sure to first pass the `time.Now`, otherwise it will get rejected because the date doesn`t match:
 
 ```
   monkey.Patch(time.Now, func() time.Time { return timeWhenTheTokenWasGenerated })
