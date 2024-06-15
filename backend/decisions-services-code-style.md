@@ -7,6 +7,15 @@ parent: Backend
 
 # Architecture Decisions: Services & Code Style
 
+
+## Propagations are executed in steps, and up to one database transaction can be executed per step
+
+Date: 18/04/2024
+
+Why?
+- Depending on what is affected, a propagation can be very long (> 15min). The issue we have is that AWS Lambda has a maximum execution time of 15min. We want to make sure that if we reach the maximum execution time, at least some of the work has been commited. Otherwise, we would have a process that can never finish.
+- We also want to avoid having a transaction that is too long, that holds many locks, and can cause deadlocks.
+
 ## Fields that are not visible to the user due to access rights must not appear in the response at all
 
 Date: 12/09/2023
