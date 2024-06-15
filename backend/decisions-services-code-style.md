@@ -8,6 +8,13 @@ parent: Backend
 # Architecture Decisions: Services & Code Style
 
 
+## When a propagation is scheduled, it is scheduled at the end of the current transaction
+
+Date: 18/04/2024
+
+Why?
+- ???
+
 ## Propagations are executed in steps, and up to one database transaction can be executed per step
 
 Date: 18/04/2024
