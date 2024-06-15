@@ -5,7 +5,7 @@ nav_order: 1000
 parent: Backend
 ---
 
-# Architecture Decisions: Services & Code Style
+# Architecture Decisions: App & Code
 
 ## Fields that are not visible to the user due to access rights must not appear in the response at all
 
