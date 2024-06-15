@@ -79,7 +79,7 @@ Because a token can only be refreshed by the most recent token, it implies that 
 If an expired token is used to refresh the token, access defined error is returned.
 
 
-### A token can only be refreshing 5 minutes after it was issued
+### A token can only be refreshed 5 minutes after it was issued
 
 It's not possible to refresh a token that was issued less than 5 minutes ago.
 
