@@ -69,6 +69,7 @@ See [Database Migrations]({{ site.baseurl }}/backend/migrations/).
 
 ### For all PRs:
 
+- [ ] If you added a lock, you must document why you added it with examples of concrete issues it solves.
 - [ ] The changes must follow all the architecture decisions documents.
 - [ ] Commits should be atomic: only contain one thing.
 - [ ] All commit messages must be clear, stating which service or part they affect, why we want to change it, and explain the reason of the choices made.
