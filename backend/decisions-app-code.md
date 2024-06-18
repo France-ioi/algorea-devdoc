@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "Architecture Decisions: Services & Code Style"
+title: "Architecture Decisions: App & Code"
 nav_order: 1000
 parent: Backend
 ---
