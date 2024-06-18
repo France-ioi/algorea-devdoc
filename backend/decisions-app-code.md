@@ -1,11 +1,22 @@
 ---
 layout: page
-title: "Architecture Decisions: Services & Code Style"
+title: "Architecture Decisions: App & Code"
 nav_order: 1000
 parent: Backend
 ---
 
-# Architecture Decisions: Services & Code Style
+# Architecture Decisions: App & Code
+
+
+## The environment is forced to `test` in the tests, can never be `test` when running the application, and the `test` environment only read its configuration from `config.yaml.test`, and never from `config.yaml`
+
+Date: 05/06/2024
+
+Why?
+- We want to make sure tests are never run on a live database because they erase all the data.
+
+More info and discussion: https://github.com/France-ioi/AlgoreaBackend/pull/1085
+
 
 ## Fields that are not visible to the user due to access rights must not appear in the response at all
 
