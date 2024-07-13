@@ -67,3 +67,16 @@ Date: 22/03/2023
 
 Why?
 - go-fmt automatically changes the line endings of *.go files with LF. Make it LF everywhere for consistency.
+
+## Panic/recover error handling
+Date: 05/03/2019
+
+Besides the usual way of error handling via returning an error value from a function and checking it in the caller, Go has a special way of handling errors. It is called panic and recover. The panic function is used to raise a runtime error. When a function encounters a panic, it stops executing and unwinds the stack. The deferred functions are executed and then the program terminates. The recover function is used to catch a panic and resume normal execution. It is used in a deferred function. The recover function returns the value that was passed to the panic function. If the function is not called in a deferred function, it returns nil.
+
+The technique of handling errors via panic/recover very convenient. It allows us to get rid of error handling in many places and concentrate it in one place. It is widely used in our code.
+
+However, it is not a good idea to return errors via panic from a public method or a public function in a package. Only the package itself can recover from a panic. All panics that are not recovered by the package are propagated to the caller and considered as a bug/unexpected behavior. As it is written in "Effective Go": "_Useful though this pattern is, it should be used only within a package. ... That is a good rule to follow._" (See https://go.dev/doc/effective_go#recover)
+
+For the reasons mentioned above, it was decided not to return errors via panic from public methods/functions in our code. Instead, we should return an error value from a public function/method and check it in the caller.
+
+As an exception it was decided to allow special public methods/functions prefixed with 'Must' to return errors via panic if their parameter is an error. The 'Must' prefix is a common convention in Go to indicate that the function panics if an error occurs. It is used in the standard library, for example, in the 'template' package. With this prefix the caller always knows that the function panics if an error occurs. You can find some functions named 'MustNotBeError' in our packages.
