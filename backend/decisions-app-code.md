@@ -68,6 +68,18 @@ Date: 22/03/2023
 Why?
 - go-fmt automatically changes the line endings of *.go files with LF. Make it LF everywhere for consistency.
 
+## Code test coverage is computed per-package
+Date: 07/03/2019 (or even 04/12/2018)
+
+The code test coverage is computed per-package. That's why the BDD tests are included in each api-related package.
+
+Why?
+- Tests are at package level and so the coverage is (which makes sense a bit).
+- That helps us to keep packages isolated from each other.
+- It allows us to keep useful method covered by tests even if they are not currently in use.
+- It prevents situations where change in one package affects a coverage of another package.
+- It prevents abslolutely crazy situations like, for example, when the log level affects the code coverage (when a logging function is not covered by tests within its own package).
+
 ## Panic/recover error handling
 Date: 05/03/2019
 
