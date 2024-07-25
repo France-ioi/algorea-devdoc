@@ -77,8 +77,8 @@ Why?
 - Tests are at package level and so the coverage is (which makes sense a bit).
 - That helps us to keep packages isolated from each other.
 - It allows us to keep useful method covered by tests even if they are not currently in use.
-- It prevents situations where change in one package affects a coverage of another package.
-- It prevents abslolutely crazy situations like, for example, when the log level affects the code coverage (when a logging function is not covered by tests within its own package).
+- It prevents situations where change in one package affects coverage of another package.
+- It prevents abslolutely crazy situations when the code coverage depends on config parameter settings (for a function that is not covered by tests within its own package).
 
 ## Panic/recover error handling
 Date: 05/03/2019
