@@ -5,6 +5,8 @@ nav_order: 20
 parent: Ops (installation, running, ...)
 ---
 
+(doc about adding a new domain to an existing instance is below this page)
+
 # Creating a new instance
 
 This document is mainly a memo for not forgetting steps when trying to install a new instance (db + backend + frontend), it barely explains
@@ -128,3 +130,9 @@ aws s3 cp ./dist/algorea/fr/index.html s3://algorea-static/deployments/myinstanc
 
 * In EC2/ALB, copy the other rules to match the hosts.
 
+
+# A new domain for an existing instance
+
+* Add the new callback urls in the login module config
+* Make sure the ALB directs correctly the requests
+* Make sure the HTTPS certificate supports this domain
