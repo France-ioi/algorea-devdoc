@@ -42,14 +42,14 @@ In practice, in order to verify that the user `U` "can request help to" a group 
 In order to write in a thread, the **thread needs to be opened** and the user needs to either:
 - be the participant of the thread
 - have `can_watch>=answer` permission on the item AND `can_watch_members` on the participant
-- be part of the group the participant has requested help to AND either have `can_watch>=answer` on the item OR have `validated` the item.
+- be part of the group the participant has requested help to AND either have `can_watch>=answer` on the item OR (have `can_watch=result` on the item AND have `validated` the item).
 
 ## Listing / reading a thread
 
 In order to have a thread listed and be able to view it (in read-only if not authorized to write), the user needs to be allowed to view the item AND match one of these conditions:
 - be the participant of the thread
 - have `can_watch>=answer` permission on the item
-- be part of the group the participant has requested help to, AND the thread is either open or closed for less than 2 weeks, AND ~~either the user has `can_watch>=answer` on the item OR (duplicate from previous rule)~~ the user has `validated` the item
+- have `can_watch=result` permission on the item, AND be part of the group the participant has requested help to, AND the thread is either open or closed for less than 2 weeks, AND ~~either the user has `can_watch>=answer` on the item OR (duplicate from previous rule)~~ the user has `validated` the item
 
 ## Changing the status of a thread
 
