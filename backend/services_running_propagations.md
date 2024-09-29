@@ -4,6 +4,8 @@ title: "Services running propagations"
 nav_order: 560
 parent: Backend
 ---
+# Services running propagations
+
 | file                                             | service                  | groups ancestors                                                            | items ancestors                   | permissions                                                                                                                                                                            | results                                                                     |
 |:-------------------------------------------------|:-------------------------|:----------------------------------------------------------------------------|:----------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------------------------------|
 | app/api/answers/submit.go                        | itemGetAnswerToken       |                                                                             |                                   | sync (if at least one item is unlocked by the results propagation)                                                                                                                     | sync                                                                        |
