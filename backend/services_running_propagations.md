@@ -53,6 +53,13 @@ async* works as follows:
 
 🤷
 
-As of April 2024, since, instead of running sync propagations in the same transaction, we run them in separate transactions, objects marked for propagations are shared between all DB sessions. This means that if a sync propagation is run in one DB session, it processes all objects marked for this propagation, no matter which DB session marked them. So, when an endpoint runs a sync propagation to recompute some objects, it also recomputes all objects currently marked as modified by other endpoints/users. This can lead to surprisingly long propagation times even for small changes.
+## Notes
 
-🤷
+### Objects marked for propagations are shared between all DB sessions
+
+As of April 2024, since, instead of running sync propagations in the same transaction, we run them in separate transactions, objects marked for propagations are shared between all DB sessions. This means that if a sync propagation is run in one DB session, it processes all objects marked for this propagation, no matter which DB session marked them. So, when an endpoint runs a sync propagation to recompute some objects, it also recomputes all objects currently marked as modified by other endpoints/users. This can lead to surprisingly long propagation times even for small changes. 🤷
+
+### Impossibility of running sync and async results propagations simultaneously
+It's easy to see that there are many endpoints that run sync results propagations. At the same time, there are some endpoints that run async results propagations. As the results propagation is run under a named lock, it's possible that a sync results propagation is waiting for an async results propagation to finish completely. This can lead to lock wait timeouts resulting in a server error response. 🤷
+
+Happily, we have a solution for this: we can completely disable sync results propagations (with a special config setting) and run only async results propagations. This is the only way to avoid lock wait timeouts.
