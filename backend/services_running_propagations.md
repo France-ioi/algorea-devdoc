@@ -47,7 +47,6 @@ async* works as follows:
 1. It tries to schedule an async propagation of the specified kind by calling a special HTTP endpoint.
 2. If the endpoint succeeds, the specified propagation really runs async.
 3. If the endpoint fails (due to a network error, a 3-second timeout, or a non-200 HTTP response), no matter which of propagations it tried to schedule, it synchronously runs the sequence of three propagations:
-   - items ancestors,
    - permissions,
    - results.
 
