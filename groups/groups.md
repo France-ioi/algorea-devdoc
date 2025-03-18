@@ -71,7 +71,8 @@ Must be descendant of a school. <span class="label label-yellow">Draft</span>
 
 ## Group visibility
 
-A group is visible to a user if one of the following conditions is fulfilled:
-- The group is an ancestor of a group that the user has joined (or the group itself)
-- The group is an ancestor of a group of which the user is a manager (or the group itself)
+A group is visible to a current user `CU` if one of the following conditions is fulfilled: (considering a group is its own ancestor)
+- The group is an ancestor of a group that the `CU` has joined
+- The group is an ancestor of a non-user group that `CU` manages explicitely or implicitely (descendant)
+- The user is implicitely managed by `CU`.
 - The group is public (`is_public` is true)
