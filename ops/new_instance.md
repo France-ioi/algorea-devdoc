@@ -9,25 +9,36 @@ parent: Ops (installation, running, ...)
 
 # Creating a new instance
 
-This document is mainly a memo for not forgetting steps when trying to install a new instance (db + backend + frontend), it barely explains
-the reasons behind these operations. Reasons have to be found in the project repositories directly, in ops best-practices, or in my head🤷‍♂️. Many of these steps may only apply if you do the same kind of setup as ours (very AWS specific).
+This document is mainly a memo for not forgetting steps when trying to install a new instance (db + backend + frontend).
+It barely explains the reasons behind these operations.
+Reasons have to be found in the project repositories directly, in ops best-practices, or in my head🤷‍♂️.
+Many of these steps may only apply if you do the same kind of setup as ours (very AWS specific).
 
+## Required from others
+
+- the domain name (then adding the domain name and TXT entry for the certificate)
+- the supported languages and the default one
+- the login-module client id and secret
+- `itemPlatformId` to communicate with tasks
+- the title on top left (inc. language-specific ones) for the frontend
+- whether skills are enabled
 
 ## SSL / DNS
 
 - create a new certificate in the same region as the load balancer (+ TXT entry in the DNS to validate it)
 - create a new DNS entry to the load balancer
 
-
 ## Database
 
-Run the following action as a db admin. I suppose the new instance is called "myinstance".
+Run the following action as a db admin. I suppose the new instance is called "myinstance" (short token to be chosen).
 
 ### Create the user/database
 ```
-CREATE USER 'algorea-myinstance'@'%' IDENTIFIED BY '...';
-CREATE DATABASE algorea_myinstance;
-GRANT ALL PRIVILEGES ON algorea_myinstance.* TO 'algorea-myinstance'@'%';
+CREATE USER 'alg-myinstance-backend'@'%' IDENTIFIED BY '...'; # for the backend API
+CREATE USER 'alg-myinstance-admin'@'%' IDENTIFIED BY '...'; # for migration and commands
+CREATE DATABASE alg_myinstance_prod;
+GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE TEMPORARY TABLES ON `alg_myinstance_prod`.* TO `alg-myinstance-backend`@`%`;
+GRANT ALL PRIVILEGES ON alg_myinstance_prod.* TO 'alg-myinstance-admin'@'%';
 ```
 
 ### Create the db schema:
@@ -36,17 +47,14 @@ If you do not have a running DB, install the schema on the backend and run migra
 
 Otherwise, you can copy another instance schema:
 ```
-mysqldump --no-data --triggers --routines --events --add-drop-trigger --no-create-info --no-create-db --skip-opt -h <HOSTNAME> -u <ADMIN_USER> --protocol=TCP <EXISTING_DB_NAME> -p > db-schema-dump.sql
+mysqldump --no-data --triggers --routines --events --add-drop-trigger --no-create-db --skip-opt -h <HOSTNAME> -u <ADMIN_USER> --protocol=TCP <EXISTING_DB_NAME> -p > db-schema-dump.sql
 ```
-Search and replace `<ADMIN_USER>` as trigger definer, to `algorea-myinstance`. Then:
+Search and replace `<ADMIN_USER>` as trigger definer, to `alg-myinstance-admin`. Remove "@SESSION.SQL_LOG_BIN" and "GLOBAL.GTID_PURGED" lines. Then:
 ```
-mysql -h <HOSTNAME> -u algorea-myinstance --protocol=TCP  algorea_myinstance -p < db-schema-dump.sql
+mysql -h <HOSTNAME> -u alg-myinstance-admin --protocol=TCP  alg_myinstance_prod -p < db-schema-dump.sql
 ```
 
 ### Creating initial data
-
-Note: If you have followed the "Seeding the database" section of the backend README, some of the following operations may have already
-performed by the "install" command. This command does not do all the job currently, it probably needs to be improved a bit.
 
 #### Create the default groups
 ```
@@ -56,7 +64,7 @@ INSERT INTO `groups` (id, name, type, description, is_open, is_public, frozen_me
 
 #### Create supported languages for items
 ```
-INSERT INTO LANGUAGES VALUES ('en', 'English'), ('fr', 'French');
+INSERT INTO languages VALUES ('en', 'English'), ('fr', 'French');
 ```
 
 #### Create the initial item and set it as the root activity for the groups
@@ -70,6 +78,17 @@ INSERT INTO permissions_granted (group_id, item_id, source_group_id, origin, can
 INSERT INTO permissions_granted (group_id, item_id, source_group_id, origin, can_view) VALUES (3, 1, 3, 'group_membership', 'content') ;
 ```
 
+#### Create the initial skill if enabled
+```
+SET FOREIGN_KEY_CHECKS=0;
+INSERT INTO items (id, type, default_language_tag) VALUES (2, 'Skill', 'en');
+SET FOREIGN_KEY_CHECKS=1;
+INSERT INTO items_strings (item_id, language_tag, title) VALUES (2, 'en', 'Root skill (rename me)');
+UPDATE `groups` SET root_skill_id = 2 WHERE id IN (2, 3);
+INSERT INTO permissions_granted (group_id, item_id, source_group_id, origin, can_view) VALUES (2, 2, 2, 'group_membership', 'content') ;
+INSERT INTO permissions_granted (group_id, item_id, source_group_id, origin, can_view) VALUES (3, 2, 3, 'group_membership', 'content') ;
+```
+
 #### Create an initial "admin" group
 ```
 INSERT INTO `groups` (id, name, type, is_open, is_public, frozen_membership) VALUES (5, 'Platform admins', 'Other', 0, 0, 0);
@@ -77,62 +96,93 @@ INSERT INTO permissions_granted (group_id, item_id, source_group_id, origin, can
 INSERT INTO group_managers (group_id, manager_id , can_manage, can_grant_group_access , can_watch_members) VALUES (3, 5, 'memberships_and_group', 1, 1);
 ```
 
-### Recompute computed (cached) values for relations and permissions
-Run on the backend: `make db-recompute`
+If skills are enabled:
+```
+INSERT INTO permissions_granted (group_id, item_id, source_group_id, origin, can_view,  can_grant_view, can_watch, can_edit, is_owner) VALUES (5, 2, 5, 'group_membership', 'solution', 'solution_with_grant', 'answer_with_grant', 'all_with_grant', 1) ;
+```
 
-### First login
+## Config
+
+### Frontend
+
+On AlgoreaConfig, fork an existing frontend branch and change:
+
+- the supported languages in the build config
+- in the main config:
+  - `itemPlatformId` (for communication with tasks)
+  - `oauthClientId` (for communication with the login-module)
+  - `defaultActivityId`: `1` if you have followed the steps above
+  - `defaultSkillId`: `2` if enabled and using our default
+  - `allUsersGroupId`: `3` if using our default
+  - `title` and `languageSpecificTitles`.
+  - `searchApiUrl`: undefined for now
+  - `forumServerUrl`: undefined for now
+
+### Backend
+
+On AlgoreaConfig, fork an existing backend branch and change:
+
+Generate a new key pair:
+```
+rm *key*
+openssl genrsa --out private_key.pem 4096
+openssl rsa -in private_key.pem -pubout -out public_key.pem
+```
+Then encrypt the private key.
+
+Decrypt the env config and adapt it:
+- token platform name
+- the login-module id and secret (and possibly url)
+- the database name, users and passwords
+- empty the propagation end point
+
+Send the public key to the login module manager, and the token platform name if you chose it yourself.
+
+### Ops
+
+* In the ACM (certificate manager), create a new certificate for the new domain with DNS validation.
+
+* On AlgoreaConfig, add the new deployment environment in the env file. Force redeployment on the "AlgoreaOps" CI (opsbot-deploy*) directly.
+
+* Deploy the frontend and backend using the slack bot (`deploy frontend|backend <new_env_name> <version>`)
+
+* Create manually the `released` tag on the "*-static-serve" and "server" lambda functions pointing to the deployed version
+
+* re-compute the permissions via the slack bot: `command backend <env> db-recompute`
+
+## ALB
+
+* In EC2/LB, create a new target rule for the lambda function, pointing to the `released` tag of the lambdas, enable multi-header on the backend target
+
+* In EC2/ALB:
+  - add the new certificate
+  - copy the other rules to match the hosts (frontend and backend)
+  - depending on the default language you want to redirect the unknown path to, adapt the alias rule
+
+## Boostrap permissions on a first user
+
 Once your first user has signed in, add him as a manager of group `5`:
 ```
 INSERT INTO group_managers (group_id, manager_id, can_manage, can_grant_group_access, can_watch_members) VALUES (5,<new_user_group_id>,'memberships_and_group',1,1);
 ```
 (find the the `group_id` of the user using `SELECT group_id, login FROM users WHERE temp_user = 0;` )
 
-Then, the user can add himself (using the app) in the managed group to get the other access.
+Then, the user can add himself (using the webapp) as the member of the group, which will give him access to manage content.
 
-## Frontend
+## Propagation end-point
 
-### Config
+In the ops repository, in `src/backend-propagation`, run `sls deploy --stage pbl --aws-profile algorea` to deploy the propagation end-point.
 
-In the config, change
-- `apiUrl` (should be on the same domain to use cookies)
-- `itemPlatformId` (for communication with tasks)
-- `oauthClientId` (for communication with the login-module)
-- `defaultActivityId`: `1` if you have followed the steps abobe)
-- `title` and `languageSpecificTitles`.
+Update the "ALGOREA_SERVER__PROPAGATION_ENDPOINT" in the backend config with the end-point url.
 
-### Compile for prod
+## Forum
 
-Compilation has to be done one language at a time as the build override the previous build (language).
+To setup the forum, first, in the ops repository:
+- create a directory in `envionments/forum` based on the existing ones
+- refer it in the `environments/deployments.yaml` file
 
-What follows make some assumption about the deployment (using S3) that should be described in another doc.
+That should create the forum. Then copy the `wss` url to the frontend config.
 
-#### English
-```
-ng build --configuration production-en --base-href / --deploy-url //assets.algorea.org/deployments/myinstance/en/
-aws s3 sync ./dist/algorea/ s3://algorea-static/deployments/myinstance --acl public-read --exclude "*/index.html" --cache-control 'max-age=86400' --profile ...
-aws s3 cp ./dist/algorea/en/index.html s3://algorea-static/deployments/myinstance/en/index.html --acl public-read --cache-control 'max-age=300' --profile ...
-```
+## Search
 
-#### French
-```
-ng build --configuration production-fr --base-href / --deploy-url //assets.algorea.org/deployments/myinstance/fr/
-aws s3 sync ./dist/algorea/ s3://algorea-static/deployments/myinstance --acl public-read --exclude "*/index.html" --cache-control 'max-age=86400' --profile ...
-aws s3 cp ./dist/algorea/fr/index.html s3://algorea-static/deployments/myinstance/fr/index.html --acl public-read --cache-control 'max-age=300' --profile ...
-```
-
-## AWS Lambda & ALB
-
-* For static and backend: change the config, save to a new version, update/create the alias, restore the initial config.
-
-* Config to change for the backend: ALGOREA_AUTH__CLIENTID, ALGOREA_AUTH__CLIENTSECRET, ALGOREA_DATABASE__DBNAME, ALGOREA_DATABASE__PASSWD, ALGOREA_DATABASE__USER, ALGOREA_SERVER__DOMAINOVERRIDE
-
-* In EC2, create a new target rule for the lambda alias, enable multi-header on the backend target
-
-* In EC2/ALB, copy the other rules to match the hosts.
-
-
-# A new domain for an existing instance
-
-* Add the new callback urls in the login module config
-* Make sure the ALB directs correctly the requests
-* Make sure the HTTPS certificate supports this domain
+TODO
