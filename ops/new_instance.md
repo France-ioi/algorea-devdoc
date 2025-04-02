@@ -159,6 +159,10 @@ Send the public key to the login module manager, and the token platform name if 
   - copy the other rules to match the hosts (frontend and backend)
   - depending on the default language you want to redirect the unknown path to, adapt the alias rule
 
+## Allow access to assets
+
+If a new domain is used, add it to allowed origin in the response header policy of the CloudFront distribution.
+
 ## Boostrap permissions on a first user
 
 Once your first user has signed in, add him as a manager of group `5`:
