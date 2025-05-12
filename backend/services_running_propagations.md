@@ -52,7 +52,7 @@ async* works as follows:
 
 🤷
 
-mark-or-sync* means marking objects for async propagation without  calling the propagation endpoint when the config setting `server.disableResultsPropagation` is set to `true` (as we have in production). Otherwise, it means sync.
+mark-or-sync* means that, in the context where the backend server has `server.disableResultsPropagation`=1 (as it must be now in prod), it marks objects as to be propagated, but does not launch any sync propagation nor call the async-propagation endpoint. If `server.disableResultsPropagation`=0, it does the propagation synchronously.
 
 ## Notes
 
@@ -63,4 +63,4 @@ As of April 2024, since, instead of running sync permissions/results propagation
 ### Impossibility of running sync and async results propagations simultaneously
 It's easy to see that there are many endpoints that run sync results propagations. At the same time, there are some endpoints that run async results propagations. As the results propagation is run under a named lock (except for the `saveGrade` service), it's possible that a sync results propagation is waiting for an async results propagation to finish. This can lead to named lock wait timeouts resulting in server error responses. 🤷
 
-Happily, we have a solution for this: we can completely disable sync results propagations (with the special config setting `server.disableResultsPropagation`) and run only async results propagations (except for the `saveGrade` service which always runs it synchronously). This is the only way to avoid named lock wait timeouts.
+Happily, we have a "solution" for this: we completely disable sync results propagations (see the `mark-or-sync*` description above) and run only async results propagations (except for the `saveGrade` service which always runs it synchronously). This is currently the only way we have to avoid named lock wait timeouts.
