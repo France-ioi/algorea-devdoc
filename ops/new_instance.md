@@ -5,7 +5,7 @@ nav_order: 20
 parent: Ops (installation, running, ...)
 ---
 
-(doc about adding a new domain to an existing instance is below this page)
+(doc about adding a new domain to an existing instance is at the bottom of this page)
 
 # Creating a new instance
 
@@ -20,8 +20,10 @@ Many of these steps may only apply if you do the same kind of setup as ours (ver
 - the supported languages and the default one
 - the login-module client id and secret
 - `itemPlatformId` to communicate with tasks
-- the title on top left (inc. language-specific ones) for the frontend
+- the title on top left (inc. language-specific ones) and in browser tabs for the frontend
+- a logo if any
 - whether skills are enabled
+- whether groups should be shown in the left menu
 
 ## SSL / DNS
 
@@ -56,10 +58,20 @@ mysql -h <HOSTNAME> -u alg-myinstance-admin --protocol=TCP  alg_myinstance_prod 
 
 ### Creating initial data
 
+#### Copy the migration table
+
+Copy the  `gorp_migrations` from the model database to the new one:
+```
+mysqldump -h <hostname> --no-create-db --no-create-info -u <user> -p <sourcedatabase> gorp_migrations > db-migration-dump.sql
+```
+mysql -h <HOSTNAME> -u alg-myinstance-admin --protocol=TCP  alg_myinstance_prod -p < db-migration-dump.sql
+
 #### Create the default groups
 ```
-INSERT INTO `groups` (id, name, type, description, is_open, is_public, frozen_membership) values (2, 'TempUsers', 'Base', 'temporary users', 0, 0, 1);
-INSERT INTO `groups` (id, name, type, description, is_open, is_public, frozen_membership) values (3, 'AllUsers', 'Base', 'AllUsers', 0, 0, 1);
+INSERT INTO `groups` (id, name, type, text_id, description, is_open, is_public, frozen_membership) values (2, 'TempUsers', 'Base', 'TempUsers', 'temporary users', 0, 0, 1);
+INSERT INTO `groups` (id, name, type, text_id, description, is_open, is_public, frozen_membership) values (3, 'AllUsers', 'Base', 'AllUsers', 'AllUsers', 0, 0, 1);
+INSERT INTO `groups` (`id`, `name`, `type`, `text_id`, `description`, is_open, is_public, frozen_membership) VALUE (4, 'NonTempUsers', 'Base', 'NonTempUsers', 'non-temporary users',0, 0, 1);
+INSERT INTO `groups_groups` (parent_group_id, child_group_id) values (3, 2), (3, 4)
 ```
 
 #### Create supported languages for items
@@ -85,7 +97,6 @@ INSERT INTO items (id, type, default_language_tag) VALUES (2, 'Skill', 'en');
 SET FOREIGN_KEY_CHECKS=1;
 INSERT INTO items_strings (item_id, language_tag, title) VALUES (2, 'en', 'Root skill (rename me)');
 UPDATE `groups` SET root_skill_id = 2 WHERE id IN (2, 3);
-INSERT INTO permissions_granted (group_id, item_id, source_group_id, origin, can_view) VALUES (2, 2, 2, 'group_membership', 'content') ;
 INSERT INTO permissions_granted (group_id, item_id, source_group_id, origin, can_view) VALUES (3, 2, 3, 'group_membership', 'content') ;
 ```
 
