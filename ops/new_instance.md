@@ -111,6 +111,10 @@ If skills are enabled:
 ```
 INSERT INTO permissions_granted (group_id, item_id, source_group_id, origin, can_view,  can_grant_view, can_watch, can_edit, is_owner) VALUES (5, 2, 5, 'group_membership', 'solution', 'solution_with_grant', 'answer_with_grant', 'all_with_grant', 1) ;
 ```
+### Create default "platform"
+```
+insert into platforms (id, name, `regexp`, priority) values (0,'default', '.*',0);
+```
 
 ## Config
 
