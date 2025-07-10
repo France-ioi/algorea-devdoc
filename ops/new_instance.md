@@ -64,7 +64,10 @@ Copy the  `gorp_migrations` from the model database to the new one:
 ```
 mysqldump -h <hostname> --no-create-db --no-create-info -u <user> -p <sourcedatabase> gorp_migrations > db-migration-dump.sql
 ```
+Remove the line not related to data insertion and:
+```
 mysql -h <HOSTNAME> -u alg-myinstance-admin --protocol=TCP  alg_myinstance_prod -p < db-migration-dump.sql
+```
 
 #### Create the default groups
 ```
@@ -122,7 +125,7 @@ insert into platforms (id, name, `regexp`, priority) values (0,'default', '.*',0
 
 On AlgoreaConfig, fork an existing frontend branch and change:
 
-- the supported languages in the build config
+- the build config
 - in the main config:
   - `itemPlatformId` (for communication with tasks)
   - `oauthClientId` (for communication with the login-module)
@@ -133,31 +136,32 @@ On AlgoreaConfig, fork an existing frontend branch and change:
   - `searchApiUrl`: undefined for now
   - `forumServerUrl`: undefined for now
 
+### Propagation end-point
+
+In the ops repository, in `src/backend-propagation`, run `sls deploy --stage pbl --aws-profile algorea` to deploy the propagation end-point.
+
+Update the "ALGOREA_SERVER__PROPAGATION_ENDPOINT" in the backend config with the end-point url.
+
 ### Backend
 
-On AlgoreaConfig, fork an existing backend branch and change:
+In the AWS parameter store, create a `/alg/myinstance-prod/Auth`, `/alg/myinstance-prod/Database`, and `/alg/myinstance-prod/Token` of type `SecureString` and copy-update value from other instances.
 
-Generate a new key pair:
+For the key pair, generate one this way:
 ```
-rm *key*
-openssl genrsa --out private_key.pem 4096
+openssl genrsa --out private_key.pem 2048
 openssl rsa -in private_key.pem -pubout -out public_key.pem
 ```
-Then encrypt the private key.
+And then replace the line breaks by `\n`.
 
-Decrypt the env config and adapt it:
-- token platform name
-- the login-module id and secret (and possibly url)
-- the database name, users and passwords
-- empty the propagation end point
+Send the public key to the task manager if such tasks are used, and the token platform name if you chose it yourself.
 
-Send the public key to the login module manager, and the token platform name if you chose it yourself.
+On AlgoreaConfig, fork one backend branch and update the propagation end-point with the one given in the previous section.
 
 ### Ops
 
 * In the ACM (certificate manager), create a new certificate for the new domain with DNS validation.
 
-* On AlgoreaConfig, add the new deployment environment in the env file. Force redeployment on the "AlgoreaOps" CI (opsbot-deploy*) directly.
+* On AlgoreaConfig, in the `opsbot_prod` branch, add the new deployment environment in the env file. Force redeployment of the main branch of "AlgoreaOps" via the CI  so that the bot is redeployed.
 
 * Deploy the frontend and backend using the slack bot (`deploy frontend|backend <new_env_name> <version>`)
 
@@ -176,7 +180,7 @@ Send the public key to the login module manager, and the token platform name if 
 
 ## Allow access to assets
 
-If a new domain is used, add it to allowed origin in the response header policy of the CloudFront distribution.
+If a new domain is used, add it to allowed origin in the response header policy of the CloudFront distribution (in policies > response headers).
 
 ## Boostrap permissions on a first user
 
@@ -188,11 +192,6 @@ INSERT INTO group_managers (group_id, manager_id, can_manage, can_grant_group_ac
 
 Then, the user can add himself (using the webapp) as the member of the group, which will give him access to manage content.
 
-## Propagation end-point
-
-In the ops repository, in `src/backend-propagation`, run `sls deploy --stage pbl --aws-profile algorea` to deploy the propagation end-point.
-
-Update the "ALGOREA_SERVER__PROPAGATION_ENDPOINT" in the backend config with the end-point url.
 
 ## Forum
 
