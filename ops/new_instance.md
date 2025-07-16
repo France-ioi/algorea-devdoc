@@ -138,7 +138,7 @@ On AlgoreaConfig, fork an existing frontend branch and change:
 
 ### Propagation end-point
 
-In the ops repository, in `src/backend-propagation`, run `sls deploy --stage pbl --aws-profile algorea` to deploy the propagation end-point.
+In the ops repository, in `src/backend-propagation`, run `sls deploy --stage abc-prod --aws-profile algorea` to deploy the propagation end-point.
 
 Update the "ALGOREA_SERVER__PROPAGATION_ENDPOINT" in the backend config with the end-point url.
 
