@@ -39,13 +39,15 @@ In order for a user to be able to grant (or change) additional time given to a g
 
 ## Permissions on permissions
 
-Note: For the conditions below, do not forget that a group is a descendant of itself.
+Notes:
+* For the conditions below, do not forget that a group is a descendant of itself.
+* grant permission on an item, can be achieved by `can_grant_view > 'none'` or `can_watch = 'answer_with_grant'` or `can_edit = 'all_with_grant'` on that item
 
 ### View generated permissions
 
 In order for a `User` to view a permission given to `Group` on `Item`, the user requires:
 * either the permission to **watch `Item`** ("can_watch ≥ result") and to **watch `Group`** ("can_watch_members" on an ancestor of `Group`).
-* or the permission to **grant permission on `Item`** ("can_grant_view ≥ enter") and to **grant permission to `Group`** ("can_grant_group_access" of an ancestor of `Group`).
+* or the permission to **grant permission on `Item`** and to **grant permission to `Group`** ("can_grant_group_access" of an ancestor of `Group`).
 * or to be a descendant of `Group` .
 * or to be (implicit or explicit) a manager of `Group` with `level >= membership`
 
@@ -81,7 +83,7 @@ Item ids and info are visible as long `User` can view the item (`can_view>='info
 
 Only `origin: group_membership` permissions can be edited/created.
 
-In order to give (or edit) a permission, `User` needs the permission to **grant permission on `Item`** ("can_grant_view ≥ enter") and to **grant permission to `GroupSource`** ("can_grant_group_access" of an ancestor of `GroupSource`). In addition, it needs specific permission depending on the given permission value (e.g., giving `can_view:content` require `can_grant_view>=content`), cfr the item permission page.
+In order to give (or edit) a permission, `User` needs the permission to **grant permission on `Item`** and to **grant permission to `GroupSource`** ("can_grant_group_access" of an ancestor of `GroupSource`). In addition, it needs specific permission depending on the given permission value (e.g., giving `can_view:content` require `can_grant_view>=content`), cfr the item permission page.
 
 ### Discussions
 
