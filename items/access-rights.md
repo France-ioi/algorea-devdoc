@@ -46,7 +46,7 @@ Note: For the conditions below, do not forget that a group is a descendant of it
 In order for a `User` to view a permission given to `Group` on `Item`, the user requires:
 * either the permission to **watch `Item`** ("can_watch ≥ result") and to **watch `Group`** ("can_watch_members" on an ancestor of `Group`).
 * or the permission to **grant permission on `Item`** ("can_grant_view ≥ enter") and to **grant permission to `Group`** ("can_grant_group_access" of an ancestor of `Group`).
-* or the `can_view >= info` permission on `Item` and be a descendant of `Group` .
+* or to be a descendant of `Group` .
 * or to be (implicit or explicit) a manager of `Group` with `level >= membership`
 
 ### Granted permissions
@@ -74,7 +74,8 @@ Item ids and info are visible as long `User` can view the item (`can_view>='info
   * `User` is (explicitly or implicitly) a manager with "can_watch_members" or "can_grant_group_access" of `Group`
 * or
   * `Group` is a user, and
-  * `User` is (explicitly or implicitly) a manager with "can_watch_members" or "can_grant_group_access" of a non-user descendant group of `GroupSource`
+  * `User` is implicitly a manager with "can_watch_members" or "can_grant_group_access" of `Group`, and
+  * `User` is (explicitly or implicitly) a manager of a non-user descendant group of `GroupSource`
 
 #### Edit (or create) a granted permissions
 
@@ -82,7 +83,7 @@ In order to give (or edit) a permission, `User` requires the permission to **gra
 
 ### Discussions
 
-The base of these decisions is the following:
+The base for these decisions is the following:
 
 1) a user should be able to see the permissions which applies to himself, and to see where (from what group) it comes from.
 
@@ -92,7 +93,7 @@ The base of these decisions is the following:
 
 4) a manager with "can grant" permissions on a (group, item) pair should be able to see and edit permissions which related to it
 
-5) The manager with `membership` level on a group can add himself to the group; also a user with can watch or grant on an item can always view the item. As a consequence, (3) and (4) are not necessary as superseeded by (1) as long as the user is a manager with `membership` level on the group and can view the item.
+5) The manager with `membership` level on a group can add himself to the group. As a consequence, he can choose the have the permissions applying to him, so there is not point in not allowing him to see these permissions.
 
 #### Interesting scenarios
 
