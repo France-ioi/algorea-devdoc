@@ -79,7 +79,7 @@ Item ids and info are visible as long `User` can view the item (`can_view>='info
 
 #### Edit (or create) a granted permissions
 
-Only `origin: membership` permissions can be edited/created.
+Only `origin: group_membership` permissions can be edited/created.
 
 In order to give (or edit) a permission, `User` needs the permission to **grant permission on `Item`** ("can_grant_view ≥ enter") and to **grant permission to `GroupSource`** ("can_grant_group_access" of an ancestor of `GroupSource`). In addition, it needs specific permission depending on the given permission value (e.g., giving `can_view:content` require `can_grant_view>=content`), cfr the item permission page.
 
