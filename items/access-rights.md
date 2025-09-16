@@ -37,8 +37,65 @@ In order for a user to be able to grant (or change) additional time given to a g
 * "can_watch ≥ result" on the timed item
 * to be a manager of the group with "can_grant_group_access" and "can_watch_members"
 
-### Permissions to view other's permissions
+## Permissions on permissions
 
-In order for a `User` to view another permission given by `GroupSource` to `Group` on `Item`, the user requires:
+Note: For the conditions below, do not forget that a group is a descendant of itself.
+
+### View generated permissions
+
+In order for a `User` to view a permission given to `Group` on `Item`, the user requires:
 * either the permission to **watch `Item`** ("can_watch ≥ result") and to **watch `Group`** ("can_watch_members" on an ancestor of `Group`).
 * or the permission to **grant permission on `Item`** ("can_grant_view ≥ enter") and to **grant permission to `Group`** ("can_grant_group_access" of an ancestor of `Group`).
+* or the `can_view >= info` permission on `Item` and be a descendant of `Group` .
+* or to be (implicit or explicit) a manager of `Group` with `level >= membership`
+
+### Granted permissions
+
+Let's consider a `User` and some granted permission from `GroupSource` to `Group` on `Item`.
+
+Note that, by definition, a `Group` is always a descendant of `GroupSource`. As a consequence, if a user is a (implicit or explicit) manager or `GroupSource`, it is (at least implicitly) a manager of `Group`.
+
+**To list the granted permissions which applies to a group and an item, the user has to be allowed to view the generated permissions for that pair (see the previous section). But that applies to the permissions themselves (`can_...`), not to the ids (group, source group and item) as otherwise that would allow to deduce what group a user is member of.**
+
+#### Item info
+
+Item ids and info are visible as long `User` can view the item (`can_view>='info'`).
+
+#### Group and source group info
+
+`User` can view the group and source info if:
+* either
+  * `User` is a descendant of `Group`
+* or (as a manager with membership level can add himself into a group)
+  * `Group` is not a user, and
+  * `User` is (explicitly or implicitly) a manager of a descendant of `Group` with `level >= membership`
+* or
+  * `Group` is not a user, and
+  * `User` is (explicitly or implicitly) a manager with "can_watch_members" or "can_grant_group_access" of `Group`
+* or
+  * `Group` is a user, and
+  * `User` is (explicitly or implicitly) a manager with "can_watch_members" or "can_grant_group_access" of a non-user descendant group of `GroupSource`
+
+#### Edit (or create) a granted permissions
+
+In order to give (or edit) a permission, `User` requires the permission to **grant permission on `Item`** ("can_grant_view ≥ enter") and to **grant permission to `GroupSource`** ("can_grant_group_access" of an ancestor of `GroupSource`). In addition, it needs specific permission depending on the given permission value (e.g., giving `can_view:content` require `can_grant_view>=content`), cfr the item permission page.
+
+### Discussions
+
+The base of these decisions is the following:
+
+1) a user should be able to see the permissions which applies to himself, and to see where (from what group) it comes from.
+
+2) a user should not be able to deduce with 100% certainty the membership of another in a group that he does not manage
+
+3) a manager with "watch" permissions on a (group, item) pair should be able to see permissions which related to it
+
+4) a manager with "can grant" permissions on a (group, item) pair should be able to see and edit permissions which related to it
+
+5) The manager with `membership` level on a group can add himself to the group; also a user with can watch or grant on an item can always view the item. As a consequence, (3) and (4) are not necessary as superseeded by (1) as long as the user is a manager with `membership` level on the group and can view the item.
+
+#### Interesting scenarios
+
+1) A student is a member of a school class and of a coder dojo group (both groups are unrelated). The class teacher should not be able to see that there is a permission which has been given by the coder dojo group (which would allow to deduce that the student is a member of the dojo)
+
+2) A class teacher (manager from the class) should be able to see the permissions given to the students of his class by the school (school is ancestor of the class) even if he is not manager from the school
