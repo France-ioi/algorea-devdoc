@@ -119,6 +119,22 @@ INSERT INTO permissions_granted (group_id, item_id, source_group_id, origin, can
 insert into platforms (id, name, `regexp`, priority) values (0,'default', '.*',0);
 ```
 
+
+## API Gateway
+
+Only if you need websockets / serverless.
+
+In the API gateway console:
+- create API > websocket API
+- name: `alg-websockets-envname` (e.g. `alg-websockets-tez`)
+- address type: dualstack
+- Route selection expression: `$request.body.action`
+- Predefined routes: enable the 3 routes
+- Attach integrations: mock for now
+- Stage name: "prod"
+- Create and deploy
+- Then select "stages" and go copy paste the websocket URL for the serverless and frontend configs
+
 ## Config
 
 ### Frontend
@@ -134,7 +150,8 @@ On AlgoreaConfig, fork an existing frontend branch and change:
   - `allUsersGroupId`: `3` if using our default
   - `title` and `languageSpecificTitles`.
   - `searchApiUrl`: undefined for now
-  - `forumServerUrl`: undefined for now
+  - `slsWsUrl`: the wss url from the API Gateway
+  - `slsWslsApiUrlsUrl`: use the same as the other env
 
 ### Propagation end-point
 
@@ -157,17 +174,34 @@ Send the public key to the task manager if such tasks are used, and the token pl
 
 On AlgoreaConfig, fork one backend branch and update the propagation end-point with the one given in the previous section.
 
+
+### Serverless
+
+Fork the config from another env:
+- update the public key with the public key of the backend
+- keep the same table name and ops bucket as the other prod env if on the same aws account
+- for the `APIGW_ENDPOINT`, update it with the websocket url from the API Gateway but starting with https and ending with the env name
+
+
 ### Ops
 
 * In the ACM (certificate manager), create a new certificate for the new domain with DNS validation.
 
 * On AlgoreaConfig, in the `opsbot_prod` branch, add the new deployment environment in the env file. Force redeployment of the main branch of "AlgoreaOps" via the CI  so that the bot is redeployed.
 
-* Deploy the frontend and backend using the slack bot (`deploy frontend|backend <new_env_name> <version>`)
+* Deploy the frontend and backend using the slack bot (`deploy frontend|backend|serverless <new_env_name> <version>`)
 
 * Create manually the `released` tag on the "*-static-serve" and "server" lambda functions pointing to the deployed version
 
 * re-compute the permissions via the slack bot: `command backend <env> db-recompute`
+
+
+### Post deployment
+
+* Update the API gateway endpoints (the integration requests of the 3 websocket routes):
+- select lambda
+- enable "Lambda proxy integration"
+- select the serverless server  lambda and append `:released` to the name to use the "released" alias
 
 ## ALB
 
@@ -193,14 +227,10 @@ INSERT INTO group_managers (group_id, manager_id, can_manage, can_grant_group_ac
 Then, the user can add himself (using the webapp) as the member of the group, which will give him access to manage content.
 
 
-## Forum
-
-To setup the forum, first, in the ops repository:
-- create a directory in `envionments/forum` based on the existing ones
-- refer it in the `environments/deployments.yaml` file
-
-That should create the forum. Then copy the `wss` url to the frontend config.
-
 ## Search
 
 TODO
+
+## Deployment
+
+Use the slack bot to deploy the frontend and backend
