@@ -205,11 +205,11 @@ Fork the config from another env:
 
 ## ALB
 
-* In EC2/LB, create a new target rule for the lambda function, pointing to the `released` tag of the lambdas, enable multi-header on the backend target
+* In EC2/LB, create a new target rules for the lambda functions (for frontend, backend and serverless), pointing to the `released` tag of the lambdas, enable multi-header on the backend target
 
 * In EC2/ALB:
   - add the new certificate
-  - copy the other rules to match the hosts (frontend and backend)
+  - copy the other rules to match the hosts (frontend, backend and serverless)
   - depending on the default language you want to redirect the unknown path to, adapt the alias rule
 
 ## Allow access to assets
