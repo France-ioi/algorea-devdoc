@@ -72,14 +72,21 @@ Must be descendant of a school. <span class="label label-yellow">Draft</span>
 ## Group visibility
 
 A group `G` is visible to a user `U` if:
+
 1) either `G` is an ancestor of `U`
+
 2) either `G` is an ancestor of a non-user group `G'` that `U` manages explicitely or implicitely
+
 3) either `G` is a user who is implicitely managed by `U`.
+
 4) either `G` is public (`is_public` is true)
 
 ### Explanations
 
 1) A user can see all the groups he is member of as well as their ancestors (he is implicitely member of them)
+
 2) When a user is manager of a group, we consider he may know about all groups which are ancestors of the group he manages directly (explicitely) or any of its descendants (implicitely). Of course, that excludes ancestors of users he manages as he cannot be member of a user. Note that in theory, that should only apply the manager with `membership` level (as they may add themselves to these descendant groups anyway), but we extends it to all managers for simplicity.
+
 3) The manager (implicit or explicit) of a group should be able to see the users who are members of that group. In theory, that should only apply the manager with `level >= membership` or `can_watch_members=true` or `can_grant_group_access=true` but we extends it to all managers for simplicity. Anyway, managers without that permissions should be restricted on the service call directly, not at the row level.
+
 4) Public groups are by definition visible to everyone.
