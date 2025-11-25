@@ -65,19 +65,7 @@ Item ids and info are visible as long `User` can view the item (`can_view>='info
 
 #### Group and source group info
 
-`User` can view the group and source info if:
-* either
-  * `User` is a descendant of `Group`
-* or (as a manager with membership level can add himself into a group)
-  * `Group` is not a user, and
-  * `User` is (explicitly or implicitly) a manager of a descendant of `Group` with `level >= membership`
-* or
-  * `Group` is not a user, and
-  * `User` is (explicitly or implicitly) a manager with "can_watch_members" or "can_grant_group_access" of `Group`
-* or
-  * `Group` is a user, and
-  * `User` is implicitly a manager with "can_watch_members" or "can_grant_group_access" of `Group`, and
-  * `User` is (explicitly or implicitly) a manager of a non-user descendant group of `GroupSource`
+`User` can view the group and source info if [the rules defined on the group page](../groups/groups.md#group-visibility) match.
 
 #### Edit (or create) a granted permissions
 
