@@ -75,9 +75,9 @@ A group `G` is visible to a user `U` if:
 
 1) `G` is an ancestor of `U` or `G` is an ancestor of at least one team `U` is member of or
 
-2) `G` is an ancestor of a non-user group `G'` that `U` manages explicitly or implicitly or
+2) `G` is an ancestor of a non-user group `G'` that `U` manages explicitly or implicitly with `can_manage>="memberships" or
 
-3) `G` is a user implicitly managed by `U` or is a member of a team managed by `U` (explicitly or implicitly) or
+3) `G` is a user implicitly managed by `U` or `G` is a member of a team managed by `U` (explicitly or implicitly) with `can_manage`>="membership" or `can_watch_members`=true or `can_grant_group_access`=true or
 
 4) `G` is public (`is_public` is true).
 
@@ -85,8 +85,8 @@ A group `G` is visible to a user `U` if:
 
 1) A user can see all the groups he is member of as well as their ancestors (he is implicitly member of them)
 
-2) When a user is manager of a group, we consider he may know about all groups which are ancestors of the group he manages directly (explicitly) or any of its descendants (implicitly). Of course, that excludes ancestors of users he manages as he cannot be member of a user. Note that in theory, that should only apply the manager with `membership` level (as they may add themselves to these descendant groups anyway), but we extend it to all managers for simplicity.
+2) When a user is manager of a group, we consider he may know about all groups which are ancestors of the group he manages directly (explicitly) or any of its descendants (implicitly) with `can_manage`>="membership" (as they may add themselves to these descendant groups anyway). Of course, that excludes ancestors of users he manages as he cannot be member of a user.
 
-3) The manager (implicit or explicit) of a group should be able to see the users who are members of that group. In theory, that should only apply the manager with `level >= membership` or `can_watch_members=true` or `can_grant_group_access=true` but we extend it to all managers for simplicity. Anyway, managers without that permissions should be restricted on the service call directly, not at the row level.
+3) The manager (implicit or explicit) of a group having `can_manage`>="membership" or `can_watch_members`=true or `can_grant_group_access`=true should be able to see the users who are members of that group.
 
 4) Public groups are by definition visible to everyone.
