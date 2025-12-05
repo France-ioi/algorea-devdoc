@@ -73,11 +73,11 @@ Must be descendant of a school. <span class="label label-yellow">Draft</span>
 
 A group `G` is visible to a user `U` if:
 
-1) `G` is an ancestor of `U` or
+1) `G` is an ancestor of `U` or `G` is an ancestor of at least one team `U` is member of or
 
 2) `G` is an ancestor of a non-user group `G'` that `U` manages explicitly or implicitly or
 
-3) `G` is a user who is implicitly managed by `U` or
+3) `G` is a user implicitly managed by `U` or is a member of a team managed by `U` (explicitly or implicitly) or
 
 4) `G` is public (`is_public` is true).
 
