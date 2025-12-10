@@ -75,7 +75,7 @@ A group `G` is visible to a user `U` if:
 
 1) `G` is an ancestor of `U` or `G` is an ancestor of at least one team `U` is member of or
 
-2) `G` is an ancestor of a non-user group `G'` that `U` manages with `can_manage>="memberships" (explicitly or implicitly) or
+2) `G` is an ancestor of a non-user group `G'` that `U` manages with `can_manage`>="memberships" or `can_watch_members`=true or `can_grant_group_access`=true (explicitly or implicitly) or
 
 3) `G` is a user implicitly managed by `U` or `G` is a member of a team managed by `U` (explicitly or implicitly) with `can_manage`>="membership" or `can_watch_members`=true or `can_grant_group_access`=true or
 
@@ -83,10 +83,16 @@ A group `G` is visible to a user `U` if:
 
 ### Explanations
 
-1) A user can see all the groups he is member of as well as their ancestors (he is implicitly member of them)
+1) A user can see all the groups he is a member of as well as their ancestors (he is implicitly a member of them).
 
-2) When a user is manager of a group, we consider he may know about all groups which are ancestors of the group he manages directly (explicitly) or any of its descendants (implicitly) with `can_manage`>="membership" (as they may add themselves to these descendant groups anyway). Of course, that excludes ancestors of users he manages as he cannot be member of a user.
+2) When a user is a manager of a group (with `can_manage`>="memberships" or `can_watch_members`=true or `can_grant_group_access`=true), we consider they may know about all groups that are ancestors of the group he manages directly (explicitly) or via descendants (implicitly). Why we do this:
+  * When a user manages a group with `can_manage`>="memberships", he can himself into that group or any of its descendant (leading to the rule 1). This excludes ancestors of users the user manages as it's impossible to become a member of a user.
+  * When a user manages a group with `can_watch_members`=true, we allow him to see ancestors of the group for a REASON TO BE DOCUMENTED. This excludes ancestors of users the user manages as it's impossible for a user to have members.
+  * When a user manages a group with `can_grant_group_access`=true, we want the user to be able to all the permissions given to the group via any of its ancestors, so all the ancestors of the managed group should be visible to the user. This excludes ancestors of users for a REASON TO BE DOCUMENTED.
 
-3) The manager (implicit or explicit) of a group having `can_manage`>="membership" or `can_watch_members`=true or `can_grant_group_access`=true should be able to see the users who are members of that group.
+3) A manager (implicit or explicit) of a group having `can_manage`>="membership" or `can_watch_members`=true or `can_grant_group_access`=true should be able to see the users who are members of that group. Why we do this:
+  * When a user manages a group with `can_manage`>="membership", we allow them to see the members of that group for a REASON TO BE DOCUMENTED.
+  * When a user manages a group with `can_watch_members`=true, he should be able to see the members of that group because that's the purpose of that permission.
+  * When a user manages a group with `can_grant_group_access`=true, we want the user to be able to see all the members of that group for a REASON TO BE DOCUMENTED.
 
 4) Public groups are by definition visible to everyone.
