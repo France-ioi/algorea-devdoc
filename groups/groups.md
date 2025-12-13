@@ -73,7 +73,7 @@ Must be descendant of a school. <span class="label label-yellow">Draft</span>
 
 A group `G` is visible to a user `U` if:
 
-1) `G` is an ancestor of `U` or `G` is an ancestor of at least one team `U` is member of or
+1) `G` is an ancestor of `U` or `G` is an ancestor of at least one team `U` is a member of or
 
 2) `G` is an ancestor of a non-user group `G'` that `U` manages with `can_manage`>="memberships" or `can_watch_members`=true or `can_grant_group_access`=true (explicitly or implicitly) or
 
