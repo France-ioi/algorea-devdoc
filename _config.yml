@@ -17,6 +17,11 @@ gh_edit_view_mode: "edit" # "tree" or "edit" if you want the user to jump into t
 
 search_enabled: true
 permalink: pretty
+
+# Mermaid diagrams (jsDelivr). Used e.g. by exports/group-results-export.md
+mermaid:
+  version: "10.9.0"
+
 exclude:
   - Gemfile
   - Gemfile.lock

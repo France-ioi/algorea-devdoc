@@ -9,6 +9,8 @@ parent: Backend
 
 The backend uses JWS tokens (encrypted data structures using public/private keys) to allow transmission of data between servers by a client, while protecting this data from alteration.
 
+Existing cross-cutting token types include the **group results token**, used to authorize the asynchronous [group results export]({{ site.baseurl }}{% link exports/group-results-export.md %}) across backend, serverless, and the worker.
+
 ## Create a new type of token
 
 First, define your token data structure in `app/payloads/yourtype_token.go`:

@@ -9,6 +9,8 @@ parent: Backend
 
 This page contains various notes on the deployment of the backend service on AWS Lambda.
 
+The **worker** Lambda also handles EventBridge events (full event JSON with a `detail-type`), for example `group_results_export_requested` for the [group results export]({{ site.baseurl }}{% link exports/group-results-export.md %}). Those payloads are passed to the `handle-event` CLI command rather than the `{"command": "…"}` whitelist used for other worker jobs.
+
 It is interesting to understand how lambdas work under the hood. In nutshell: a daemon makes a call on an [API endpoint](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-api.html) (`/next`) which is blocking waiting for the next (HTTP) request to arrive. Then it passes the request to your lambda code with a timeout, and send the response back to that endpoint, and then wait back in loop on this `/next` endpoint. You do not know how many requests the daemon will process before being stopped and started on another server.
 
 

@@ -11,6 +11,8 @@ Data related to the forum are split between:
 - DynamoDB (unstructructured data), mainly for message content and notification system
 - Backend relational database, mainly for everything related to permission checks
 
+The same DynamoDB + WebSocket notification path (`notifyUser` / `notification.new`) is also used for non-forum types such as `group_results_export.ready` and `group_results_export.failed` — see [Group results export]({{ site.baseurl }}{% link exports/group-results-export.md %}).
+
 The main "entities" in forum are "threads", they correspond to a discussion thread related to one task for one participant (a user or a team). So thread are unique for a `item_id, participant_id`.
 
 ## In the relational DB
