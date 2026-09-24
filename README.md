@@ -1,5 +1,7 @@
 # Developer Documentation for France-IOI Algorea
 
+**The content of this documentation has been moved to https://github.com/France-ioi/knowledge-base**
+
 Code for auto-generated static website: https://france-ioi.github.io/algorea-devdoc/
 
 ## Quick Start
